@@ -1,5 +1,5 @@
 <?php
-namespace twa\apiutils\Jobs;
+namespace twa\smsautils\Jobs;
 
 
 use Illuminate\Bus\Queueable;
