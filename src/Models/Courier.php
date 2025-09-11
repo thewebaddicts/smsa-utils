@@ -35,15 +35,34 @@ class Courier extends Model
         'notes',
     ];
 
+    public function status()
+    {
+        return $this->belongsTo(CourierStatus::class, 'status_id');
+    }
+    public function company()
+    {
+        return $this->belongsTo(\App\Models\Company::class, 'company_id');
+    }
+
+    public function assignedRoutes()
+    {
+        return $this->belongsToMany(
+            \twa\smsautils\Models\Route::class,
+            'route_assignments',
+            'courier_id',
+            'route_id'
+        )->whereNull('route_assignments.deleted_at');
+    }
+
 
     public function getFullNameAttribute()
     {
         return trim($this->first_name . ' ' . $this->last_name);
     }
 
-   
+
     public function getDisplayNameAttribute()
     {
         return $this->getFullNameAttribute();
     }
-} 
+}

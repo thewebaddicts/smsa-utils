@@ -66,7 +66,15 @@ class MigrationsController extends Controller
                 $table->softDeletes();
             });
         }
-
+        if (!Schema::hasTable('courier_statuses')) {
+            Schema::create('courier_statuses', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->text('description')->nullable();
+                $table->softDeletes();
+                $table->timestamps();
+            });
+        }
         if (!Schema::hasTable('operators')) {
             Schema::create('operators', function (Blueprint $table) {
                 $table->id();
@@ -124,5 +132,19 @@ class MigrationsController extends Controller
                 $table->timestamps();
             });
         }
+
+          if (!Schema::hasTable('route_assignments')) {
+            Schema::create('route_assignments', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('route_id');
+                $table->unsignedBigInteger('courier_id');
+                $table->timestamp('assigned_at')->nullable();
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
+
+
+
     }
 }
