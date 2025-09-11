@@ -1,0 +1,49 @@
+<?php
+
+
+namespace twa\smsautils\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Courier extends Model
+{
+    use HasFactory, SoftDeletes;
+
+    protected $table = 'couriers';
+
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'phone_number',
+        'email',
+        'national_id',
+        'address',
+        'driving_license_number',
+        'license_expiry_date',
+        'license_type',
+        'hire_date',
+        'status',
+        'assigned_vehicle',
+        'type',
+        'contact_person_name',
+        'contact_phone_number',
+        'relationship',
+        'driving_license_scan',
+        'national_id_scan',
+        'notes',
+    ];
+
+
+    public function getFullNameAttribute()
+    {
+        return trim($this->first_name . ' ' . $this->last_name);
+    }
+
+   
+    public function getDisplayNameAttribute()
+    {
+        return $this->getFullNameAttribute();
+    }
+} 
