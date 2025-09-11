@@ -28,6 +28,47 @@ if (!function_exists('log_activity')) {
 
         DB::table($table)->insert($data);
 
-        return $data; 
+        return $data;
+    }
+}
+
+
+if (!function_exists('query_options_response')) {
+    function query_options_response($table, $columnValue, $columnLabel)
+    {
+
+        $values = request()->input('values');
+
+        if (is_numeric($values)) {
+            $values = [$values];
+        } elseif (is_array($values)) {
+            $values = $values;
+        } else {
+            $values = [];
+        }
+
+
+        // Build base query
+        $baseQuery = DB::table($table)->whereNull('deleted_at');
+
+        // Apply search filter if provided
+        if (request()->input('search')) {
+            $baseQuery->where($columnLabel, 'like', '%' . request()->input('search') . '%');
+        }
+
+        // If we have specific values, prioritize them at the top
+        if (count($values) > 0) {
+            $baseQuery->orderByRaw("CASE WHEN " . $columnValue . " IN (" . implode(',', array_map('intval', $values)) . ") THEN 0 ELSE 1 END")
+                ->orderBy($columnValue, 'asc');
+        } else {
+            $baseQuery->orderBy($columnValue, 'asc');
+        }
+
+        return $baseQuery->paginate(20)->through(function ($item) use ($columnValue, $columnLabel) {
+            return [
+                'value' => $item->$columnValue,
+                'label' => $item->$columnLabel,
+            ];
+        });
     }
 }
