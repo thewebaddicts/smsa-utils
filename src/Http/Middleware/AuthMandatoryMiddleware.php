@@ -36,7 +36,7 @@ class AuthMandatoryMiddleware
             ->first();
 
         if (!$access_token) {
-            return $this->response(notification()->error("Access Token has expired or is invalid", "Access Token has expired or is invalid"));
+            return $this->response(notification()->error("Access Token has expired or is invalid", "Access Token has expired or is invalid", 100));
         }
 
 
