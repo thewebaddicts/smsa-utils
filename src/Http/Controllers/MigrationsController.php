@@ -132,8 +132,7 @@ class MigrationsController extends Controller
                 $table->timestamps();
             });
         }
-
-          if (!Schema::hasTable('route_assignments')) {
+        if (!Schema::hasTable('route_assignments')) {
             Schema::create('route_assignments', function (Blueprint $table) {
                 $table->id();
                 $table->unsignedBigInteger('route_id');
@@ -143,8 +142,35 @@ class MigrationsController extends Controller
                 $table->softDeletes();
             });
         }
+        if (!Schema::hasTable('clients')) {
+            Schema::create('clients', function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('name');
+                $table->string('email');
+                $table->string('phone');
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
 
 
-
+        if (!Schema::hasTable('files')) {
+            Schema::create('files', function (Blueprint $table) {
+                $table->id();
+                $table->string('original_name');
+                $table->string('file_path');
+                $table->string('mime_type');
+                $table->unsignedBigInteger('size');
+                $table->timestamps();
+            });
+        }
+          if (!Schema::hasTable('companies')) {
+            Schema::create('companies', function (Blueprint $table) {
+                $table->id();
+                $table->string('label');
+                $table->timestamps();
+                $table->softDeletes();
+            });
+        }
     }
 }
