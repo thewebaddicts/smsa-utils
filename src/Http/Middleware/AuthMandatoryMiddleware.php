@@ -30,7 +30,7 @@ class AuthMandatoryMiddleware
             return $this->response(notification()->error("Access Token is required", "Access Token is required"));
         }
 
-        $access_token =  DB::table('access_tokens')->where('token', $access_token)
+        $access_token = DB::table('access_tokens')->where('token', $access_token)
             ->where('expires_at', '>', now())
             ->whereNull('deleted_at')
             ->first();
@@ -45,22 +45,30 @@ class AuthMandatoryMiddleware
 
 
                 $user = DB::table('operators')->whereId($access_token->tokenable_id)->first();
-
+                $performer = $user->id . ' | ' . $user->name;
 
                 break;
 
-            case 'client':
+            case 'client_api_key':
 
 
-                $user = DB::table('clients')->whereId($access_token->tokenable_id)->first();
+                $user = DB::table('client_api_keys')->whereId($access_token->tokenable_id)->first();
+                $performer = $user->id . ' | ' . $user->label;
 
+                break;
+
+            case 'user':
+
+                $user = DB::table('users')->whereId($access_token->tokenable_id)->first();
+                $performer = $user->id . ' | ' . $user->first_name . ' ' . $user->last_name;
 
                 break;
         }
 
         request()->merge([
             'user' => (array) $user,
-            'user_type' => $access_token->tokenable_type
+            'user_type' => $access_token->tokenable_type,
+            'user_performer' => $performer
         ]);
 
         return $next($request);

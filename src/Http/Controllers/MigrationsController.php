@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use twa\apiutils\Traits\APITrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Schema;
 
 class MigrationsController extends Controller
 {
