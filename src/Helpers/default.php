@@ -32,9 +32,8 @@ if (!function_exists('log_activity')) {
     }
 }
 
-
 if (!function_exists('query_options_response')) {
-    function query_options_response($table, $columnValue, $columnLabel)
+    function query_options_response($table, $columnValue, $columnLabel, $params = [])
     {
 
         $values = request()->input('values');
@@ -51,10 +50,16 @@ if (!function_exists('query_options_response')) {
         // Build base query
         $baseQuery = DB::table($table)->whereNull('deleted_at');
 
+
+        foreach ($params as $field => $value) {
+            $baseQuery->where($field, $value);
+        }
+
         // Apply search filter if provided
         if (request()->input('search')) {
             $baseQuery->where($columnLabel, 'like', '%' . request()->input('search') . '%');
         }
+
 
         // If we have specific values, prioritize them at the top
         if (count($values) > 0) {
