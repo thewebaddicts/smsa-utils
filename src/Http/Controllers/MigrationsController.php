@@ -20,6 +20,7 @@ class MigrationsController extends Controller
                 $table->id();
                 $table->string('label');
                 $table->string('reference')->unique();
+                $table->string('currency_code', 3)->nullable();
                 $table->softDeletes();
                 $table->timestamps();
             });

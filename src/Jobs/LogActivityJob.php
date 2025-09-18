@@ -1,12 +1,12 @@
 <?php
 namespace twa\smsautils\Jobs;
 
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\DB;
 
 class LogActivityJob implements ShouldQueue
 {
@@ -21,9 +21,6 @@ class LogActivityJob implements ShouldQueue
     protected ?string $comment;
     protected array $files;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(
         string $table,
         string $target,
@@ -44,20 +41,22 @@ class LogActivityJob implements ShouldQueue
         $this->files = $files;
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
-        log_activity(
-            $this->table,
-            target: $this->target,
-            target_id: $this->target_id,
-            status_code: $this->status_code,
-            activity_by_id: $this->activity_by_id,
-            activity_by_type: $this->activity_by_type,
-            comment: $this->comment,
-            files: $this->files,
-        );
+    
+        // Directly insert into the table, no helper call
+     $data=   DB::table($this->table)->insert([
+            'target' => $this->target,
+            'target_id' => $this->target_id,
+            'status_code' => $this->status_code,
+            'activity_by_id' => $this->activity_by_id,
+            'activity_by_type' => $this->activity_by_type,
+            'comment' => $this->comment,
+            'files' => $this->files ? json_encode($this->files) : null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // dd($data);
     }
 }

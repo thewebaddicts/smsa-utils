@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 if (!function_exists('log_activity')) {
+
     function log_activity(
         string $table,
         string $status_code,
@@ -14,23 +15,25 @@ if (!function_exists('log_activity')) {
         ?string $comment = null,
         ?array $files = null
     ) {
-        $data = [
-            'target' => $target,
-            'target_id' => $target_id,
-            'status_code' => $status_code,
-            'activity_by_id' => $activity_by_id,
-            'activity_by_type' => $activity_by_type,
-            'comment' => $comment,
-            'files' => $files ? json_encode($files) : null,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
+        try {
 
-        DB::table($table)->insert($data);
-
-        return $data;
+            \twa\smsautils\Jobs\LogActivityJob::dispatch(
+                $table,
+                $target ?? '',
+                $target_id ?? 0,
+                $status_code,
+                $activity_by_id,
+                $activity_by_type,
+                $comment,
+                $files ?? []
+            );
+        } catch (\Exception $e) {
+// dd($e);
+            Log::error('Failed to dispatch LogActivityJob: ' . $e->getMessage());
+        }
     }
 }
+
 
 if (!function_exists('query_options_response')) {
     function query_options_response($table, $columnValue, $columnLabel, $params = [])
