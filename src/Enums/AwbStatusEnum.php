@@ -29,7 +29,7 @@ enum AwbStatusEnum: string
         // case PENDING = 'pending';
 
         // case SCANNED = 'SC';
-        // case ARRIVED = 'AR100';
+
         // ready for dispatch
         // missing from shelf
         // on hold
@@ -72,6 +72,9 @@ enum AwbStatusEnum: string
 
     case CLOSED = 'CL';
 
+
+        //nourhane
+    case ARRIVED = 'AR100';
         // To be Removed
 
     case OPERATIONS_QC = 'OP-QC';
@@ -320,12 +323,19 @@ enum AwbStatusEnum: string
                 'description' => 'Shipment closed',
             ],
             self::OPERATIONS_QC => [
-               'label' => 'Operations QC',
+                'label' => 'Operations QC',
                 'icon' => 'check',
                 'color_bg' => '#e8f5e9',
                 'color_text' => '#1b5e20',
                 'description' => 'Quality check completed',
-            ], 
+            ],
+            self::ARRIVED => [
+                'label' => 'Arrived',
+                'icon' => 'map-pin',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Shipment has arrived at the destination hub',
+            ],
         };
     }
 }
