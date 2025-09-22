@@ -132,7 +132,7 @@ if (!function_exists('query_options_response')) {
                    
                 return collect($fieldName)->map(function($itteration) use ($item , $separator){
                         return $item->{$itteration} ?? null;
-                   })->filter()->values()->implode($separator)->toString();
+                   })->filter()->values()->implode($separator);
  
  
             })->filter()->values()->toArray();
