@@ -16,8 +16,7 @@ if (!function_exists('log_activity')) {
         ?string $comment = null,
         ?array $files = null
     ) {
-        try {
-
+    
             \twa\smsautils\Jobs\LogActivityJob::dispatch(
                 $table,
                 $target ?? '',
@@ -28,10 +27,7 @@ if (!function_exists('log_activity')) {
                 $comment,
                 $files ?? []
             );
-        } catch (\Exception $e) {
-            // dd($e);
-            Log::error('Failed to dispatch LogActivityJob: ' . $e->getMessage());
-        }
+       
     }
 }
 
@@ -108,7 +104,7 @@ if (!function_exists('currencies_conversion')) {
         $total = 0;
 
         foreach ($amounts as $amount) {
-            $total += convert_from_to($amount['amount'], $amount['currency'], $currency);
+            $total += convert_from_to($amount['value'], $amount['currency'], $currency);
         }
 
         return $total;
@@ -126,7 +122,7 @@ if (!function_exists('convert_from_to')) {
 
         $rates = get_currencies_rates();
 
-        if (!isset($rates[$amount['currency']])) {
+        if (!isset($rates[$from_currency]) || !isset($rates[$to_currency])) {
             return 0;
         }
 
