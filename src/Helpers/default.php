@@ -69,6 +69,15 @@ if (!function_exists('log_activity')) {
     }
 }
 
+if (!function_exists('query_options_new_record')) {
+    function query_options_new_record($id)
+    {
+ 
+        return [
+            "id" => $id
+        ];
+    }
+}
 
 if (!function_exists('query_options_response')) {
     function query_options_response($table, $columnValue, $columnLabel, $params = [] , $extraFields = [] , $separator = " ")
