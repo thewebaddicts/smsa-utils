@@ -16,6 +16,20 @@ if (!function_exists('exists_rule')) {
         return  Rule::exists($table, $column)->whereNull('deleted_at');
     }
 }
+
+
+if (!function_exists('money_object')) {
+    function money_object($value, $currency): array
+    {
+        $numeric = (float) $value;
+
+        return [
+            'value' => $numeric,
+            'formatted' =>   trim(number_format((float) $numeric, 2, '.', '') . ' ' . $currency),
+            'currency' => $currency,
+        ];
+    }
+}
  
 
 
