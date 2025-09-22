@@ -3,6 +3,21 @@
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+
+if (!function_exists('unique_rule')) {
+    function unique_rule($table, $column) {
+        return  Rule::unique($table, $column)->whereNull('deleted_at');
+    }
+}
+
+if (!function_exists('exists_rule')) {
+    function exists_rule($table, $column) {
+        return  Rule::exists($table, $column)->whereNull('deleted_at');
+    }
+}
+ 
+
 
 if (!function_exists('log_activity')) {
 
