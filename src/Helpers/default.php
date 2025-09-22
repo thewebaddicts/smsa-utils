@@ -18,6 +18,15 @@ if (!function_exists('exists_rule')) {
 }
 
 
+
+if (!function_exists('format_id_name')) {
+    function format_id_name($id, $first_name, $last_name)
+    {
+        return $id . ' | ' . trim($first_name . ' ' . $last_name);
+    }
+}
+
+
 if (!function_exists('money_object')) {
     function money_object($value, $currency): array
     {
@@ -62,11 +71,11 @@ if (!function_exists('log_activity')) {
 
 
 if (!function_exists('query_options_response')) {
-    function query_options_response($table, $columnValue, $columnLabel, $params = [])
+    function query_options_response($table, $columnValue, $columnLabel, $params = [] , $extraFields = [] , $separator = " ")
     {
-
+ 
         $values = request()->input('values');
-
+ 
         if (is_numeric($values)) {
             $values = [$values];
         } elseif (is_array($values)) {
@@ -74,22 +83,27 @@ if (!function_exists('query_options_response')) {
         } else {
             $values = [];
         }
-
-
+ 
+ 
         // Build base query
         $baseQuery = DB::table($table)->whereNull('deleted_at');
-
-
+ 
+ 
         foreach ($params as $field => $value) {
             $baseQuery->where($field, $value);
         }
-
+ 
         // Apply search filter if provided
         if (request()->input('search')) {
             $baseQuery->where($columnLabel, 'like', '%' . request()->input('search') . '%');
+ 
+            foreach(collect($extraFields)->flatten()->values()->toArray() as $extraField){
+                 $baseQuery->orWhere($extraField, 'like', '%' . request()->input('search') . '%');
+            }
+ 
         }
-
-
+ 
+ 
         // If we have specific values, prioritize them at the top
         if (count($values) > 0) {
             $baseQuery->orderByRaw("CASE WHEN " . $columnValue . " IN (" . implode(',', array_map('intval', $values)) . ") THEN 0 ELSE 1 END")
@@ -97,17 +111,31 @@ if (!function_exists('query_options_response')) {
         } else {
             $baseQuery->orderBy($columnValue, 'asc');
         }
-
-        return $baseQuery->paginate(20)->through(function ($item) use ($columnValue, $columnLabel) {
+ 
+        return $baseQuery->paginate(20)->through(function ($item) use ($columnValue, $columnLabel , $extraFields , $separator) {
+            
+            $extraFields = collect($extraFields)->map(function($fieldName) use ($item , $separator){
+                
+                if(!is_array($fieldName)){
+                    return $item->{$fieldName} ?? null;
+                }
+                    
+                   
+                return collect($fieldName)->map(function($itteration) use ($item , $separator){
+                        return $item->{$itteration} ?? null;
+                   })->filter()->values()->implode($separator)->toString();
+ 
+ 
+            })->filter()->values()->toArray();
+            
             return [
                 'value' => $item->$columnValue,
                 'label' => $item->$columnLabel,
+                'extra_descriptions' => $extraFields
             ];
         });
     }
 }
-
-
 
 if (!function_exists('get_currencies_rates')) {
     function get_currencies_rates()
