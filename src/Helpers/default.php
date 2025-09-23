@@ -78,7 +78,6 @@ if (!function_exists('query_options_new_record')) {
         ];
     }
 }
-
 if (!function_exists('query_options_response')) {
     function query_options_response($table, $columnValue, $columnLabel, $params = [] , $extraFields = [] , $separator = " ")
     {
@@ -99,7 +98,31 @@ if (!function_exists('query_options_response')) {
  
  
         foreach ($params as $field => $value) {
-            $baseQuery->where($field, $value);
+ 
+            if(is_array($value)){
+ 
+                $type = $value['type'] ?? null;
+ 
+ 
+                switch($type){
+                    case 'array_to_array':
+                        $baseQuery->where(function($q) use ($value , $field){
+                            foreach($value['value'] as $item){
+                                $q->orWhere($field, 'LIKE' , '%"'.$item.'"%');
+                            }
+                        });
+ 
+                        break;
+ 
+                    default:
+                        $baseQuery->where($field, $value['operand'], $value['value']);
+                }
+ 
+            } else {
+                $baseQuery->where($field, $value);
+            }
+ 
+          
         }
  
         // Apply search filter if provided
@@ -145,7 +168,8 @@ if (!function_exists('query_options_response')) {
         });
     }
 }
-
+ 
+ 
 if (!function_exists('get_currencies_rates')) {
     function get_currencies_rates()
     {
