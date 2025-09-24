@@ -107,6 +107,29 @@ function on_awb_untracked(Awb|string|int &$record, $save = true)
 
 
 
+
+
+function on_awbs_debriefed(Builder $records, $courier_id, $params)
+{
+
+    $records->update([
+        ...$params,
+        'current_location' => 'debriefed_courier_' . $courier_id
+    ]);
+}
+
+
+
+function on_awbs_outstanded(Builder $records, $courier_id, $params)
+{
+
+    $records->update([
+        ...$params,
+        'current_location' => 'outstanding_courier_' . $courier_id
+    ]);
+}
+
+
 function on_awbs_dispatched(Builder $records, $courier_id, $params)
 {
 
