@@ -66,10 +66,14 @@ class AuthMandatoryMiddleware
         }
 
         request()->merge([
-            'user' => $user,
+            // 'user' => $user,
             'user_type' => $access_token->tokenable_type,
             'user_performer' => $performer
         ]);
+
+          $request->setUserResolver(function () use ($user) {
+            return $user;
+        });
 
         return $next($request);
     }
