@@ -89,10 +89,10 @@ if (!function_exists('log_awb_activity')) {
 
     function log_awb_activity(
         string $status_code,
-        ?string $target = null,
-        ?int $target_id = null,
-        ?int $activity_by_id = null,
-        ?string $activity_by_type = null,
+        string $target,
+        int $target_id,
+        int $activity_by_id,
+        string $activity_by_type,
         ?string $comment = null,
         ?array $files = []
     ) {
