@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use twa\apiutils\Traits\APITrait;
+use twa\smsautils\Models\ClientApiKey;
+use twa\smsautils\Models\Operator;
+use twa\smsautils\Models\User;
 
 class AuthMandatoryMiddleware
 {
@@ -44,7 +47,7 @@ class AuthMandatoryMiddleware
             case 'operator':
 
 
-                $user = DB::table('operators')->whereId($access_token->tokenable_id)->first();
+                $user = Operator::whereId($access_token->tokenable_id)->first();
                 $performer = $user->id . ' | ' . $user->name;
 
                 break;
@@ -52,14 +55,14 @@ class AuthMandatoryMiddleware
             case 'client_api_key':
 
 
-                $user = DB::table('client_api_keys')->whereId($access_token->tokenable_id)->first();
+                $user = ClientApiKey::whereId($access_token->tokenable_id)->first();
                 $performer = $user->id . ' | ' . $user->label;
 
                 break;
 
             case 'user':
 
-                $user = DB::table('users')->whereId($access_token->tokenable_id)->first();
+                $user = User::whereId($access_token->tokenable_id)->first();
                 $performer = $user->id . ' | ' . $user->first_name . ' ' . $user->last_name;
 
                 break;
