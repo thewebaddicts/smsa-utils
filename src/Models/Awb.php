@@ -14,6 +14,10 @@ class Awb extends Model
         'number',
     ];
 
+    public function shipment()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Shipment::class, 'shipment_id');
+    }
 
-    
+
 }
