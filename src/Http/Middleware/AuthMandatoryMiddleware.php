@@ -66,7 +66,7 @@ class AuthMandatoryMiddleware
         }
 
         request()->merge([
-            'user' => (array) $user,
+            'user' => $user,
             'user_type' => $access_token->tokenable_type,
             'user_performer' => $performer
         ]);
