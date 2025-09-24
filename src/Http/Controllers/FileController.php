@@ -2,7 +2,7 @@
 
 namespace twa\smsautils\Http\Controllers;
 
-use App\Models\File;
+use twa\smsautils\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use twa\apiutils\Traits\APITrait;
