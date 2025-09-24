@@ -128,6 +128,14 @@ function on_awbs_outstanded(Builder $records, $courier_id,  $params =[])
         'current_location' => 'outstanding_courier_' . $courier_id
     ]);
 }
+function on_awbs_untracked(Builder $records, $params =[])
+{
+
+    $records->update([
+        ...$params,
+        'current_location' => 'unknown'
+    ]);
+}
 
 
 function on_awbs_dispatched(Builder $records, $courier_id,  $params =[])
