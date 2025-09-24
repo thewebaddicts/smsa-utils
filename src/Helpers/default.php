@@ -6,14 +6,31 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 if (!function_exists('unique_rule')) {
-    function unique_rule($table, $column) {
+    function unique_rule($table, $column)
+    {
         return  Rule::unique($table, $column)->whereNull('deleted_at');
     }
 }
 
 if (!function_exists('exists_rule')) {
-    function exists_rule($table, $column) {
+    function exists_rule($table, $column)
+    {
         return  Rule::exists($table, $column)->whereNull('deleted_at');
+    }
+}
+
+
+if (!function_exists('create_record')) {
+    function create_record(&$model, $fields, $save = false)
+    {
+
+        foreach ($fields as $key => $value) {
+            $model->{$key} = $value;
+        }
+
+        if ($save) {
+            $model->save();
+        }
     }
 }
 
@@ -39,7 +56,7 @@ if (!function_exists('money_object')) {
         ];
     }
 }
- 
+
 
 
 if (!function_exists('log_activity')) {
@@ -54,36 +71,35 @@ if (!function_exists('log_activity')) {
         ?string $comment = null,
         ?array $files = null
     ) {
-    
-            \twa\smsautils\Jobs\LogActivityJob::dispatch(
-                $table,
-                $target ?? '',
-                $target_id ?? 0,
-                $status_code,
-                $activity_by_id,
-                $activity_by_type,
-                $comment,
-                $files ?? []
-            );
-       
+
+        \twa\smsautils\Jobs\LogActivityJob::dispatch(
+            $table,
+            $target ?? '',
+            $target_id ?? 0,
+            $status_code,
+            $activity_by_id,
+            $activity_by_type,
+            $comment,
+            $files ?? []
+        );
     }
 }
 
 if (!function_exists('query_options_new_record')) {
     function query_options_new_record($id)
     {
- 
+
         return [
             "id" => $id
         ];
     }
 }
 if (!function_exists('query_options_response')) {
-    function query_options_response($table, $columnValue, $columnLabel, $params = [] , $extraFields = [] , $separator = " ")
+    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ")
     {
- 
+
         $values = request()->input('values');
- 
+
         if (is_numeric($values)) {
             $values = [$values];
         } elseif (is_array($values)) {
@@ -91,51 +107,47 @@ if (!function_exists('query_options_response')) {
         } else {
             $values = [];
         }
- 
- 
+
+
         // Build base query
         $baseQuery = DB::table($table)->whereNull('deleted_at');
- 
- 
+
+
         foreach ($params as $field => $value) {
- 
-            if(is_array($value)){
- 
+
+            if (is_array($value)) {
+
                 $type = $value['type'] ?? null;
- 
- 
-                switch($type){
+
+
+                switch ($type) {
                     case 'array_to_array':
-                        $baseQuery->where(function($q) use ($value , $field){
-                            foreach($value['value'] as $item){
-                                $q->orWhere($field, 'LIKE' , '%"'.$item.'"%');
+                        $baseQuery->where(function ($q) use ($value, $field) {
+                            foreach ($value['value'] as $item) {
+                                $q->orWhere($field, 'LIKE', '%"' . $item . '"%');
                             }
                         });
- 
+
                         break;
- 
+
                     default:
                         $baseQuery->where($field, $value['operand'], $value['value']);
                 }
- 
             } else {
                 $baseQuery->where($field, $value);
             }
- 
-          
         }
- 
+
         // Apply search filter if provided
         if (request()->input('search')) {
             $baseQuery->where($columnLabel, 'like', '%' . request()->input('search') . '%');
- 
-            foreach(collect($extraFields)->flatten()->values()->toArray() as $extraField){
-                 $baseQuery->orWhere($extraField, 'like', '%' . request()->input('search') . '%');
+
+            foreach (collect($extraFields)->flatten()->values()->toArray() as $extraField) {
+                $baseQuery->orWhere($extraField, 'like', '%' . request()->input('search') . '%');
             }
- 
         }
- 
- 
+
+
         // If we have specific values, prioritize them at the top
         if (count($values) > 0) {
             $baseQuery->orderByRaw("CASE WHEN " . $columnValue . " IN (" . implode(',', array_map('intval', $values)) . ") THEN 0 ELSE 1 END")
@@ -143,23 +155,21 @@ if (!function_exists('query_options_response')) {
         } else {
             $baseQuery->orderBy($columnValue, 'asc');
         }
- 
-        return $baseQuery->paginate(20)->through(function ($item) use ($columnValue, $columnLabel , $extraFields , $separator) {
-            
-            $extraFields = collect($extraFields)->map(function($fieldName) use ($item , $separator){
-                
-                if(!is_array($fieldName)){
+
+        return $baseQuery->paginate(20)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator) {
+
+            $extraFields = collect($extraFields)->map(function ($fieldName) use ($item, $separator) {
+
+                if (!is_array($fieldName)) {
                     return $item->{$fieldName} ?? null;
                 }
-                    
-                   
-                return collect($fieldName)->map(function($itteration) use ($item , $separator){
-                        return $item->{$itteration} ?? null;
-                   })->filter()->values()->implode($separator);
- 
- 
+
+
+                return collect($fieldName)->map(function ($itteration) use ($item, $separator) {
+                    return $item->{$itteration} ?? null;
+                })->filter()->values()->implode($separator);
             })->filter()->values()->toArray();
-            
+
             return [
                 'value' => $item->$columnValue,
                 'label' => $item->$columnLabel,
@@ -168,8 +178,8 @@ if (!function_exists('query_options_response')) {
         });
     }
 }
- 
- 
+
+
 if (!function_exists('get_currencies_rates')) {
     function get_currencies_rates()
     {
