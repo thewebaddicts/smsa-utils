@@ -4,9 +4,14 @@ use twa\smsautils\Models\Awb;
 
 if (!function_exists('awb_location_change')) {
 
-    function awb_location_change(Awb &$awb, $location)
+    function awb_location_change(Awb &$awb, $location, $save)
     {
         $awb->current_location = $location;
+
+        if ($save) {
+            $awb->save();
+            return $awb;
+        }
     }
 }
 
@@ -20,24 +25,81 @@ if (!function_exists('extract_awb_model_from_record')) {
             $record = Awb::find($record);
         }
 
+
+
         return $record;
     }
 }
 
-if (!function_exists('on_awb_created')) {
-    function on_awb_created(Awb|string|int &$record, $save = false)
-    {
+function on_awb_created(Awb|string|int &$record, $address_id, $save = true)
+{
 
-        $awb = extract_awb_model_from_record($record);
-        $location = 'shipper_' . $awb->shipment->client_id;
+    $awb = extract_awb_model_from_record($record);
 
-        awb_location_change($awb, $location);
+    $location = 'shipper_address_' . $address_id;
 
-        if ($save) {
-            $awb->save();
-            return $awb;
-        }
+    awb_location_change($awb, $location, $save);
+}
 
-        return $awb;
-    }
+function on_awb_collected(Awb|string|int &$record, $courier_id, $save = true)
+{
+
+    $awb = extract_awb_model_from_record($record);
+
+    $location = 'courier_' . $courier_id;
+
+    awb_location_change($awb, $location, $save);
+}
+
+function on_awb_delivered(Awb|string|int &$record, $courier_id, $save = true)
+{
+
+    $awb = extract_awb_model_from_record($record);
+
+    $location = 'courier_' . $courier_id . '_delivered';
+
+    awb_location_change($awb, $location, $save);
+}
+
+
+function on_awb_debreifed(Awb|string|int &$record, $courier_id, $save = true)
+{
+
+    $awb = extract_awb_model_from_record($record);
+
+    $location = 'debriefed_courier_' . $courier_id;
+
+    awb_location_change($awb, $location, $save);
+}
+
+function on_awb_outstanded(Awb|string|int &$record, $courier_id, $save = true)
+{
+
+    $awb = extract_awb_model_from_record($record);
+
+    $location = 'outstanding_courier_' . $courier_id;
+
+    awb_location_change($awb, $location, $save);
+}
+
+
+
+function on_awb_operation_received(Awb|string|int &$record, $hub_id, $save = true)
+{
+
+    $awb = extract_awb_model_from_record($record);
+
+    $location = 'hub_' . $hub_id . '_operations';
+
+    awb_location_change($awb, $location, $save);
+}
+
+function on_awb_untracked(Awb|string|int &$record, $save = true)
+{
+
+    $awb = extract_awb_model_from_record($record);
+
+    $location = 'unknown';
+
+    awb_location_change($awb, $location, $save);
 }
