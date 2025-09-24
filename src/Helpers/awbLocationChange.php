@@ -109,7 +109,19 @@ function on_awb_untracked(Awb|string|int &$record, $save = true)
 
 
 
-function on_awbs_debriefed(Builder &$records, $courier_id, $params =[])
+function on_awb_closed(Awb|string|int &$record, $hub_id, $save = true)
+{
+
+    $awb = extract_awb_model_from_record($record);
+
+    $location = 'hub_' . $hub_id . '_closed';
+
+    awb_location_change($awb, $location, $save);
+}
+
+
+
+function on_awbs_debriefed(Builder &$records, $courier_id, $params = [])
 {
 
     $records->update([
@@ -120,7 +132,7 @@ function on_awbs_debriefed(Builder &$records, $courier_id, $params =[])
 
 
 
-function on_awbs_outstanded(Builder &$records, $courier_id,  $params =[])
+function on_awbs_outstanded(Builder &$records, $courier_id,  $params = [])
 {
 
     $records->update([
@@ -128,7 +140,7 @@ function on_awbs_outstanded(Builder &$records, $courier_id,  $params =[])
         'current_location' => 'outstanding_courier_' . $courier_id
     ]);
 }
-function on_awbs_untracked(Builder &$records, $params =[])
+function on_awbs_untracked(Builder &$records, $params = [])
 {
 
     $records->update([
@@ -138,7 +150,7 @@ function on_awbs_untracked(Builder &$records, $params =[])
 }
 
 
-function on_awbs_dispatched(Builder &$records, $courier_id,  $params =[])
+function on_awbs_dispatched(Builder &$records, $courier_id,  $params = [])
 {
 
     $records->update([

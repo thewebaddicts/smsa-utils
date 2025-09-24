@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\Query\Builder;
 
 if (!function_exists('unique_rule')) {
     function unique_rule($table, $column)
@@ -110,6 +111,15 @@ if (!function_exists('log_awb_activity')) {
     }
 }
 
+if (!function_exists('log_awbs_activity')) {
+    function log_awbs_activity(Builder $builder)
+    {
+
+
+       
+    }
+}
+
 if (!function_exists('query_options_new_record')) {
     function query_options_new_record($id)
     {
@@ -119,6 +129,8 @@ if (!function_exists('query_options_new_record')) {
         ];
     }
 }
+
+
 if (!function_exists('query_options_response')) {
     function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ")
     {
