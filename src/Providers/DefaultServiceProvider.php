@@ -15,8 +15,6 @@ class DefaultServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Configs/smsa-utils.php' => config_path('smsa-utils.php'),
         ], 'smsa-utils-config');
-
-
     }
 
     public function register()
@@ -24,9 +22,6 @@ class DefaultServiceProvider extends ServiceProvider
 
         $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
         include_once(__DIR__ . '/../Helpers/default.php');
-
-
-      
+        include_once(__DIR__ . '/../Helpers/awbLocationChange.php');
     }
-
 }

@@ -13,4 +13,7 @@ class Awb extends Model
         'runsheet_id',
         'number',
     ];
+
+
+    
 }
