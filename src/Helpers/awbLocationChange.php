@@ -1,6 +1,7 @@
 <?php
 
 use twa\smsautils\Models\Awb;
+use Illuminate\Database\Query\Builder;
 
 if (!function_exists('awb_location_change')) {
 
@@ -102,4 +103,15 @@ function on_awb_untracked(Awb|string|int &$record, $save = true)
     $location = 'unknown';
 
     awb_location_change($awb, $location, $save);
+}
+
+
+
+function on_awbs_dispatched(Builder $records, $courier_id, $params)
+{
+
+    $records->update([
+        ...$params,
+        'current_location' => 'courier_' . $courier_id
+    ]);
 }

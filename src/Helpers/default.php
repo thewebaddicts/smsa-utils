@@ -69,7 +69,7 @@ if (!function_exists('log_activity')) {
         ?int $activity_by_id = null,
         ?string $activity_by_type = null,
         ?string $comment = null,
-        ?array $files = null
+        ?array $files = []
     ) {
 
         \twa\smsautils\Jobs\LogActivityJob::dispatch(
@@ -80,7 +80,32 @@ if (!function_exists('log_activity')) {
             $activity_by_id,
             $activity_by_type,
             $comment,
-            $files ?? []
+            $files
+        );
+    }
+}
+
+if (!function_exists('log_awb_activity')) {
+
+    function log_awb_activity(
+        string $status_code,
+        ?string $target = null,
+        ?int $target_id = null,
+        ?int $activity_by_id = null,
+        ?string $activity_by_type = null,
+        ?string $comment = null,
+        ?array $files = []
+    ) {
+
+        log_activity(
+            'awb_activities',
+            $status_code,
+            $target,
+            $target_id,
+            $activity_by_id,
+            $activity_by_type,
+            $comment,
+            $files
         );
     }
 }
