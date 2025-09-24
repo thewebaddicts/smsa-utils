@@ -1,4 +1,5 @@
 <?php
+
 namespace twa\smsautils\Jobs;
 
 use Illuminate\Bus\Queueable;
@@ -12,24 +13,24 @@ class LogActivityJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected string $table;
-    protected string $target;
-    protected int $target_id;
-    protected string $status_code;
-    protected ?int $activity_by_id;
-    protected ?string $activity_by_type;
-    protected ?string $comment;
-    protected array $files;
+    protected  $table;
+    protected  $target;
+    protected  $target_id;
+    protected  $status_code;
+    protected  $activity_by_id;
+    protected  $activity_by_type;
+    protected  $comment;
+    protected  $files;
 
     public function __construct(
-        string $table,
-        string $target,
-        int $target_id,
-        string $status_code,
-        ?int $activity_by_id = null,
-        ?string $activity_by_type = null,
-        ?string $comment = null,
-        array $files = []
+        $table,
+        $target,
+        $target_id,
+        $status_code,
+        $activity_by_id = null,
+        $activity_by_type = null,
+        $comment = null,
+        $files = []
     ) {
         $this->table = $table;
         $this->target = $target;
@@ -43,9 +44,9 @@ class LogActivityJob implements ShouldQueue
 
     public function handle(): void
     {
-    
+
         // Directly insert into the table, no helper call
-     $data=   DB::table($this->table)->insert([
+        $data =   DB::table($this->table)->insert([
             'target' => $this->target,
             'target_id' => $this->target_id,
             'status_code' => $this->status_code,

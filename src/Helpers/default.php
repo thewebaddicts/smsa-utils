@@ -63,14 +63,14 @@ if (!function_exists('money_object')) {
 if (!function_exists('log_activity')) {
 
     function log_activity(
-        string $table,
-        string $status_code,
-        ?string $target = null,
-        ?int $target_id = null,
-        ?int $activity_by_id = null,
-        ?string $activity_by_type = null,
-        ?string $comment = null,
-        ?array $files = []
+        $table,
+        $status_code,
+        $target = null,
+        $target_id = null,
+        $activity_by_id = null,
+        $activity_by_type = null,
+        $comment = null,
+        $files = []
     ) {
 
         \twa\smsautils\Jobs\LogActivityJob::dispatch(
@@ -89,13 +89,13 @@ if (!function_exists('log_activity')) {
 if (!function_exists('log_awb_activity')) {
 
     function log_awb_activity(
-        string $status_code,
-        string $target,
-        int $target_id,
-        int $activity_by_id,
-        string $activity_by_type,
-        ?string $comment = null,
-        ?array $files = []
+        $status_code,
+        $target,
+        $target_id,
+        $activity_by_id,
+        $activity_by_type,
+        $comment = null,
+        $files = []
     ) {
 
         log_activity(
@@ -110,7 +110,6 @@ if (!function_exists('log_awb_activity')) {
         );
     }
 }
-
 if (!function_exists('log_awbs_activity')) {
     function log_awbs_activity(Builder $builder)
     {
