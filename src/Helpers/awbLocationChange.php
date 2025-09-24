@@ -150,6 +150,16 @@ function on_awbs_untracked(Builder &$records, $params = [])
 }
 
 
+function on_awbs_undebriefed(Builder &$records, $courier_id,  $params = [])
+{
+
+    $records->update([
+        ...$params,
+        'current_location' => 'courier_' . $courier_id
+    ]);
+}
+
+
 function on_awbs_dispatched(Builder &$records, $courier_id,  $params = [])
 {
 
