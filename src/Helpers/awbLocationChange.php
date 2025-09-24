@@ -2,6 +2,7 @@
 
 use twa\smsautils\Models\Awb;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 
 if (!function_exists('awb_location_change')) {
 
@@ -121,7 +122,7 @@ function on_awb_closed(Awb|string|int &$record, $hub_id, $save = true)
 
 
 
-function on_awbs_debriefed(Builder &$records, $courier_id, $params = [])
+function on_awbs_debriefed(Builder|EloquentBuilder &$records, $courier_id, $params = [])
 {
 
     $records->update([
@@ -132,7 +133,7 @@ function on_awbs_debriefed(Builder &$records, $courier_id, $params = [])
 
 
 
-function on_awbs_outstanded(Builder &$records, $courier_id,  $params = [])
+function on_awbs_outstanded(Builder|EloquentBuilder &$records, $courier_id,  $params = [])
 {
 
     $records->update([
@@ -140,7 +141,7 @@ function on_awbs_outstanded(Builder &$records, $courier_id,  $params = [])
         'current_location' => 'outstanding_courier_' . $courier_id
     ]);
 }
-function on_awbs_untracked(Builder &$records, $params = [])
+function on_awbs_untracked(Builder|EloquentBuilder &$records, $params = [])
 {
 
     $records->update([
@@ -150,7 +151,7 @@ function on_awbs_untracked(Builder &$records, $params = [])
 }
 
 
-function on_awbs_undebriefed(Builder &$records, $courier_id,  $params = [])
+function on_awbs_undebriefed(Builder|EloquentBuilder &$records, $courier_id,  $params = [])
 {
 
     $records->update([
@@ -160,7 +161,7 @@ function on_awbs_undebriefed(Builder &$records, $courier_id,  $params = [])
 }
 
 
-function on_awbs_dispatched(Builder &$records, $courier_id,  $params = [])
+function on_awbs_dispatched(Builder|EloquentBuilder &$records, $courier_id,  $params = [])
 {
 
     $records->update([
