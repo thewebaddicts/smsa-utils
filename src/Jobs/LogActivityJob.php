@@ -13,14 +13,14 @@ class LogActivityJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $table = '';
-    protected $target = '';
-    protected $target_id = 0;
-    protected $status_code = '';
-    protected $activity_by_id = null;
-    protected $activity_by_type = null;
-    protected $comment = null;
-    protected $files = [];
+    protected  $table;
+    protected  $target;
+    protected  $target_id;
+    protected  $status_code;
+    protected  $activity_by_id;
+    protected  $activity_by_type;
+    protected  $comment;
+    protected  $files;
 
     public function __construct(
         $table,
