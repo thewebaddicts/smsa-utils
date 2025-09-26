@@ -22,7 +22,7 @@ class Awb extends Model
 
     public function shelf()
     {
-        return $this->belongsTo(\twa\smsautils\Models\shelf::class, 'shelf_id');
+        return $this->belongsTo(\twa\smsautils\Models\Shelf::class, 'shelf_id');
     }
 
 
