@@ -16,4 +16,10 @@ class Route extends Model
         'capacity',
         'mode',
     ];
+
+        public function hub()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'hub_id');
+    }
+
 } 
