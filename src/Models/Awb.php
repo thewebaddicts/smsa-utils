@@ -51,8 +51,24 @@ class Awb extends Model
         return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'origin_hub_id');
     }
 
-      public function activities()
+    public function activities()
     {
         return $this->belongsTo(\twa\smsautils\Models\AwbActivity::class, 'target_id');
+    }
+
+    public function sender()
+    {
+        return $this->belongsTo(Address::class, 'sender_address_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(Address::class, 'receiver_address_id');
+    }
+
+
+    public function items()
+    {
+        return $this->hasMany(AwbItem::class, 'awb_id');
     }
 }

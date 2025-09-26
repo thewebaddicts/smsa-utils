@@ -39,13 +39,14 @@ class Shipment extends Model
         return $this->hasMany(\twa\smsautils\Models\Awb::class);
     }
 
-    public function sender()
+      public function client()
     {
-        return $this->belongsTo(Address::class, 'sender_address_id');
+        return $this->belongsTo(\twa\smsautils\Models\Client::class);
     }
-
-    public function receiver()
+    
+    public function customer()
     {
-        return $this->belongsTo(Address::class, 'receiver_address_id');
+        return $this->belongsTo(\twa\smsautils\Models\Customer::class);
     }
+ 
 }
