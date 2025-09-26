@@ -24,11 +24,11 @@ class Client extends Model
 
     public function apiKeys()
     {
-        return $this->hasMany(ClientApiKey::class);
+        return $this->hasMany(\twa\smsautils\Models\ClientApiKey::class);
     }
 
     public function addresses()
     {
-        return $this->hasMany(Address::class);
+        return $this->hasMany(\twa\smsautils\Models\Address::class);
     }
 }
