@@ -20,10 +20,39 @@ class Awb extends Model
     }
 
 
+    public function shelf()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\shelf::class, 'shelf_id');
+    }
+
+
+
+    public function pickupRoute()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Route::class, 'pickup_route_id');
+    }
+
+    public function deliveryRoute()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Route::class, 'delivery_route_id');
+    }
 
 
 
 
-    
+    public function destinationHub()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'destination_hub_id');
+    }
 
+
+    public function originHub()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'origin_hub_id');
+    }
+
+      public function activities()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\AwbActivity::class, 'target_id');
+    }
 }
