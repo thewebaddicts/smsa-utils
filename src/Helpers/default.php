@@ -73,18 +73,32 @@ if (!function_exists('log_activity')) {
         $files = []
     ) {
 
-        \twa\smsautils\Jobs\LogActivityJob::dispatch(
-            $table,
-            $target ?? '',
-            $target_id ?? 0,
-            $status_code,
-            $activity_by_id,
-            $activity_by_type,
-            $comment,
-            $files
-        );
+
+        $data =   DB::table($table)->insert([
+            'target' => $target,
+            'target_id' => $target_id,
+            'status_code' => $status_code,
+            'activity_by_id' => $activity_by_id,
+            'activity_by_type' => $activity_by_type,
+            'comment' => $comment,
+            'files' => $files ? json_encode($files) : null,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        // LogActivityJob::dispatch(
+        //     $table,
+        //     $target ?? '',
+        //     $target_id ?? 0,
+        //     $status_code,
+        //     $activity_by_id,
+        //     $activity_by_type,
+        //     $comment,
+        //     $files
+        // );
     }
 }
+
 
 if (!function_exists('log_awb_activity')) {
 
