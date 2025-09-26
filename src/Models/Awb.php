@@ -58,12 +58,12 @@ class Awb extends Model
 
     public function sender()
     {
-        return $this->belongsTo(Address::class, 'sender_address_id');
+        return $this->belongsTo(\twa\smsautils\Models\Address::class, 'sender_address_id');
     }
 
     public function receiver()
     {
-        return $this->belongsTo(Address::class, 'receiver_address_id');
+        return $this->belongsTo(\twa\smsautils\Models\Address::class, 'receiver_address_id');
     }
 
 
