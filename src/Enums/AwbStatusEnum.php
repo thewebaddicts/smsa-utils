@@ -19,8 +19,8 @@ enum AwbStatusEnum: string
 
     case RETRIEVED = 'RETR10';
 
-    case SCAN_RUNSHEET = 'SC100'; // Scan AWB Assign to runsheet 
-    case SCAN_RUNSHEET_VERIFIED = 'SC101'; // Shipment Verification on runsheet
+    case SCAN_RUNSHEET = 'SC100';
+    case SCAN_RUNSHEET_VERIFIED = 'SC101';
 
     case OUT_FOR_DELIVERY = 'OD';
 
@@ -51,7 +51,11 @@ enum AwbStatusEnum: string
 
     case DEBRIEF_OUTSTANDING = 'DB-OUT';
     case CANCELLED = 'cancelled';
-    case HOLD = 'HL';
+
+    case HOLD = 'DEX-HL';
+    case HOLD_PAYMENT_ISSUE   = 'DEX-HL-101';
+    case HOLD_DOCUMENTS       = 'DEX-HL-102';
+    case HOLD_CUSTOMS         = 'DEX-HL-103';
 
         // case DEBRIEF_OUTSTANDING = 'DEX-OTD';
         // case CANCELLED = 'DEX-CNL';
@@ -65,6 +69,8 @@ enum AwbStatusEnum: string
     case SECURITY = 'DEX-SEC';
 
     case OVERAGE = 'DEX-OVG';
+    case CANCELLED_CUSTOMER_REQUEST = 'DEX-CA-101';
+    case CANCELLED_OPERATIONAL_ISSUE = 'DEX-CA-102';
 
     case MISSING_SHELVE = 'MIS10';
 
@@ -252,6 +258,28 @@ enum AwbStatusEnum: string
                 'color_text' => '#ef6c00',
                 'description' => 'Shipment placed on hold',
             ],
+
+            self::HOLD_PAYMENT_ISSUE => [
+                'label' => 'On Hold - Payment Issue',
+                'icon' => 'credit-card',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment on hold due to payment issue',
+            ],
+            self::HOLD_DOCUMENTS => [
+                'label' => 'On Hold - Missing Documents',
+                'icon' => 'file-text',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment on hold pending documents',
+            ],
+            self::HOLD_CUSTOMS => [
+                'label' => 'On Hold - Customs',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment on hold for customs clearance',
+            ],
             self::CUSTOMS_HOLD => [
                 'label' => 'Customs Hold',
                 'icon' => 'shield',
@@ -301,6 +329,22 @@ enum AwbStatusEnum: string
                 'color_text' => '#bf360c',
                 'description' => 'Extra shipment found',
             ],
+
+
+            self::CANCELLED_CUSTOMER_REQUEST => [
+                'label' => 'Cancelled - Customer Request',
+                'icon' => 'user-x',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment cancelled upon customer request',
+            ],
+            self::CANCELLED_OPERATIONAL_ISSUE => [
+                'label' => 'Cancelled - Operational Issue',
+                'icon' => 'alert-triangle',
+                'color_bg' => '#ffebee',
+                'color_text' => '#c62828',
+                'description' => 'Shipment cancelled due to operational issue',
+            ],
             self::MISSING_SHELVE => [
                 'label' => 'Missing',
                 'icon' => 'help-circle',
@@ -339,10 +383,10 @@ enum AwbStatusEnum: string
         };
     }
 
-     public function  infoHub(): array
+    public function  infoHub(): array
     {
         return match ($this) {
-           self::CREATED => [
+            self::CREATED => [
                 'label' => 'Created',
                 'icon' => 'file-plus',
                 'color_bg' => '#e3f2fd',
@@ -356,7 +400,7 @@ enum AwbStatusEnum: string
                 'color_text' => '#007bff',
                 'description' => 'Shipment picked up',
             ],
-       
+
             self::RECEIVED_OPERATION => [
                 'label' => 'Received in operation',
                 'icon' => 'check-circle',
@@ -420,7 +464,7 @@ enum AwbStatusEnum: string
                 'color_text' => '#2e7d32',
                 'description' => 'Shipment verification completed on runsheet',
             ],
-           self::OUT_FOR_DELIVERY => [
+            self::OUT_FOR_DELIVERY => [
                 'label' => 'Pending Scan',
                 'icon' => 'fa-hourglass-half',
                 'color_bg' => '#9e9e9e',
@@ -511,6 +555,28 @@ enum AwbStatusEnum: string
                 'color_text' => '#ef6c00',
                 'description' => 'Shipment placed on hold',
             ],
+
+            self::HOLD_PAYMENT_ISSUE => [
+                'label' => 'On Hold - Payment Issue',
+                'icon' => 'credit-card',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment on hold due to payment issue',
+            ],
+            self::HOLD_DOCUMENTS => [
+                'label' => 'On Hold - Missing Documents',
+                'icon' => 'file-text',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment on hold pending documents',
+            ],
+            self::HOLD_CUSTOMS => [
+                'label' => 'On Hold - Customs',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment on hold for customs clearance',
+            ],
             self::CUSTOMS_HOLD => [
                 'label' => 'Customs Hold',
                 'icon' => 'shield',
@@ -560,6 +626,21 @@ enum AwbStatusEnum: string
                 'color_text' => '#bf360c',
                 'description' => 'Extra shipment found',
             ],
+
+            self::CANCELLED_CUSTOMER_REQUEST => [
+                'label' => 'Cancelled - Customer Request',
+                'icon' => 'user-x',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment cancelled upon customer request',
+            ],
+            self::CANCELLED_OPERATIONAL_ISSUE => [
+                'label' => 'Cancelled - Operational Issue',
+                'icon' => 'alert-triangle',
+                'color_bg' => '#ffebee',
+                'color_text' => '#c62828',
+                'description' => 'Shipment cancelled due to operational issue',
+            ],
             self::MISSING_SHELVE => [
                 'label' => 'Missing',
                 'icon' => 'help-circle',
@@ -588,7 +669,7 @@ enum AwbStatusEnum: string
                 'color_text' => '#1b5e20',
                 'description' => 'Quality check completed',
             ],
-           
+
             self::ARRIVED => [
                 'label' => 'Received in hub',
                 'icon' => 'check-circle',
@@ -596,19 +677,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#000000',
                 'description' => 'AWB has been scanned successfully'
             ],
-
-
-
-
-
-
-
-
-
-
-
-        
-          
         };
     }
 }
