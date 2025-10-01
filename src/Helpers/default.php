@@ -36,6 +36,14 @@ if (!function_exists('create_record')) {
 }
 
 
+if (!function_exists('awb_pdf_url')) {
+    function awb_pdf_url($awb)
+    {
+        $base_url = env('AWB_URL', 'https://opssmsaexpressco_6874ad59df6e7.twalab.cloud');
+        return $base_url . '/awb/' . $awb . '/pdf';
+    }
+}
+
 
 if (!function_exists('format_id_name')) {
     function format_id_name($id, $first_name, $last_name)
