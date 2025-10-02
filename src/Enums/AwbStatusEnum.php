@@ -112,7 +112,7 @@ enum AwbStatusEnum: string
                 'description' => 'Shipment received in operations',
             ],
             self::SHELVED => [
-                'label' => 'Shelved',
+                'label' => 'In Storage',
                 'icon' => 'archive',
                 'color_bg' => '#fffde7',
                 'color_text' => '#f57f17',

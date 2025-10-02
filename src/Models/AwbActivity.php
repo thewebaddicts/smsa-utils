@@ -17,6 +17,8 @@ class AwbActivity extends Model
         'activity_by_id',
         'activity_by_type',
         'files',
+        'target',
+        'target_id'
     ];
 
     protected $casts = [
