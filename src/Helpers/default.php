@@ -133,12 +133,7 @@ if (!function_exists('log_awb_activity')) {
     }
 }
 if (!function_exists('log_awbs_activity')) {
-    function log_awbs_activity(Builder $builder)
-    {
-
-
-       
-    }
+    function log_awbs_activity(Builder $builder) {}
 }
 
 if (!function_exists('query_options_new_record')) {
@@ -305,5 +300,124 @@ if (!function_exists('send_courier_notification')) {
         ]);
 
         return true;
+    }
+}
+
+
+
+
+if (!function_exists('find_route_by_address')) {
+    /**
+     * Find route by address using city and postal code matching
+     */
+    function find_route_by_address(array $address): ?int
+    {
+        // First, try to find route by city
+        $routeByCity = DB::table('route_by_cities')
+            ->where('city', $address['city'])
+            ->whereNull('deleted_at')
+            ->select('route_id')
+            ->first();
+
+        if ($routeByCity) {
+            return $routeByCity->route_id;
+        }
+
+        // If no city route found and no postal code, return null
+        if (empty($address['postal_code'])) {
+            return null;
+        }
+
+        $postalCode = $address['postal_code'];
+
+        // Try to find routes by postal code with different specificity levels
+        $routes = find_routes_by_postal_code($address);
+
+        if (count($routes) == 0) {
+            return null;
+        }
+
+        // Try to match by numeric range first
+        if (is_numeric($postalCode)) {
+            $postalCode = (float) $postalCode;
+            $rangeRoute = $routes->first(function ($route) use ($postalCode) {
+                return isset($route->start_range, $route->end_range) &&
+                    $route->start_range <= $postalCode && $route->end_range >= $postalCode &&
+                    is_null($route->pattern);
+            });
+            if ($rangeRoute) {
+                return $rangeRoute->route_id;
+            }
+        }
+
+        // Try to match by pattern
+        foreach ($routes as $route) {
+            if ($route->pattern && is_null($route->start_range) && is_null($route->end_range) && strpos($postalCode, $route->pattern) === 0) {
+                return $route->route_id;
+            }
+        }
+
+        return null;
+    }
+}
+
+if (!function_exists('find_routes_by_postal_code')) {
+    /**
+     * Find routes by postal code with fallback specificity levels
+     */
+    function find_routes_by_postal_code(array $address): \Illuminate\Support\Collection
+    {
+        // Level 1: Exact match (country, province, city)
+        $routes = DB::table('route_by_postal_codes')
+            ->whereNull('deleted_at')
+            ->where('country', $address['country'])
+            ->where('province', $address['province'])
+            ->where('city', $address['city'])
+            ->get();
+
+        if (count($routes) > 0) {
+            return $routes;
+        }
+
+        // Level 2: Country and province only
+        $routes = DB::table('route_by_postal_codes')
+            ->whereNull('deleted_at')
+            ->where('country', $address['country'])
+            ->where('province', $address['province'])
+            ->whereNull('city')
+            ->get();
+
+        if (count($routes) > 0) {
+            return $routes;
+        }
+
+        // Level 3: Country only
+        $routes = DB::table('route_by_postal_codes')
+            ->whereNull('deleted_at')
+            ->where('country', $address['country'])
+            ->whereNull('province')
+            ->whereNull('city')
+            ->get();
+
+        return $routes;
+    }
+}
+
+
+if (!function_exists('courier_assignment_on_route')) {
+    /**
+     * Find route by address using city and postal code matching
+     */
+    function courier_assignment_on_route($route)
+    {
+        $assignment = DB::table('route_assignments')
+            ->where('route_id', $route->id)
+            ->whereNull('deleted_at')
+            ->orderByDesc('assigned_at')
+            ->first();
+
+        if ($assignment) {
+            $courier_id = $assignment->courier_id;
+        }
     }
 }
