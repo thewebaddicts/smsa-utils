@@ -60,8 +60,7 @@ class MigrationsController extends Controller
                 $table->text('relationship');
                 $table->bigInteger('driving_license_scan');
                 $table->bigInteger('national_id_scan');
-                $table->string('status')->nullable();
-                ;
+                $table->string('status')->nullable();;
                 $table->text('notes')->nullable();
                 $table->foreignId('company_id')->nullable()->constrained('companies')->nullOnDelete();
                 $table->timestamps();
@@ -150,6 +149,14 @@ class MigrationsController extends Controller
                 $table->string('name');
                 $table->string('email');
                 $table->string('phone');
+                $table->string('account_country');
+                $table->string('account_entity');
+                $table->string('account_number');
+                $table->string('account_pin');
+                $table->enum('customs_payment', ['DDU', 'DDP']);
+                $table->enum('customs_payment_method', ['CASH', 'ACCOUNT']);
+                $table->enum('freight_payment', ['S', 'R']);
+                $table->enum('freight_payment_method', ['CASH', 'ACCOUNT']);
                 $table->timestamps();
                 $table->softDeletes();
             });
@@ -166,7 +173,7 @@ class MigrationsController extends Controller
                 $table->timestamps();
             });
         }
-          if (!Schema::hasTable('companies')) {
+        if (!Schema::hasTable('companies')) {
             Schema::create('companies', function (Blueprint $table) {
                 $table->id();
                 $table->string('label');
