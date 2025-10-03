@@ -410,6 +410,12 @@ if (!function_exists('courier_assignment_on_route')) {
      */
     function courier_assignment_on_route($route)
     {
+
+
+        if (!$route) {
+            return null;
+        }
+
         $assignment = DB::table('route_assignments')
             ->where('route_id', $route->id)
             ->whereNull('deleted_at')
@@ -419,5 +425,7 @@ if (!function_exists('courier_assignment_on_route')) {
         if ($assignment) {
             $courier_id = $assignment->courier_id;
         }
+
+        return $courier_id;
     }
 }
