@@ -240,8 +240,8 @@ enum AwbStatusEnum: string
             self::DEBRIEF_OUTSTANDING => [
                 'label' => 'Outstanding',
                 'icon' => 'alert-triangle',
-                'color_bg' => '#fff8e1',
-                'color_text' => '#ef6c00',
+                'color_bg' => '#ffebee',   // light red background
+                'color_text' => '#c62828', // deep red text
                 'description' => 'Pending debrief review',
             ],
             self::CANCELLED => [
