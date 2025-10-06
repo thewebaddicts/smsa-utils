@@ -314,7 +314,7 @@ if (!function_exists('find_route_by_address')) {
     {
         // First, try to find route by city
         $routeByCity = DB::table('cities')
-            ->where('code', $address['city'])
+            ->where('name', $address['city'])
             ->whereNull('deleted_at')
             ->select('route_id')
             ->first();
