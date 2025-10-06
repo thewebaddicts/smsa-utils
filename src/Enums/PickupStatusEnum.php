@@ -9,7 +9,7 @@ enum PickupStatusEnum: string
     case CANCELLED = 'cancelled';
     case FAILED = 'failed';
     case DELAYED = 'delayed';
-    case COMPLETED = 'completed';
+
 
     public function info(): array
     {
@@ -49,13 +49,7 @@ enum PickupStatusEnum: string
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Delayed'
             ],
-            self::COMPLETED => [
-                'label' => 'Completed',
-                'icon' => 'check',
-                'color_bg' => '#DCFCE7', // light green background
-                'color_text' => '#15803D', // green-700
-                'description' => 'Completed',
-            ],
+         
         };
     }
 

@@ -47,7 +47,7 @@ enum AwbStatusEnum: string
     case REFUSED_DAMAGED = 'DEX-RFS-103';
 
     case DEBRIEF_OUTSTANDING = 'DB-OUT';
-        // case CANCELLED = 'cancelled';
+
 
 
 
@@ -71,6 +71,7 @@ enum AwbStatusEnum: string
     case OVERAGE = 'DEX-OVG';
     case CANCELLED_CUSTOMER_REQUEST = 'DEX-CA-101';
     case CANCELLED_OPERATIONAL_ISSUE = 'DEX-CA-102';
+    case CANCELLED = 'CLD';
 
     case MISSING_SHELVE = 'MIS10';
 
@@ -78,7 +79,7 @@ enum AwbStatusEnum: string
 
     case CLOSED = 'CL';
 
-    case CANCELLED = 'CLD';
+
 
         //nourhane
     case ARRIVED = 'AR100';
@@ -681,3 +682,36 @@ enum AwbStatusEnum: string
         };
     }
 }
+
+
+/*
+
+From Creation to Pickup
+-> Created:  CR
+-> Address Changed:  CNG-ADD
+-> Validate Address: VLD-ADD
+-> Updated Dimensions: UPD-DIM
+-> Change Route: CNG-ROU
+-> Cancel AWB: CLD
+-> Picked up : PU
+
+From Pickup to Debrief:
+
+
+->LOST       EXP-LST
+->DAMAGED   EXP-DMG
+->STOLEN    EXP-STL
+-> Address Changed:  CNG-ADD
+-> Validate Address: VLD-ADD
+-> Change Route: CNG-ROU
+
+->RECEIVED_OPERATION RO
+
+
+From debrief to dispatch
+
+
+->shelf
+
+
+*/
