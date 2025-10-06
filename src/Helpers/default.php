@@ -313,7 +313,7 @@ if (!function_exists('find_route_by_address')) {
     function find_route_by_address(array $address): ?int
     {
         // First, try to find route by city
-        $routeByCity = DB::table('route_by_cities')
+        $routeByCity = DB::table('cities')
             ->where('city', $address['city'])
             ->whereNull('deleted_at')
             ->select('route_id')
