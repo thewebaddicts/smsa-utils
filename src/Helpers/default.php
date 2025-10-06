@@ -368,7 +368,7 @@ if (!function_exists('find_routes_by_postal_code')) {
     function find_routes_by_postal_code(array $address): \Illuminate\Support\Collection
     {
         // Level 1: Exact match (country, province, city)
-        $routes = DB::table('route_by_postal_codes')
+        $routes = DB::table('route_by_area_codes')
             ->whereNull('deleted_at')
             ->where('country', $address['country'])
             ->where('province', $address['province'])
@@ -380,7 +380,7 @@ if (!function_exists('find_routes_by_postal_code')) {
         }
 
         // Level 2: Country and province only
-        $routes = DB::table('route_by_postal_codes')
+        $routes = DB::table('route_by_area_codes')
             ->whereNull('deleted_at')
             ->where('country', $address['country'])
             ->where('province', $address['province'])
@@ -392,7 +392,7 @@ if (!function_exists('find_routes_by_postal_code')) {
         }
 
         // Level 3: Country only
-        $routes = DB::table('route_by_postal_codes')
+        $routes = DB::table('route_by_area_codes')
             ->whereNull('deleted_at')
             ->where('country', $address['country'])
             ->whereNull('province')
