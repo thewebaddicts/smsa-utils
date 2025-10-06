@@ -20,7 +20,64 @@ enum AwbStatusEnum: string
     case WMS_OUTBOUND = 'WMS_OB';
 
     case RETRIEVED = 'RETR10';
+    case ADDRESS_CHANGED = 'CNG-ADD';
+    case ADDRESS_VALIDATED = 'VLD-ADD';
+    case UPDATED_DIMENSIONS = 'UPD-DIM';
+    case CHANGE_ROUTE = 'CNG-ROU';
 
+
+
+
+
+
+        /*
+
+From Creation to Pickup
+-> Created:  CR
+-> Address Changed:  CNG-ADD
+-> Validate Address: VLD-ADD
+-> Updated Dimensions: UPD-DIM
+-> Change Route: CNG-ROU
+-> Cancel AWB: CLD
+-> Picked up : PU
+
+From Pickup to Debrief:
+
+
+->LOST       EXP-LST
+->DAMAGED   EXP-DMG
+->STOLEN    EXP-STL
+-> Address Changed:  CNG-ADD
+-> Validate Address: VLD-ADD
+-> Change Route: CNG-ROU
+
+->RECEIVED_OPERATION RO
+
+
+From debrief to dispatch
+
+
+->IN STORAGE
+
+->LOST       EXP-LST
+->DAMAGED   EXP-DMG
+->STOLEN    EXP-STL
+
+-> Address Changed:  CNG-ADD
+-> Validate Address: VLD-ADD
+
+->ASSIGNED RUNSHEET
+->VERIFY RUNSHEET
+->ASSIGNED COURIER
+
+
+->RECEIVED OPERATIONS
+->OUT FOR DELIEVERY
+
+
+
+
+*/
 
 
         // case PENDING = 'pending';
@@ -105,6 +162,38 @@ enum AwbStatusEnum: string
                 'color_bg' => '#e6f7ff',
                 'color_text' => '#007bff',
                 'description' => 'Shipment picked up',
+            ],
+
+            self::ADDRESS_CHANGED => [
+                'label' => 'Address changed',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#15c0a4ff',
+                'description' => 'Shipment created in system',
+            ],
+
+            self::ADDRESS_VALIDATED => [
+                'label' => 'Address validated',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#d482d8ff',
+                'description' => 'Shipment created in system',
+            ],
+            self::UPDATED_DIMENSIONS => [
+                'label' => 'Updated Dimensions',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
+            ],
+
+
+            self::CHANGE_ROUTE => [
+                'label' => 'Change Route',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
             ],
             self::RECEIVED_OPERATION => [
                 'label' => 'Received',
@@ -395,6 +484,35 @@ enum AwbStatusEnum: string
                 'color_text' => '#1565c0',
                 'description' => 'Shipment created in system',
             ],
+            self::ADDRESS_CHANGED => [
+                'label' => 'Address changed',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#15c0a4ff',
+                'description' => 'Shipment created in system',
+            ],
+            self::ADDRESS_VALIDATED => [
+                'label' => 'Address validated',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#d482d8ff',
+                'description' => 'Shipment created in system',
+            ],
+
+            self::UPDATED_DIMENSIONS => [
+                'label' => 'Updated Dimensions',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
+            ],
+            self::CHANGE_ROUTE => [
+                'label' => 'Change Route',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
+            ],
             self::PICKED_UP => [
                 'label' => 'Picked Up',
                 'icon' => 'truck',
@@ -682,36 +800,3 @@ enum AwbStatusEnum: string
         };
     }
 }
-
-
-/*
-
-From Creation to Pickup
--> Created:  CR
--> Address Changed:  CNG-ADD
--> Validate Address: VLD-ADD
--> Updated Dimensions: UPD-DIM
--> Change Route: CNG-ROU
--> Cancel AWB: CLD
--> Picked up : PU
-
-From Pickup to Debrief:
-
-
-->LOST       EXP-LST
-->DAMAGED   EXP-DMG
-->STOLEN    EXP-STL
--> Address Changed:  CNG-ADD
--> Validate Address: VLD-ADD
--> Change Route: CNG-ROU
-
-->RECEIVED_OPERATION RO
-
-
-From debrief to dispatch
-
-
-->shelf
-
-
-*/
