@@ -5,11 +5,13 @@ namespace twa\smsautils\Enums;
 enum AwbStatusEnum: string
 {
     case CREATED = 'CR';
-
     case PICKED_UP = 'PU';
     case RECEIVED_OPERATION = 'R100';
-
     case SHELVED = 'SHEL10';
+    case SCAN_RUNSHEET = 'SC100';
+    case SCAN_RUNSHEET_VERIFIED = 'SC101';
+    case OUT_FOR_DELIVERY = 'OD';
+    case DELIVERED = 'DL';
 
     case WMS_SHELVE_ASSIGNED = 'WMS-SA';
     case WMS_BIN_ASSIGNED = 'WMS-BA';
@@ -19,12 +21,7 @@ enum AwbStatusEnum: string
 
     case RETRIEVED = 'RETR10';
 
-    case SCAN_RUNSHEET = 'SC100';
-    case SCAN_RUNSHEET_VERIFIED = 'SC101';
 
-    case OUT_FOR_DELIVERY = 'OD';
-
-    case DELIVERED = 'DL';
 
         // case PENDING = 'pending';
 
@@ -50,7 +47,10 @@ enum AwbStatusEnum: string
     case REFUSED_DAMAGED = 'DEX-RFS-103';
 
     case DEBRIEF_OUTSTANDING = 'DB-OUT';
-    case CANCELLED = 'cancelled';
+        // case CANCELLED = 'cancelled';
+
+
+
 
     case HOLD = 'DEX-HL';
     case HOLD_PAYMENT_ISSUE   = 'DEX-HL-101';
@@ -78,6 +78,7 @@ enum AwbStatusEnum: string
 
     case CLOSED = 'CL';
 
+    case CANCELLED = 'CLD';
 
         //nourhane
     case ARRIVED = 'AR100';
