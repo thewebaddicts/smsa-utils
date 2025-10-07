@@ -23,6 +23,7 @@ enum AwbStatusEnum: string
     case ADDRESS_CHANGED = 'CNG-ADD';
     case ADDRESS_VALIDATED = 'VLD-ADD';
     case UPDATED_DIMENSIONS = 'UPD-DIM';
+    case UPDATED_WEIGHT = 'UPD-WE';
     case CHANGE_ROUTE = 'CNG-ROU';
 
 
@@ -181,6 +182,15 @@ From debrief to dispatch
             ],
             self::UPDATED_DIMENSIONS => [
                 'label' => 'Updated Dimensions',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
+            ],
+
+
+            self::UPDATED_WEIGHT => [
+                'label' => 'Updated Weight',
                 'icon' => 'file-plus',
                 'color_bg' => '#e3f2fd',
                 'color_text' => '#82add8ff',
@@ -506,6 +516,14 @@ From debrief to dispatch
                 'color_text' => '#82add8ff',
                 'description' => 'Shipment created in system',
             ],
+            self::UPDATED_WEIGHT => [
+                'label' => 'Updated Weight',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
+            ],
+
             self::CHANGE_ROUTE => [
                 'label' => 'Change Route',
                 'icon' => 'file-plus',
