@@ -25,60 +25,60 @@ enum AwbStatusEnum: string
     case UPDATED_DIMENSIONS = 'UPD-DIM';
     case UPDATED_WEIGHT = 'UPD-WE';
     case CHANGE_ROUTE = 'CNG-ROU';
-case CRN_IN='SHCI';
-case CRN_OUT='SHCO';
+    case CRN_IN = 'SHCI';
+    case CRN_OUT = 'SHCO';
 
 
 
 
         /*
 
-From Creation to Pickup
--> Created:  CR
--> Address Changed:  CNG-ADD
--> Validate Address: VLD-ADD
--> Updated Dimensions: UPD-DIM
--> Change Route: CNG-ROU
--> Cancel AWB: CLD
--> Picked up : PU
+            From Creation to Pickup
+            -> Created:  CR
+            -> Address Changed:  CNG-ADD
+            -> Validate Address: VLD-ADD
+            -> Updated Dimensions: UPD-DIM
+            -> Change Route: CNG-ROU
+            -> Cancel AWB: CLD
+            -> Picked up : PU
 
-From Pickup to Debrief:
-
-
-->LOST       EXP-LST
-->DAMAGED   EXP-DMG
-->STOLEN    EXP-STL
--> Address Changed:  CNG-ADD
--> Validate Address: VLD-ADD
--> Change Route: CNG-ROU
-
-->RECEIVED_OPERATION RO
+            From Pickup to Debrief:
 
 
-From debrief to dispatch
+            ->LOST       EXP-LST
+            ->DAMAGED   EXP-DMG
+            ->STOLEN    EXP-STL
+            -> Address Changed:  CNG-ADD
+            -> Validate Address: VLD-ADD
+            -> Change Route: CNG-ROU
+
+            ->RECEIVED_OPERATION RO
 
 
-->IN STORAGE
-
-->LOST       EXP-LST
-->DAMAGED   EXP-DMG
-->STOLEN    EXP-STL
-
--> Address Changed:  CNG-ADD
--> Validate Address: VLD-ADD
-
-->ASSIGNED RUNSHEET
-->VERIFY RUNSHEET
-->ASSIGNED COURIER
+            From debrief to dispatch
 
 
-->RECEIVED OPERATIONS
-->OUT FOR DELIEVERY
+            ->IN STORAGE
+
+            ->LOST       EXP-LST
+            ->DAMAGED   EXP-DMG
+            ->STOLEN    EXP-STL
+
+            -> Address Changed:  CNG-ADD
+            -> Validate Address: VLD-ADD
+
+            ->ASSIGNED RUNSHEET
+            ->VERIFY RUNSHEET
+            ->ASSIGNED COURIER
+
+
+            ->RECEIVED OPERATIONS
+            ->OUT FOR DELIEVERY
 
 
 
 
-*/
+            */
 
 
         // case PENDING = 'pending';
@@ -815,20 +815,21 @@ From debrief to dispatch
                 'color_text' => '#000000',
                 'description' => 'AWB has been scanned successfully'
             ],
-        
-         self::CRN_IN => [
-            'label' => 'CRN In',
-            'icon' => 'check-circle',
-            'color_bg' => '#c8e6c9',
-            'color_text' => '#000000',
-            'description' => 'AWB has been scanned successfully'
-        ],
-         self::CRN_OUT => [
-            'label' => 'CRN Out',
-            'icon' => 'check-circle',
-            'color_bg' => '#c8e6c9',
-            'color_text' => '#000000',
-            'description' => 'AWB has been scanned successfully'
-        ],
+
+            self::CRN_IN => [
+                'label' => 'CRN In',
+                'icon' => 'check-circle',
+                'color_bg' => '#c8e6c9',
+                'color_text' => '#000000',
+                'description' => 'AWB has been scanned successfully'
+            ],
+            self::CRN_OUT => [
+                'label' => 'CRN Out',
+                'icon' => 'check-circle',
+                'color_bg' => '#c8e6c9',
+                'color_text' => '#000000',
+                'description' => 'AWB has been scanned successfully'
+            ]
+        };
     }
 }
