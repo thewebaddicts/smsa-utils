@@ -148,7 +148,7 @@ if (!function_exists('query_options_new_record')) {
 
 
 if (!function_exists('query_options_response')) {
-    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ")
+    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ",$except = [])
     {
 
         $values = request()->input('values');
@@ -163,7 +163,9 @@ if (!function_exists('query_options_response')) {
 
 
         // Build base query
-        $baseQuery = DB::table($table)->whereNull('deleted_at');
+        $baseQuery = DB::table($table)->when(is_array($except) && count($except) > 0 , function($query) use ($except,$columnValue){
+            $query->whereNotIn($columnValue, $except);
+        })->whereNull('deleted_at');
 
 
         foreach ($params as $field => $value) {
