@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
+use twa\smsautils\Http\Controllers\OneSignalController;
 
 if (!function_exists('unique_rule')) {
     function unique_rule($table, $column)
@@ -439,5 +440,13 @@ if (!function_exists('generate_awb_token')) {
     {
         $secret = env('AWB_SECRET_KEY');
         return md5($awb . $secret);
+    }
+}
+
+if (!function_exists('send_push_notification')) {
+    function send_push_notification($titles, $messages, $conditions = [], $data = [], $image_url = null, $playerID = null)
+    {
+        $config = config('omnipush.onesignal');
+        (new OneSignalController($config['data']))->sendPush($titles,$messages,$conditions,$data, $image_url, $playerID);
     }
 }
