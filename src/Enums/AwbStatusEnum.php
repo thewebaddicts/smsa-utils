@@ -481,6 +481,20 @@ enum AwbStatusEnum: string
                 'color_text' => '#1565c0',
                 'description' => 'Shipment has arrived at the destination hub',
             ],
+                self::CRN_IN => [
+                'label' => 'CRN In',
+                'icon' => 'check-circle',
+                'color_bg' => '#c8e6c9',
+                'color_text' => '#000000',
+                'description' => 'AWB has been scanned successfully'
+            ],
+            self::CRN_OUT => [
+                'label' => 'CRN Out',
+                'icon' => 'check-circle',
+                'color_bg' => '#c8e6c9',
+                'color_text' => '#000000',
+                'description' => 'AWB has been scanned successfully'
+            ]
         };
     }
 
