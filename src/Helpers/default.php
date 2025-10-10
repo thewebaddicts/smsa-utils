@@ -40,7 +40,7 @@ if (!function_exists('awb_pdf_url')) {
     function awb_pdf_url($awb)
     {
         $base_url = env('AWB_URL', 'https://opssmsaexpressco_6874ad59df6e7.twalab.cloud');
-        return $base_url . '/awb/' . $awb . '/pdf';
+        return $base_url . '/awb/' . $awb . '/pdf/' . generate_awb_token($awb);
     }
 }
 
@@ -148,7 +148,7 @@ if (!function_exists('query_options_new_record')) {
 
 
 if (!function_exists('query_options_response')) {
-    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ",$except = [])
+    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ", $except = [])
     {
 
         $values = request()->input('values');
@@ -163,7 +163,7 @@ if (!function_exists('query_options_response')) {
 
 
         // Build base query
-        $baseQuery = DB::table($table)->when(is_array($except) && count($except) > 0 , function($query) use ($except,$columnValue){
+        $baseQuery = DB::table($table)->when(is_array($except) && count($except) > 0, function ($query) use ($except, $columnValue) {
             $query->whereNotIn($columnValue, $except);
         })->whereNull('deleted_at');
 
@@ -429,5 +429,15 @@ if (!function_exists('courier_assignment_on_route')) {
         }
 
         return $courier_id;
+    }
+}
+
+
+
+if (!function_exists('generate_awb_token')) {
+    function generate_awb_token(string $awb): string
+    {
+        $secret = env('AWB_SECRET_KEY');
+        return md5($awb . $secret);
     }
 }
