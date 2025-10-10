@@ -6,6 +6,8 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
 use twa\smsautils\Http\Controllers\OneSignalController;
+use Illuminate\Support\Facades\Log;
+
 
 if (!function_exists('unique_rule')) {
     function unique_rule($table, $column)
@@ -448,5 +450,63 @@ if (!function_exists('send_push_notification')) {
     {
         $config = config('omnipush.onesignal');
         (new OneSignalController($config['data']))->sendPush($titles,$messages,$conditions,$data, $image_url, $playerID);
+    }
+}
+
+if (!function_exists('send_client_otp')) {
+    function send_client_otp($phone, $otp)
+    {
+
+        $clientId = env('INFINITO_CLIENT_ID');
+        $clientPassword = env('INFINITO_CLIENT_PASSWORD');
+        $senderId = env('INFINITO_SENDER_ID');
+        $message = "Your OTP is {$otp}";
+
+        Log::info("Starting OTP send", [
+            'phone' => $phone,
+            'otp' => $otp,
+            'clientId' => $clientId,
+            'senderId' => $senderId
+        ]);
+
+
+        $query = http_build_query([
+            'clientid' => $clientId,
+            'clientpassword' => $clientPassword,
+            'from' => $senderId,
+            'to' => $phone,
+            'text' => $message
+        ]);
+
+        $url = "https://api.goinfinito.me/unified/v2/send?" . $query;
+
+        try {
+
+            $response = file_get_contents($url);
+
+            Log::info("OTP API raw response", ['response' => $response]);
+
+
+            parse_str($response, $result);
+
+            if (isset($result['statuscode']) && $result['statuscode'] === '0') {
+                Log::info("OTP sent successfully", [
+                    'phone' => $phone,
+                    'otp' => $otp,
+                    'result' => $result
+                ]);
+                return true;
+            }
+
+            Log::error("Failed to send OTP", ['phone' => $phone, 'response' => $result]);
+            return false;
+        } catch (\Exception $e) {
+            Log::error("Exception while sending OTP", [
+                'phone' => $phone,
+                'otp' => $otp,
+                'error' => $e->getMessage()
+            ]);
+            return false;
+        }
     }
 }
