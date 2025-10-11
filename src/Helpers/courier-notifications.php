@@ -94,37 +94,6 @@ if (!function_exists('notify_new_delivery_trip')) {
 
 
 
-
-if (!function_exists('notify_trip_cancelled')) {
-    /**
-     * Send notification for trip cancellation
-     * 
-     * Example:
-     * notify_trip_cancelled($courier->id);
-     * 
-     * @param int $courier_id The courier user ID
-     * @param array|null $data Additional data
-     * @return void
-     */
-    function notify_trip_cancelled($courier_id, $data = null)
-    {
-        $title_en = "Trip Cancelled";
-        $title_ar = "تم إلغاء الرحلة";
-        $message_en = "Your trip has been cancelled";
-        $message_ar = "تم إلغاء رحلتك";
-        
-        send_notification_helper(
-            $title_en,
-            $title_ar,
-            $message_en,
-            $message_ar,
-            ["condition" => ["user_id"], "value" => [$courier_id]],
-            $data
-        );
-    }
-}
-
-
 if (!function_exists('notify_shipment_delivered')) {
     /**
      * Send notification for successful delivery
@@ -136,7 +105,7 @@ if (!function_exists('notify_shipment_delivered')) {
      * @param array|null $data Additional data
      * @return void
      */
-    function notify_shipment_delivered($user_id, $data = null)
+    function notify_shipment_delivered($courier_id, $awb_id, $data = null)
     {
         $title_en = "Shipment Delivered";
         $title_ar = "تم تسليم الشحنة";
@@ -148,7 +117,8 @@ if (!function_exists('notify_shipment_delivered')) {
             $title_ar,
             $message_en,
             $message_ar,
-            ["condition" => ["user_id"], "value" => [$user_id]],
+            ["condition" => ["user_id"], "value" => [$courier_id]],
+            $awb_id,
             $data
         );
     }
