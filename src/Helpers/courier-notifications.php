@@ -262,7 +262,7 @@ if(!function_exists('mission_transfer_request_received')){
         $title_ar = "ويتم ارسال طلب تحويل مهمة وسنخطرك عندما يتم الموافقة عليه";
         $message_en = "You have a new mission transfer request we will notify you when if it's approved";
         $message_ar = "لديك طلب تحويل مهمة جديد وسنخطرك عندما يتم الموافقة عليه";
-    }
+    
 
     send_notification_helper(
         $title_en,
@@ -272,6 +272,7 @@ if(!function_exists('mission_transfer_request_received')){
         ["condition" => ["user_id"], "value" => [$courier_id]],
         $data
     );
+}
 }
 
 if(!function_exists('mission_transfer_request_approved')){
@@ -281,7 +282,7 @@ if(!function_exists('mission_transfer_request_approved')){
         $title_ar = "تم الموافقة على طلب تحويل مهمة";
         $message_en = "Your mission transfer request has been approved";
         $message_ar = "تم الموافقة على طلب تحويل مهمتك";
-    }
+    
 
     send_notification_helper(
         $title_en,
@@ -292,13 +293,14 @@ if(!function_exists('mission_transfer_request_approved')){
         $data
     );
 }
+}
 if(!function_exists('mission_transfer_request_rejected')){
     function mission_transfer_request_rejected($courier_id, $data = null){
         $title_en = "Mission Transfer Request Rejected";
         $title_ar = "تم رفض طلب تحويل مهمة";
         $message_en = "Your mission transfer request has been rejected";
         $message_ar = "تم رفض طلب تحويل مهمتك";
-    }
+    
     send_notification_helper(
         $title_en,
         $title_ar,
@@ -308,13 +310,14 @@ if(!function_exists('mission_transfer_request_rejected')){
         $data
     );
 }
+}
 if(!function_exists('mission_transfer_request_completed')){
     function mission_transfer_request_completed($courier_id, $data = null){
         $title_en = "Mission Transfer Request Completed";
         $title_ar = "تم إكمال طلب تحويل مهمة";
         $message_en = "Your mission transfer request has been completed";
         $message_ar = "تم إكمال طلب تحويل مهمتك";
-    }
+    
     send_notification_helper(
         $title_en,
         $title_ar,
@@ -323,6 +326,7 @@ if(!function_exists('mission_transfer_request_completed')){
         ["condition" => ["user_id"], "value" => [$courier_id]],
         $data
     );
+  }
 }
  
 if(!function_exists('assign_courier_to_runsheet')){
@@ -331,7 +335,7 @@ if(!function_exists('assign_courier_to_runsheet')){
         $title_ar = "تم تعيين موظف للرحلة";
         $message_en = "You have a new runsheet assigned to you";
         $message_ar = "لديك رحلة جديدة";
-    }
+    
 
     send_notification_helper(
         $title_en,
@@ -341,6 +345,7 @@ if(!function_exists('assign_courier_to_runsheet')){
         ["condition" => ["user_id"], "value" => [$courier_id]],
         $data
     );
+  }
 }
 
 if(!function_exists('unassign_courier_from_pickup')){
@@ -349,7 +354,7 @@ if(!function_exists('unassign_courier_from_pickup')){
         $title_ar = "تم إلغاء تعيين موظف للاستلام" . $pickup_id;
         $message_en = "You have been unassigned from the pickup" . $pickup_id;
         $message_ar = "تم إلغاء تعيينك من الاستلام" . $pickup_id;
-    }
+    
     send_notification_helper(
         $title_en,
         $title_ar,
@@ -358,6 +363,7 @@ if(!function_exists('unassign_courier_from_pickup')){
         ["condition" => ["user_id"], "value" => [$courier_id]],
         $data
     );
+  }
 }
 if(!function_exists('change_address_alert')){
     function change_address_alert($courier_id , $address_id, $shipment_id, $data = null){
@@ -365,7 +371,7 @@ if(!function_exists('change_address_alert')){
         $title_ar = "تنبيه تغيير العنوان" . $address_id . " للشحنة " . $shipment_id;
         $message_en = "You have a new address change to $address_id for shipment $shipment_id";
         $message_ar = "لديك تغيير عنوان جديد للشحنة $shipment_id" . $address_id;
-    }
+    
     send_notification_helper(
         $title_en,
         $title_ar,  
@@ -374,4 +380,5 @@ if(!function_exists('change_address_alert')){
         ["condition" => ["user_id"], "value" => [$courier_id]],
         $data
     );
+}
 }
