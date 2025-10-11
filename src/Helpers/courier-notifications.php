@@ -43,7 +43,7 @@ if (!function_exists('notify_new_pickup_request')) {
      * @param array|null $data Additional data
      * @return void
      */
-    function notify_new_pickup_request($courier_id, $data = null)
+    function notify_new_pickup_request($courier_id,$pickup_id, $data = null)
     {
         $title_en = "New Pickup Request";
         $title_ar = "طلب استلام جديد";
@@ -56,6 +56,7 @@ if (!function_exists('notify_new_pickup_request')) {
             $message_en,
             $message_ar,
             ["condition" => ["user_id"], "value" => [$courier_id]],
+            $pickup_id,
             $data
         );
     }
