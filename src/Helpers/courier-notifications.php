@@ -62,7 +62,7 @@ if (!function_exists('notify_new_pickup_request')) {
     }
 }
 
-if (!function_exists('notify_new_trip')) {
+if (!function_exists('notify_new_delivery_trip')) {
     /**
      * Send notification for new trip
      * 
@@ -74,12 +74,12 @@ if (!function_exists('notify_new_trip')) {
      * @param array|null $data Additional data
      * @return void
      */
-    function notify_new_trip($courier_id, $data = null)
+    function notify_new_delivery_trip($courier_id, $data = null)
     {
-        $title_en = "New Trip";
-        $title_ar = "رحلة جديدة";
-        $message_en = "You have a new trip";
-        $message_ar = "لديك رحلة جديدة";
+        $title_en = "New Delivery Trip";
+        $title_ar = "رحلة تسليم جديدة";
+        $message_en = "You have a new delivery trip";
+        $message_ar = "لديك رحلة تسليم جديدة";
         
         send_notification_helper(
             $title_en,
@@ -92,34 +92,6 @@ if (!function_exists('notify_new_trip')) {
     }
 }
 
-if (!function_exists('notify_new_shipment')) {
-    /**
-     * Send notification for new shipment
-     * 
-     * Example:
-     * notify_new_shipment($courier->id);
-     * 
-     * @param int $courier_id The courier user ID
-     * @param array|null $data Additional data
-     * @return void
-     */
-    function notify_new_shipment($courier_id, $data = null)
-    {
-        $title_en = "New Shipment";
-        $title_ar = "شحنة جديدة";
-        $message_en = "You have a new shipment assigned";
-        $message_ar = "لديك شحنة جديدة";
-        
-        send_notification_helper(
-            $title_en,
-            $title_ar,
-            $message_en,
-            $message_ar,
-            ["condition" => ["user_id"], "value" => [$courier_id]],
-            $data
-        );
-    }
-}
 
 
 
