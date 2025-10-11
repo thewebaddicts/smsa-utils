@@ -27,5 +27,6 @@ class DefaultServiceProvider extends ServiceProvider
         $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
         include_once(__DIR__ . '/../Helpers/default.php');
         include_once(__DIR__ . '/../Helpers/awbLocationChange.php');
+        include_once(__DIR__ . '/../Helpers/courier-notifications.php');
     }
 }
