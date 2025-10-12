@@ -4,146 +4,78 @@ namespace twa\smsautils\Enums;
 
 enum AwbStatusEnum: string
 {
-    case CREATED = 'CR';
-    case PICKED_UP = 'PU';
-    case RECEIVED_OPERATION = 'R100';
-    case SHELVED = 'SHEL10';
-    case SCAN_RUNSHEET = 'SC100';
-    case SCAN_RUNSHEET_VERIFIED = 'SC101';
-    case OUT_FOR_DELIVERY = 'OD';
-    case DELIVERED = 'DL';
-
-    case WMS_SHELVE_ASSIGNED = 'WMS-SA';
-    case WMS_BIN_ASSIGNED = 'WMS-BA';
-
-    case WMS_PICKED = 'WMS_PK';
-    case WMS_OUTBOUND = 'WMS_OB';
-
-    case RETRIEVED = 'RETR10';
-    case ADDRESS_CHANGED = 'CNG-ADD';
-    case ADDRESS_VALIDATED = 'VLD-ADD';
-    case UPDATED_DIMENSIONS = 'UPD-DIM';
-    case UPDATED_WEIGHT = 'UPD-WE';
-    case CHANGE_ROUTE = 'CNG-ROU';
+    case CREATED = 'SHCR';
+    case PICKED_UP = 'SHPU';
+    case RECEIVED_OPERATION = 'SHOR';
     case CRN_IN = 'SHCI';
     case CRN_OUT = 'SHCO';
+    case SHELF_IN = 'SHSI';
+    case SHELF_OUT = 'SHSO';
+    case HUB_IN = 'SHHI';
+    case HUB_OUT = 'SHHO';
+    case OPERATION_INBOUND = 'SHOI';
+    case OPERATION_OUTBOUND = 'SHOO';
+    case DELIVERED = 'SHDL';
+    case REVERSE_DELIEVERY = 'SHRD';
+    case DEBRIEFED_OPERATION = 'SHDO';
+    case DEBRIEFED_FINANCE = 'SHDF';
+    case CLOSED = 'SHCL';
+    case ADDRESS_CHANGED = 'SHAU';
+    case ADDRESS_VALIDATED = 'SHAV';
+    case UPDATED_DIMENSIONS = 'SHDU';
+    case UPDATED_WEIGHT = 'SHWU';
+    case CANCELLED = 'SHCN';
+    case CHANGE_ROUTE = 'SHRC';
+    case OUT_FOR_DELIVERY = 'SHOD';
+    case SMS_SENT = 'SHSM';
+    case SHIPPER_CANCELED = 'SHSC';
+    case IN_TRANSIT = 'SHIT';
+    case GATEWAY_INBOUND = 'SHGI';
+    case GATEWAY_OUTBOUND = 'SHGO';
+    case HOLD_FOR_PICKUP = 'SHHP';
+    case HOLD = 'SHOH'; //was DEX
+    case RELEASE_HOLD = 'SHRL';
+    case HOLD_CUSTOMS = 'SHCH'; //was DEX
+    case RELEASE_CUSTOMS = 'SHRC';
+    case RETURN_IN = 'SHRI';
+    case RETURN_OUT = 'SHRO';
+    case RETURN_TO_SHIPPER = 'SHRS';
+    case SCAN_RUNSHEET = 'SHRA';
+    case SCAN_RUNSHEET_VERIFIED = 'SHRU';
 
 
+    case NOT_AVAILABLE_MOBILE_CLOSED  = 'ATMC';
+    case NOT_AVAILABLE_NO_ANSWER  = 'ATNA';
+    case NOT_AVAILABLE_RESCHEDULE  = 'ATRS';
+    case NOT_AVAILABLE_TRAVELING  = 'ATTR';
+
+    case NOT_AVAILABLE_WRONG_PHONE = 'ATWN';
+    case NOT_AVAILABLE_WRONG_CUSTOMER = 'ATWC';
+    case NOT_AVAILABLE_WRONG_CITY = 'ATLC';
+    case NOT_AVAILABLE_ROUTE = 'ATLR'; //to be checked by hovig
+    case NOT_AVAILABLE_OUT_OF_AREA = 'ATOA';
+
+    case HOLD_PICKUP = 'ATLC';
+
+    case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
+    case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
+    case NOT_PICKED_UP_ADDRESS_CHANGED = 'NPLR';
 
 
-        /*
-
-            From Creation to Pickup
-            -> Created:  CR
-            -> Address Changed:  CNG-ADD
-            -> Validate Address: VLD-ADD
-            -> Updated Dimensions: UPD-DIM
-            -> Change Route: CNG-ROU
-            -> Cancel AWB: CLD
-            -> Picked up : PU
-
-            From Pickup to Debrief:
+    case REFUSED_OPEN_SHIPMENT  = 'RFOS';
+    case REFUSED_MONEY  = 'RFMO';
+    case REFUSED_ALREADY_RECEIVED  = 'RFAR';
+    case REFUSED_NO_LONGER_NEEDED = 'RFNN';
+    case REFUSED_DELAYED = 'RFDL'; // was exp
 
 
-            ->LOST       EXP-LST
-            ->DAMAGED   EXP-DMG
-            ->STOLEN    EXP-STL
-            -> Address Changed:  CNG-ADD
-            -> Validate Address: VLD-ADD
-            -> Change Route: CNG-ROU
-
-            ->RECEIVED_OPERATION RO
+    case OVERAGE = 'SHOV'; // was exp
+    case ATTEMPTED = 'SHAT';
+    case REFUSED = 'SHRF';
 
 
-            From debrief to dispatch
-
-
-            ->IN STORAGE
-
-            ->LOST       EXP-LST
-            ->DAMAGED   EXP-DMG
-            ->STOLEN    EXP-STL
-
-            -> Address Changed:  CNG-ADD
-            -> Validate Address: VLD-ADD
-
-            ->ASSIGNED RUNSHEET
-            ->VERIFY RUNSHEET
-            ->ASSIGNED COURIER
-
-
-            ->RECEIVED OPERATIONS
-            ->OUT FOR DELIEVERY
-
-
-
-
-            */
-
-
-        // case PENDING = 'pending';
-
-        // case SCANNED = 'SC';
-
-        // ready for dispatch
-        // missing from shelf
-        // on hold
-        // EXCEPTIONS
-
-        // case ATTEMPTED = 'EX-100'; //To be Removed
-
-    case ATTEMPTED = 'DEX-ATT';
-    case ATTEMPTED_WRONG_ADDRESS = 'DEX-ATT-101';
-    case ATTEMPTED_UNREACHABLE = 'DEX-ATT-102';
-    case ATTEMPTED_UNAVAILABLE = 'DEX-ATT-103';
-
-        // case REFUSED = 'EX-101'; // to be removed
-
-    case REFUSED = 'DEX-RFS';
-    case REFUSED_WRONG_PACKAGE = 'DEX-RFS-101';
-    case REFUSED_DELAYED = 'DEX-RFS-102';
-    case REFUSED_DAMAGED = 'DEX-RFS-103';
-
-    case DEBRIEF_OUTSTANDING = 'DB-OUT';
-
-
-
-
-
-    case HOLD = 'DEX-HL';
-    case HOLD_PAYMENT_ISSUE   = 'DEX-HL-101';
-    case HOLD_DOCUMENTS       = 'DEX-HL-102';
-    case HOLD_CUSTOMS         = 'DEX-HL-103';
-
-        // case DEBRIEF_OUTSTANDING = 'DEX-OTD';
-        // case CANCELLED = 'DEX-CNL';
-        // case HOLD = 'DEX-HLD';
-
-    case CUSTOMS_HOLD = 'DEX-CUS';
-    case DAMAGED = 'DEX-DMG';
-    case STOLEN = 'DEX-STL';
-    case LOST = 'DEX-LST';
-    case WEATHER = 'DEX-WTH';
-    case SECURITY = 'DEX-SEC';
-
-    case OVERAGE = 'DEX-OVG';
-    case CANCELLED_CUSTOMER_REQUEST = 'DEX-CA-101';
-    case CANCELLED_OPERATIONAL_ISSUE = 'DEX-CA-102';
-    case CANCELLED = 'CLD';
-
-    case MISSING_SHELVE = 'MIS10';
-
-    case WMS_MISSING_SHELVE = 'WMS-MS';
-
-    case CLOSED = 'CL';
-
-
-
-        //nourhane
-    case ARRIVED = 'AR100';
-        // To be Removed
-
-    case OPERATIONS_QC = 'OP-QC';
+    case DAMAGED = 'EXDM'; // was exp
+    case LOST = 'EXLO';
 
 
 
@@ -155,16 +87,92 @@ enum AwbStatusEnum: string
                 'icon' => 'file-plus',
                 'color_bg' => '#e3f2fd',
                 'color_text' => '#1565c0',
-                'description' => 'Shipment created in system',
+                'description' => 'Shipment has been created in the system',
             ],
             self::PICKED_UP => [
                 'label' => 'Picked Up',
                 'icon' => 'truck',
                 'color_bg' => '#e6f7ff',
                 'color_text' => '#007bff',
-                'description' => 'Shipment picked up',
+                'description' => 'Shipment has been picked up from sender',
             ],
-
+            self::RECEIVED_OPERATION => [
+                'label' => 'Received',
+                'icon' => 'inbox',
+                'color_bg' => '#f0f9eb',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment received in operations',
+            ],
+            self::SHELF_IN => [
+                'label' => 'Shelf In',
+                'icon' => 'archive',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Shipment placed in storage shelf',
+            ],
+            self::SHELF_OUT => [
+                'label' => 'Shelf Out',
+                'icon' => 'archive',
+                'color_bg' => '#e1f5fe',
+                'color_text' => '#0288d1',
+                'description' => 'Shipment removed from storage shelf',
+            ],
+            self::HUB_IN => [
+                'label' => 'Received Hub',
+                'icon' => 'home',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Shipment arrived at hub facility',
+            ],
+            self::HUB_OUT => [
+                'label' => 'Hub Departure',
+                'icon' => 'log-out',
+                'color_bg' => '#ffe0b2',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment departed from hub facility',
+            ],
+            self::OPERATION_INBOUND => [
+                'label' => 'Received Operations',
+                'icon' => 'download',
+                'color_bg' => '#dcedc8',
+                'color_text' => '#558b2f',
+                'description' => 'Shipment received by operations team',
+            ],
+            self::OPERATION_OUTBOUND => [
+                'label' => 'Operations Out',
+                'icon' => 'upload',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Shipment dispatched by operations team',
+            ],
+            self::DELIVERED => [
+                'label' => 'Delivered',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully delivered',
+            ],
+            self::REVERSE_DELIEVERY => [
+                'label' => 'Reverse Delivery',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully reversed',
+            ],
+            self::DEBRIEFED_OPERATION => [
+                'label' => 'Debrief Operation',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully reversed',
+            ],
+            self::DEBRIEFED_FINANCE => [
+                'label' => 'Debrief Finance',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully reversed',
+            ],
             self::ADDRESS_CHANGED => [
                 'label' => 'Address changed',
                 'icon' => 'file-plus',
@@ -172,7 +180,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#15c0a4ff',
                 'description' => 'Shipment created in system',
             ],
-
             self::ADDRESS_VALIDATED => [
                 'label' => 'Address validated',
                 'icon' => 'file-plus',
@@ -187,8 +194,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#82add8ff',
                 'description' => 'Shipment created in system',
             ],
-
-
             self::UPDATED_WEIGHT => [
                 'label' => 'Updated Weight',
                 'icon' => 'file-plus',
@@ -196,8 +201,13 @@ enum AwbStatusEnum: string
                 'color_text' => '#82add8ff',
                 'description' => 'Shipment created in system',
             ],
-
-
+            self::CANCELLED => [
+                'label' => 'Cancelled',
+                'icon' => 'x-circle',
+                'color_bg' => '#ffebee',
+                'color_text' => '#b71c1c',
+                'description' => 'Shipment cancelled',
+            ],
             self::CHANGE_ROUTE => [
                 'label' => 'Change Route',
                 'icon' => 'file-plus',
@@ -205,54 +215,103 @@ enum AwbStatusEnum: string
                 'color_text' => '#82add8ff',
                 'description' => 'Shipment created in system',
             ],
-            self::RECEIVED_OPERATION => [
-                'label' => 'Received',
-                'icon' => 'inbox',
-                'color_bg' => '#f0f9eb',
-                'color_text' => '#2e7d32',
-                'description' => 'Shipment received in operations',
+            self::OUT_FOR_DELIVERY => [
+                'label' => 'Out for Delivery',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'Shipment is out with courier',
             ],
-            self::SHELVED => [
-                'label' => 'In Storage',
-                'icon' => 'archive',
-                'color_bg' => '#fffde7',
-                'color_text' => '#f57f17',
-                'description' => 'Shipment placed on shelf',
+            self::SMS_SENT => [
+                'label' => 'SMS Sent',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'Shipment is out with courier',
             ],
-            self::WMS_SHELVE_ASSIGNED => [
-                'label' => 'Shelve Assigned',
-                'icon' => 'layers',
+            self::SHIPPER_CANCELED => [
+                'label' => 'Cancelled by shipper',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment cancelled by shipper',
+            ],
+            self::IN_TRANSIT => [
+                'label' => 'In Transit',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in transit',
+            ],
+            self::GATEWAY_INBOUND => [
+                'label' => 'Gateway inbound',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in gateway',
+            ],
+            self::GATEWAY_OUTBOUND => [
+                'label' => 'Gateway Outbound',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in gateway',
+            ],
+            self::HOLD_FOR_PICKUP => [
+                'label' => 'Hold For Pickup',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in gateway',
+            ],
+            self::HOLD => [
+                'label' => 'On Hold',
+                'icon' => 'pause-circle',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment placed on hold',
+            ],
+            self::RELEASE_HOLD => [
+                'label' => 'Release Hold',
+                'icon' => 'pause-circle',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment placed on hold',
+            ],
+            self::HOLD_CUSTOMS => [
+                'label' => 'On Hold - Customs',
+                'icon' => 'shield',
                 'color_bg' => '#ede7f6',
                 'color_text' => '#4527a0',
-                'description' => 'Shipment assigned to a shelf',
+                'description' => 'Shipment on hold for customs clearance',
             ],
-            self::WMS_BIN_ASSIGNED => [
-                'label' => 'Bin Assigned',
-                'icon' => 'package',
-                'color_bg' => '#f3e5f5',
-                'color_text' => '#6a1b9a',
-                'description' => 'Shipment assigned to a bin',
+            self::RELEASE_CUSTOMS => [
+                'label' => 'Release Customs',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment on hold for customs clearance',
             ],
-            self::WMS_PICKED => [
-                'label' => 'Picked (WMS)',
-                'icon' => 'shopping-bag',
-                'color_bg' => '#e0f7fa',
-                'color_text' => '#006064',
-                'description' => 'Shipment picked from warehouse',
+            self::RETURN_IN => [
+                'label' => 'Return In',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment Returned in',
             ],
-            self::WMS_OUTBOUND => [
-                'label' => 'Outbound (WMS)',
-                'icon' => 'log-out',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#e65100',
-                'description' => 'Shipment marked for outbound',
+            self::RETURN_OUT => [
+                'label' => 'Return Out',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment Returned out',
             ],
-            self::RETRIEVED => [
-                'label' => 'Retrieved',
-                'icon' => 'arrow-up-circle',
-                'color_bg' => '#e1f5fe',
-                'color_text' => '#0277bd',
-                'description' => 'Shipment retrieved for dispatch',
+            self::RETURN_TO_SHIPPER => [
+                'label' => 'Return to shipper',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment Returned out',
             ],
             self::SCAN_RUNSHEET => [
                 'label' => 'Scan Runsheet',
@@ -268,47 +327,83 @@ enum AwbStatusEnum: string
                 'color_text' => '#2e7d32',
                 'description' => 'Shipment verification completed on runsheet',
             ],
-            self::OUT_FOR_DELIVERY => [
-                'label' => 'Out for Delivery',
-                'icon' => 'truck',
-                'color_bg' => '#e6f7ff',
-                'color_text' => '#007bff',
-                'description' => 'Shipment is out with courier',
+            self::NOT_AVAILABLE_MOBILE_CLOSED => [
+                'label' => 'Mobile Closed',
+                'icon' => 'phone-off',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient mobile phone is closed, could not contact',
             ],
-            self::DELIVERED => [
-                'label' => 'Delivered',
-                'icon' => 'check-circle',
-                'color_bg' => '#e8f5e9',
-                'color_text' => '#2e7d32',
-                'description' => 'Shipment successfully delivered',
+            self::NOT_AVAILABLE_NO_ANSWER => [
+                'label' => 'No Answer',
+                'icon' => 'phone-missed',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient did not answer the call',
             ],
+            self::NOT_AVAILABLE_RESCHEDULE => [
+                'label' => 'Reschedule',
+                'icon' => 'calendar',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Delivery attempt needs to be rescheduled',
+            ],
+            self::NOT_AVAILABLE_TRAVELING => [
+                'label' => 'Traveling',
+                'icon' => 'map-pin',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient is traveling, cannot receive shipment',
+            ],
+            self::NOT_AVAILABLE_WRONG_PHONE => [
+                'label' => 'Wrong Phone Number',
+                'icon' => 'phone-slash',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery could not be completed due to wrong phone number',
+            ],
+            self::NOT_AVAILABLE_WRONG_CUSTOMER => [
+                'label' => 'Wrong Customer',
+                'icon' => 'user-x',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery could not be completed due to wrong recipient',
+            ],
+            self::NOT_AVAILABLE_WRONG_CITY => [
+                'label' => 'Wrong City',
+                'icon' => 'map',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Shipment address does not match city',
+            ],
+            self::NOT_AVAILABLE_ROUTE => [
+                'label' => 'Route Issue',
+                'icon' => 'map-signs',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery route needs verification',
+            ],
+            self::NOT_AVAILABLE_OUT_OF_AREA => [
+                'label' => 'Out of Delivery Area',
+                'icon' => 'map-pin-off',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery address is outside the service area',
+            ],
+            self::HOLD_PICKUP => [
+                'label' => 'Hold for Pickup',
+                'icon' => 'archive',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Shipment is held for pickup by recipient',
+            ],
+
             self::ATTEMPTED => [
                 'label' => 'Attempted',
                 'icon' => 'alert-circle',
                 'color_bg' => '#fff4e5',
                 'color_text' => '#b36b00',
                 'description' => 'Delivery attempt made',
-            ],
-            self::ATTEMPTED_WRONG_ADDRESS => [
-                'label' => 'Attempted - Wrong Address',
-                'icon' => 'map-pin',
-                'color_bg' => '#fffde7',
-                'color_text' => '#f57f17',
-                'description' => 'Attempted delivery, wrong address provided',
-            ],
-            self::ATTEMPTED_UNREACHABLE => [
-                'label' => 'Attempted - Unreachable',
-                'icon' => 'phone-off',
-                'color_bg' => '#fce4ec',
-                'color_text' => '#c2185b',
-                'description' => 'Attempted delivery, recipient unreachable',
-            ],
-            self::ATTEMPTED_UNAVAILABLE => [
-                'label' => 'Attempted - Unavailable',
-                'icon' => 'user-x',
-                'color_bg' => '#f3e5f5',
-                'color_text' => '#6a1b9a',
-                'description' => 'Attempted delivery, recipient unavailable',
             ],
             self::REFUSED => [
                 'label' => 'Refused',
@@ -317,111 +412,43 @@ enum AwbStatusEnum: string
                 'color_text' => '#b71c1c',
                 'description' => 'Recipient refused the shipment',
             ],
-            self::REFUSED_WRONG_PACKAGE => [
-                'label' => 'Refused - Wrong Package',
-                'icon' => 'package-x',
+
+            // NOT PICKED UP STATUSES
+            self::NOT_PICKED_UP_RESCHEDULE => [
+                'label' => 'Reschedule Pickup',
+                'icon' => 'calendar',
                 'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Refused delivery due to wrong package',
+                'color_text' => '#fb8c00',
+                'description' => 'Pickup attempt needs to be rescheduled',
             ],
-            self::REFUSED_DELAYED => [
-                'label' => 'Refused - Delayed',
-                'icon' => 'clock',
-                'color_bg' => '#e3f2fd',
-                'color_text' => '#1565c0',
-                'description' => 'Refused delivery due to delay',
-            ],
-            self::REFUSED_DAMAGED => [
-                'label' => 'Refused - Damaged',
-                'icon' => 'alert-octagon',
-                'color_bg' => '#ffebee',
-                'color_text' => '#c62828',
-                'description' => 'Refused delivery due to damage',
-            ],
-            self::DEBRIEF_OUTSTANDING => [
-                'label' => 'Outstanding',
-                'icon' => 'alert-triangle',
-                'color_bg' => '#ffebee',   // light red background
-                'color_text' => '#c62828', // deep red text
-                'description' => 'Pending debrief review',
-            ],
-            self::CANCELLED => [
-                'label' => 'Cancelled',
-                'icon' => 'x-circle',
-                'color_bg' => '#ffebee',
-                'color_text' => '#b71c1c',
-                'description' => 'Shipment cancelled',
-            ],
-            self::HOLD => [
-                'label' => 'On Hold',
-                'icon' => 'pause-circle',
+            self::NOT_PICKED_UP_NO_ANSWER => [
+                'label' => 'No Answer',
+                'icon' => 'phone-missed',
                 'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment placed on hold',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient did not answer during pickup attempt',
+            ],
+            self::NOT_PICKED_UP_ADDRESS_CHANGED => [
+                'label' => 'Address Changed',
+                'icon' => 'map-pin',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Pickup could not be completed due to address change',
             ],
 
-            self::HOLD_PAYMENT_ISSUE => [
-                'label' => 'On Hold - Payment Issue',
-                'icon' => 'credit-card',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment on hold due to payment issue',
-            ],
-            self::HOLD_DOCUMENTS => [
-                'label' => 'On Hold - Missing Documents',
-                'icon' => 'file-text',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment on hold pending documents',
-            ],
-            self::HOLD_CUSTOMS => [
-                'label' => 'On Hold - Customs',
-                'icon' => 'shield',
-                'color_bg' => '#ede7f6',
-                'color_text' => '#4527a0',
-                'description' => 'Shipment on hold for customs clearance',
-            ],
-            self::CUSTOMS_HOLD => [
-                'label' => 'Customs Hold',
-                'icon' => 'shield',
-                'color_bg' => '#ede7f6',
-                'color_text' => '#4527a0',
-                'description' => 'Shipment held in customs',
-            ],
-            self::DAMAGED => [
-                'label' => 'Damaged',
-                'icon' => 'alert-octagon',
-                'color_bg' => '#ffebee',
+            self::REFUSED_OPEN_SHIPMENT => [
+                'label' => 'Refused to Open Shipment',
+                'icon' => 'x-circle',
+                'color_bg' => '#ffcdd2',
                 'color_text' => '#c62828',
-                'description' => 'Shipment damaged',
+                'description' => 'Recipient refused to open the shipment before delivery',
             ],
-            self::STOLEN => [
-                'label' => 'Stolen',
-                'icon' => 'lock',
-                'color_bg' => '#fbe9e7',
-                'color_text' => '#bf360c',
-                'description' => 'Shipment reported stolen',
-            ],
-            self::LOST => [
-                'label' => 'Lost',
-                'icon' => 'help-circle',
-                'color_bg' => '#f3e5f5',
-                'color_text' => '#6a1b9a',
-                'description' => 'Shipment lost in transit',
-            ],
-            self::WEATHER => [
-                'label' => 'Weather Delay',
-                'icon' => 'cloud-rain',
-                'color_bg' => '#e1f5fe',
-                'color_text' => '#0277bd',
-                'description' => 'Shipment delayed due to weather',
-            ],
-            self::SECURITY => [
-                'label' => 'Security Issue',
-                'icon' => 'shield-alert',
-                'color_bg' => '#ffebee',
+            self::REFUSED_NO_LONGER_NEEDED => [
+                'label' => 'Refused – No Longer Needed',
+                'icon' => 'x-circle',
+                'color_bg' => '#ffcdd2',
                 'color_text' => '#c62828',
-                'description' => 'Shipment held for security reasons',
+                'description' => 'Recipient refused shipment, no longer needed',
             ],
             self::OVERAGE => [
                 'label' => 'Overage',
@@ -431,35 +458,41 @@ enum AwbStatusEnum: string
                 'description' => 'Extra shipment found',
             ],
 
+            self::DAMAGED => [
+                'label' => 'Damaged',
+                'icon' => 'alert-octagon',
+                'color_bg' => '#ffebee',
+                'color_text' => '#c62828',
+                'description' => 'Shipment damaged',
+            ],
 
-            self::CANCELLED_CUSTOMER_REQUEST => [
-                'label' => 'Cancelled - Customer Request',
-                'icon' => 'user-x',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment cancelled upon customer request',
+            self::REFUSED_DELAYED => [
+                'label' => 'Refused - Delayed',
+                'icon' => 'clock',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Refused delivery due to delay',
             ],
-            self::CANCELLED_OPERATIONAL_ISSUE => [
-                'label' => 'Cancelled - Operational Issue',
-                'icon' => 'alert-triangle',
+
+            self::CANCELLED => [
+                'label' => 'Cancelled',
+                'icon' => 'x-circle',
                 'color_bg' => '#ffebee',
-                'color_text' => '#c62828',
-                'description' => 'Shipment cancelled due to operational issue',
+                'color_text' => '#b71c1c',
+                'description' => 'Shipment cancelled',
             ],
-            self::MISSING_SHELVE => [
-                'label' => 'Missing',
+
+
+            self::LOST => [
+                'label' => 'Lost',
                 'icon' => 'help-circle',
-                'color_bg' => '#ffebee',
-                'color_text' => '#c62828',
-                'description' => 'Shipment missing from shelf',
+                'color_bg' => '#f3e5f5',
+                'color_text' => '#6a1b9a',
+                'description' => 'Shipment lost in transit',
             ],
-            self::WMS_MISSING_SHELVE => [
-                'label' => 'WMS Missing',
-                'icon' => 'alert-triangle',
-                'color_bg' => '#fff8e1',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment missing in WMS',
-            ],
+
+
+
             self::CLOSED => [
                 'label' => 'Closed',
                 'icon' => 'lock',
@@ -467,21 +500,8 @@ enum AwbStatusEnum: string
                 'color_text' => '#424242',
                 'description' => 'Shipment closed',
             ],
-            self::OPERATIONS_QC => [
-                'label' => 'Operations QC',
-                'icon' => 'check',
-                'color_bg' => '#e8f5e9',
-                'color_text' => '#1b5e20',
-                'description' => 'Quality check completed',
-            ],
-            self::ARRIVED => [
-                'label' => 'Arrived',
-                'icon' => 'map-pin',
-                'color_bg' => '#e3f2fd',
-                'color_text' => '#1565c0',
-                'description' => 'Shipment has arrived at the destination hub',
-            ],
-                self::CRN_IN => [
+
+            self::CRN_IN => [
                 'label' => 'CRN In',
                 'icon' => 'check-circle',
                 'color_bg' => '#c8e6c9',
@@ -506,7 +526,99 @@ enum AwbStatusEnum: string
                 'icon' => 'file-plus',
                 'color_bg' => '#e3f2fd',
                 'color_text' => '#1565c0',
-                'description' => 'Shipment created in system',
+                'description' => 'Shipment has been created in the system',
+            ],
+            self::PICKED_UP => [
+                'label' => 'Picked Up',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'Shipment has been picked up from sender',
+            ],
+            self::RECEIVED_OPERATION => [
+                'label' => 'Received',
+                'icon' => 'inbox',
+                'color_bg' => '#f0f9eb',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment received in operations',
+            ],
+
+            self::ATTEMPTED => [
+                'label' => 'Attempted',
+                'icon' => 'alert-circle',
+                'color_bg' => '#fff4e5',
+                'color_text' => '#b36b00',
+                'description' => 'Delivery attempt made',
+            ],
+            self::SHELF_IN => [
+                'label' => 'Shelf In',
+                'icon' => 'archive',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Shipment placed in storage shelf',
+            ],
+            self::SHELF_OUT => [
+                'label' => 'Shelf Out',
+                'icon' => 'archive',
+                'color_bg' => '#e1f5fe',
+                'color_text' => '#0288d1',
+                'description' => 'Shipment removed from storage shelf',
+            ],
+            self::HUB_IN => [
+                'label' => 'Received Hub',
+                'icon' => 'home',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Shipment arrived at hub facility',
+            ],
+            self::HUB_OUT => [
+                'label' => 'Hub Departure',
+                'icon' => 'log-out',
+                'color_bg' => '#ffe0b2',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment departed from hub facility',
+            ],
+            self::OPERATION_INBOUND => [
+                'label' => 'Received Operations',
+                'icon' => 'download',
+                'color_bg' => '#dcedc8',
+                'color_text' => '#558b2f',
+                'description' => 'Shipment received by operations team',
+            ],
+            self::OPERATION_OUTBOUND => [
+                'label' => 'Operations Out',
+                'icon' => 'upload',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Shipment dispatched by operations team',
+            ],
+            self::DELIVERED => [
+                'label' => 'Delivered',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully delivered',
+            ],
+            self::REVERSE_DELIEVERY => [
+                'label' => 'Reverse Delivery',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully reversed',
+            ],
+            self::DEBRIEFED_OPERATION => [
+                'label' => 'Debrief Operation',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully reversed',
+            ],
+            self::DEBRIEFED_FINANCE => [
+                'label' => 'Debrief Finance',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully reversed',
             ],
             self::ADDRESS_CHANGED => [
                 'label' => 'Address changed',
@@ -522,7 +634,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#d482d8ff',
                 'description' => 'Shipment created in system',
             ],
-
             self::UPDATED_DIMENSIONS => [
                 'label' => 'Updated Dimensions',
                 'icon' => 'file-plus',
@@ -537,7 +648,13 @@ enum AwbStatusEnum: string
                 'color_text' => '#82add8ff',
                 'description' => 'Shipment created in system',
             ],
-
+            self::CANCELLED => [
+                'label' => 'Cancelled',
+                'icon' => 'x-circle',
+                'color_bg' => '#ffebee',
+                'color_text' => '#b71c1c',
+                'description' => 'Shipment cancelled',
+            ],
             self::CHANGE_ROUTE => [
                 'label' => 'Change Route',
                 'icon' => 'file-plus',
@@ -545,62 +662,103 @@ enum AwbStatusEnum: string
                 'color_text' => '#82add8ff',
                 'description' => 'Shipment created in system',
             ],
-            self::PICKED_UP => [
-                'label' => 'Picked Up',
+            self::OUT_FOR_DELIVERY => [
+                'label' => 'Pending Scan',
+                'icon' => 'fa-hourglass-half',
+                'color_bg' => '#9e9e9e',
+                'color_text' => '#ffffff',
+                'description' => 'MAWB is out'
+            ],
+            self::SMS_SENT => [
+                'label' => 'SMS Sent',
                 'icon' => 'truck',
                 'color_bg' => '#e6f7ff',
                 'color_text' => '#007bff',
-                'description' => 'Shipment picked up',
+                'description' => 'Shipment is out with courier',
             ],
-
-            self::RECEIVED_OPERATION => [
-                'label' => 'Received in operation',
-                'icon' => 'check-circle',
-                'color_bg' => '#c8e6c9',
-                'color_text' => '#000000',
-                'description' => 'AWB has been scanned successfully'
+            self::SHIPPER_CANCELED => [
+                'label' => 'Cancelled by shipper',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment cancelled by shipper',
             ],
-            self::SHELVED => [
-                'label' => 'Shelved',
-                'icon' => 'archive',
-                'color_bg' => '#fffde7',
-                'color_text' => '#f57f17',
-                'description' => 'Shipment placed on shelf',
+            self::IN_TRANSIT => [
+                'label' => 'In Transit',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in transit',
             ],
-            self::WMS_SHELVE_ASSIGNED => [
-                'label' => 'Shelve Assigned',
-                'icon' => 'layers',
+            self::GATEWAY_INBOUND => [
+                'label' => 'Gateway inbound',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in gateway',
+            ],
+            self::GATEWAY_OUTBOUND => [
+                'label' => 'Gateway Outbound',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in gateway',
+            ],
+            self::HOLD_FOR_PICKUP => [
+                'label' => 'Hold For Pickup',
+                'icon' => 'truck',
+                'color_bg' => '#e6f7ff',
+                'color_text' => '#007bff',
+                'description' => 'shipment in gateway',
+            ],
+            self::HOLD => [
+                'label' => 'On Hold',
+                'icon' => 'pause-circle',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment placed on hold',
+            ],
+            self::RELEASE_HOLD => [
+                'label' => 'Release Hold',
+                'icon' => 'pause-circle',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#ef6c00',
+                'description' => 'Shipment placed on hold',
+            ],
+            self::HOLD_CUSTOMS => [
+                'label' => 'On Hold - Customs',
+                'icon' => 'shield',
                 'color_bg' => '#ede7f6',
                 'color_text' => '#4527a0',
-                'description' => 'Shipment assigned to a shelf',
+                'description' => 'Shipment on hold for customs clearance',
             ],
-            self::WMS_BIN_ASSIGNED => [
-                'label' => 'Bin Assigned',
-                'icon' => 'package',
-                'color_bg' => '#f3e5f5',
-                'color_text' => '#6a1b9a',
-                'description' => 'Shipment assigned to a bin',
+            self::RELEASE_CUSTOMS => [
+                'label' => 'Release Customs',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment on hold for customs clearance',
             ],
-            self::WMS_PICKED => [
-                'label' => 'Picked (WMS)',
-                'icon' => 'shopping-bag',
-                'color_bg' => '#e0f7fa',
-                'color_text' => '#006064',
-                'description' => 'Shipment picked from warehouse',
+            self::RETURN_IN => [
+                'label' => 'Return In',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment Returned in',
             ],
-            self::WMS_OUTBOUND => [
-                'label' => 'Outbound (WMS)',
-                'icon' => 'log-out',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#e65100',
-                'description' => 'Shipment marked for outbound',
+            self::RETURN_OUT => [
+                'label' => 'Return Out',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment Returned out',
             ],
-            self::RETRIEVED => [
-                'label' => 'Retrieved',
-                'icon' => 'arrow-up-circle',
-                'color_bg' => '#e1f5fe',
-                'color_text' => '#0277bd',
-                'description' => 'Shipment retrieved for dispatch',
+            self::RETURN_TO_SHIPPER => [
+                'label' => 'Return to shipper',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment Returned out',
             ],
             self::SCAN_RUNSHEET => [
                 'label' => 'Scan Runsheet',
@@ -616,47 +774,89 @@ enum AwbStatusEnum: string
                 'color_text' => '#2e7d32',
                 'description' => 'Shipment verification completed on runsheet',
             ],
-            self::OUT_FOR_DELIVERY => [
-                'label' => 'Pending Scan',
-                'icon' => 'fa-hourglass-half',
-                'color_bg' => '#9e9e9e',
-                'color_text' => '#ffffff',
-                'description' => 'MAWB is out'
-            ],
-            self::DELIVERED => [
-                'label' => 'Delivered',
-                'icon' => 'check-circle',
-                'color_bg' => '#e8f5e9',
-                'color_text' => '#2e7d32',
-                'description' => 'Shipment successfully delivered',
-            ],
-            self::ATTEMPTED => [
-                'label' => 'Attempted',
-                'icon' => 'alert-circle',
-                'color_bg' => '#fff4e5',
-                'color_text' => '#b36b00',
-                'description' => 'Delivery attempt made',
-            ],
-            self::ATTEMPTED_WRONG_ADDRESS => [
-                'label' => 'Attempted - Wrong Address',
-                'icon' => 'map-pin',
-                'color_bg' => '#fffde7',
-                'color_text' => '#f57f17',
-                'description' => 'Attempted delivery, wrong address provided',
-            ],
-            self::ATTEMPTED_UNREACHABLE => [
-                'label' => 'Attempted - Unreachable',
+            self::NOT_AVAILABLE_MOBILE_CLOSED => [
+                'label' => 'Mobile Closed',
                 'icon' => 'phone-off',
-                'color_bg' => '#fce4ec',
-                'color_text' => '#c2185b',
-                'description' => 'Attempted delivery, recipient unreachable',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient mobile phone is closed, could not contact',
             ],
-            self::ATTEMPTED_UNAVAILABLE => [
-                'label' => 'Attempted - Unavailable',
+            self::NOT_AVAILABLE_NO_ANSWER => [
+                'label' => 'No Answer',
+                'icon' => 'phone-missed',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient did not answer the call',
+            ],
+            self::NOT_AVAILABLE_RESCHEDULE => [
+                'label' => 'Reschedule',
+                'icon' => 'calendar',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Delivery attempt needs to be rescheduled',
+            ],
+            self::NOT_AVAILABLE_TRAVELING => [
+                'label' => 'Traveling',
+                'icon' => 'map-pin',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient is traveling, cannot receive shipment',
+            ],
+            self::NOT_AVAILABLE_WRONG_PHONE => [
+                'label' => 'Wrong Phone Number',
+                'icon' => 'phone-slash',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery could not be completed due to wrong phone number',
+            ],
+            self::NOT_AVAILABLE_WRONG_CUSTOMER => [
+                'label' => 'Wrong Customer',
                 'icon' => 'user-x',
-                'color_bg' => '#f3e5f5',
-                'color_text' => '#6a1b9a',
-                'description' => 'Attempted delivery, recipient unavailable',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery could not be completed due to wrong recipient',
+            ],
+            self::NOT_AVAILABLE_WRONG_CITY => [
+                'label' => 'Wrong City',
+                'icon' => 'map',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Shipment address does not match city',
+            ],
+            self::NOT_AVAILABLE_ROUTE => [
+                'label' => 'Route Issue',
+                'icon' => 'map-signs',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery route needs verification',
+            ],
+            self::NOT_AVAILABLE_OUT_OF_AREA => [
+                'label' => 'Out of Delivery Area',
+                'icon' => 'map-pin-off',
+                'color_bg' => '#ffcdd2',
+                'color_text' => '#c62828',
+                'description' => 'Delivery address is outside the service area',
+            ],
+            self::HOLD_PICKUP => [
+                'label' => 'Hold for Pickup',
+                'icon' => 'archive',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Shipment is held for pickup by recipient',
+            ],
+            self::UPDATED_DIMENSIONS => [
+                'label' => 'Updated Dimensions',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
+            ],
+            self::UPDATED_WEIGHT => [
+                'label' => 'Updated Weight',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#82add8ff',
+                'description' => 'Shipment created in system',
             ],
             self::REFUSED => [
                 'label' => 'Refused',
@@ -665,111 +865,44 @@ enum AwbStatusEnum: string
                 'color_text' => '#b71c1c',
                 'description' => 'Recipient refused the shipment',
             ],
-            self::REFUSED_WRONG_PACKAGE => [
-                'label' => 'Refused - Wrong Package',
-                'icon' => 'package-x',
+
+            // NOT PICKED UP STATUSES
+            self::NOT_PICKED_UP_RESCHEDULE => [
+                'label' => 'Reschedule Pickup',
+                'icon' => 'calendar',
                 'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Refused delivery due to wrong package',
+                'color_text' => '#fb8c00',
+                'description' => 'Pickup attempt needs to be rescheduled',
             ],
-            self::REFUSED_DELAYED => [
-                'label' => 'Refused - Delayed',
-                'icon' => 'clock',
-                'color_bg' => '#e3f2fd',
-                'color_text' => '#1565c0',
-                'description' => 'Refused delivery due to delay',
-            ],
-            self::REFUSED_DAMAGED => [
-                'label' => 'Refused - Damaged',
-                'icon' => 'alert-octagon',
-                'color_bg' => '#ffebee',
-                'color_text' => '#c62828',
-                'description' => 'Refused delivery due to damage',
-            ],
-            self::DEBRIEF_OUTSTANDING => [
-                'label' => 'Outstanding',
-                'icon' => 'alert-triangle',
-                'color_bg' => '#ffebee',   // light red background
-                'color_text' => '#c62828', // deep red text
-                'description' => 'Pending debrief review',
-            ],
-            self::CANCELLED => [
-                'label' => 'Cancelled',
-                'icon' => 'x-circle',
-                'color_bg' => '#ffebee',
-                'color_text' => '#b71c1c',
-                'description' => 'Shipment cancelled',
-            ],
-            self::HOLD => [
-                'label' => 'On Hold',
-                'icon' => 'pause-circle',
+            self::NOT_PICKED_UP_NO_ANSWER => [
+                'label' => 'No Answer',
+                'icon' => 'phone-missed',
                 'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment placed on hold',
+                'color_text' => '#fb8c00',
+                'description' => 'Recipient did not answer during pickup attempt',
+            ],
+            self::NOT_PICKED_UP_ADDRESS_CHANGED => [
+                'label' => 'Address Changed',
+                'icon' => 'map-pin',
+                'color_bg' => '#fff3e0',
+                'color_text' => '#fb8c00',
+                'description' => 'Pickup could not be completed due to address change',
             ],
 
-            self::HOLD_PAYMENT_ISSUE => [
-                'label' => 'On Hold - Payment Issue',
-                'icon' => 'credit-card',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment on hold due to payment issue',
-            ],
-            self::HOLD_DOCUMENTS => [
-                'label' => 'On Hold - Missing Documents',
-                'icon' => 'file-text',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment on hold pending documents',
-            ],
-            self::HOLD_CUSTOMS => [
-                'label' => 'On Hold - Customs',
-                'icon' => 'shield',
-                'color_bg' => '#ede7f6',
-                'color_text' => '#4527a0',
-                'description' => 'Shipment on hold for customs clearance',
-            ],
-            self::CUSTOMS_HOLD => [
-                'label' => 'Customs Hold',
-                'icon' => 'shield',
-                'color_bg' => '#ede7f6',
-                'color_text' => '#4527a0',
-                'description' => 'Shipment held in customs',
-            ],
-            self::DAMAGED => [
-                'label' => 'Damaged',
-                'icon' => 'alert-octagon',
-                'color_bg' => '#ffebee',
+            // REFUSED STATUSES
+            self::REFUSED_OPEN_SHIPMENT => [
+                'label' => 'Refused to Open Shipment',
+                'icon' => 'x-circle',
+                'color_bg' => '#ffcdd2',
                 'color_text' => '#c62828',
-                'description' => 'Shipment damaged',
+                'description' => 'Recipient refused to open the shipment before delivery',
             ],
-            self::STOLEN => [
-                'label' => 'Stolen',
-                'icon' => 'lock',
-                'color_bg' => '#fbe9e7',
-                'color_text' => '#bf360c',
-                'description' => 'Shipment reported stolen',
-            ],
-            self::LOST => [
-                'label' => 'Lost',
-                'icon' => 'help-circle',
-                'color_bg' => '#f3e5f5',
-                'color_text' => '#6a1b9a',
-                'description' => 'Shipment lost in transit',
-            ],
-            self::WEATHER => [
-                'label' => 'Weather Delay',
-                'icon' => 'cloud-rain',
-                'color_bg' => '#e1f5fe',
-                'color_text' => '#0277bd',
-                'description' => 'Shipment delayed due to weather',
-            ],
-            self::SECURITY => [
-                'label' => 'Security Issue',
-                'icon' => 'shield-alert',
-                'color_bg' => '#ffebee',
+            self::REFUSED_NO_LONGER_NEEDED => [
+                'label' => 'Refused – No Longer Needed',
+                'icon' => 'x-circle',
+                'color_bg' => '#ffcdd2',
                 'color_text' => '#c62828',
-                'description' => 'Shipment held for security reasons',
+                'description' => 'Recipient refused shipment, no longer needed',
             ],
             self::OVERAGE => [
                 'label' => 'Overage',
@@ -779,34 +912,48 @@ enum AwbStatusEnum: string
                 'description' => 'Extra shipment found',
             ],
 
-            self::CANCELLED_CUSTOMER_REQUEST => [
-                'label' => 'Cancelled - Customer Request',
-                'icon' => 'user-x',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment cancelled upon customer request',
+
+
+            self::ATTEMPTED => [
+                'label' => 'Attempted',
+                'icon' => 'alert-circle',
+                'color_bg' => '#fff4e5',
+                'color_text' => '#b36b00',
+                'description' => 'Delivery attempt made',
             ],
-            self::CANCELLED_OPERATIONAL_ISSUE => [
-                'label' => 'Cancelled - Operational Issue',
-                'icon' => 'alert-triangle',
+
+            self::REFUSED_DELAYED => [
+                'label' => 'Refused - Delayed',
+                'icon' => 'clock',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Refused delivery due to delay',
+            ],
+
+            self::HOLD_CUSTOMS => [
+                'label' => 'On Hold - Customs',
+                'icon' => 'shield',
+                'color_bg' => '#ede7f6',
+                'color_text' => '#4527a0',
+                'description' => 'Shipment on hold for customs clearance',
+            ],
+
+            self::DAMAGED => [
+                'label' => 'Damaged',
+                'icon' => 'alert-octagon',
                 'color_bg' => '#ffebee',
                 'color_text' => '#c62828',
-                'description' => 'Shipment cancelled due to operational issue',
+                'description' => 'Shipment damaged',
             ],
-            self::MISSING_SHELVE => [
-                'label' => 'Missing',
+
+            self::LOST => [
+                'label' => 'Lost',
                 'icon' => 'help-circle',
-                'color_bg' => '#ffebee',
-                'color_text' => '#c62828',
-                'description' => 'Shipment missing from shelf',
+                'color_bg' => '#f3e5f5',
+                'color_text' => '#6a1b9a',
+                'description' => 'Shipment lost in transit',
             ],
-            self::WMS_MISSING_SHELVE => [
-                'label' => 'WMS Missing',
-                'icon' => 'alert-triangle',
-                'color_bg' => '#fff8e1',
-                'color_text' => '#ef6c00',
-                'description' => 'Shipment missing in WMS',
-            ],
+
             self::CLOSED => [
                 'label' => 'Closed',
                 'icon' => 'lock',
@@ -814,21 +961,7 @@ enum AwbStatusEnum: string
                 'color_text' => '#424242',
                 'description' => 'Shipment closed',
             ],
-            self::OPERATIONS_QC => [
-                'label' => 'Operations QC',
-                'icon' => 'check',
-                'color_bg' => '#e8f5e9',
-                'color_text' => '#1b5e20',
-                'description' => 'Quality check completed',
-            ],
 
-            self::ARRIVED => [
-                'label' => 'Received in hub',
-                'icon' => 'check-circle',
-                'color_bg' => '#c8e6c9',
-                'color_text' => '#000000',
-                'description' => 'AWB has been scanned successfully'
-            ],
 
             self::CRN_IN => [
                 'label' => 'CRN In',
