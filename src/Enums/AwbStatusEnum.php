@@ -55,7 +55,7 @@ enum AwbStatusEnum: string
     case NOT_AVAILABLE_ROUTE = 'ATLR'; //to be checked by hovig
     case NOT_AVAILABLE_OUT_OF_AREA = 'ATOA';
 
-    case HOLD_PICKUP = 'ATLC';
+    case HOLD_PICKUP = 'ATHP';
 
     case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
     case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
