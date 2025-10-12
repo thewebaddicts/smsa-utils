@@ -78,6 +78,96 @@ enum AwbStatusEnum: string
     case LOST = 'EXLO';
 
 
+        //old statuses:
+
+    case AF = 'AF';
+    case CC = 'CC';
+    case CR = 'CR';
+    case DE = 'DE';
+    case DEX03 = 'DEX03';
+    case DEX08 = 'DEX08';
+    case DEX14 = 'DEX14';
+    case DEX29 = 'DEX29';
+    case DEX41 = 'DEX41';
+    case DEX42 = 'DEX42';
+    case DEX93 = 'DEX93';
+    case DF = 'DF';
+    case DL = 'DL';
+    case HIP = 'HIP';
+    case HOP = 'HOP';
+    case IC = 'IC';
+    case OD = 'OD';
+    case PU = 'PU';
+    case RTIN = 'RTIN';
+    case RTOPS = 'RTOPS';
+    case SOP = 'SOP';
+    case ST44 = 'ST44';
+    case ST68 = 'ST68';
+    case ST77 = 'ST77';
+    case UTI = 'UTI';
+    case UTLX = 'UTLX';
+    case CD = 'CD';
+    case ST41 = 'ST41';
+    case ST64 = 'ST64';
+    case DEX8X = 'DEX8X';
+    case DEX09 = 'DEX09';
+    case BA = 'BA';
+    case CA = 'CA';
+    case FD = 'FD';
+    case NH = 'NH';
+    case MS = 'MS';
+    case OH = 'OH';
+    case RD = 'RD';
+    case WC = 'WC';
+    case PRC = 'PRC';
+    case TN = 'TN';
+    case POD = 'POD';
+    case RPMX = 'RPMX';
+    case DEX03_1 = 'DEX03-1';
+    case DEX03_2 = 'DEX03-2';
+    case DEX03_3 = 'DEX03-3';
+    case DEX03_4 = 'DEX03-4';
+    case DEX03_7 = 'DEX03-7';
+    case DEX03_8 = 'DEX03-8';
+    case DEX03_9 = 'DEX03-9';
+    case DEX03_10 = 'DEX03-10';
+    case DEX03_12 = 'DEX03-12';
+    case DEX03_13 = 'DEX03-13';
+    case DEX03_14 = 'DEX03-14';
+    case DEX03_15 = 'DEX03-15';
+    case DEX03_16 = 'DEX03-16';
+    case DEX07 = 'DEX07';
+    case DEX07_3 = 'DEX07-3';
+    case DEX07_4 = 'DEX07-4';
+    case DEX07_5 = 'DEX07-5';
+    case DEX07_6 = 'DEX07-6';
+    case DEX07_7 = 'DEX07-7';
+    case DEX07_8 = 'DEX07-8';
+    case DEX93_1 = 'DEX93-1';
+    case DEX93_2 = 'DEX93-2';
+    case DEX93_3 = 'DEX93-3';
+    case DEX93_4 = 'DEX93-4';
+    case DEX93_5 = 'DEX93-5';
+    case RTS = 'RTS';
+    case RTI = 'RTI';
+    case ST50 = 'ST50';
+    case Data = 'Data';
+    case RTO = 'RTO';
+    case SMS = 'SMS';
+    case DEX17 = 'DEX17';
+    case PUX43 = 'PUX43';
+    case ADV = 'ADV';
+    case PUX_17 = 'PUX-17';
+    case PUX03_1 = 'PUX03-1';
+    case PUX3 = 'PUX3';
+    case ST60_10 = 'ST60-10';
+    case ST60_5 = 'ST60-5';
+    case ST60_6 = 'ST60-6';
+    case BTRO = 'BTRO';
+    case BTRI = 'BTRI';
+
+
+
 
     public function info(): array
     {
@@ -397,7 +487,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#fb8c00',
                 'description' => 'Shipment is held for pickup by recipient',
             ],
-
             self::ATTEMPTED => [
                 'label' => 'Attempted',
                 'icon' => 'alert-circle',
@@ -412,8 +501,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#b71c1c',
                 'description' => 'Recipient refused the shipment',
             ],
-
-            // NOT PICKED UP STATUSES
             self::NOT_PICKED_UP_RESCHEDULE => [
                 'label' => 'Reschedule Pickup',
                 'icon' => 'calendar',
@@ -435,7 +522,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#fb8c00',
                 'description' => 'Pickup could not be completed due to address change',
             ],
-
             self::REFUSED_OPEN_SHIPMENT => [
                 'label' => 'Refused to Open Shipment',
                 'icon' => 'x-circle',
@@ -457,7 +543,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#bf360c',
                 'description' => 'Extra shipment found',
             ],
-
             self::DAMAGED => [
                 'label' => 'Damaged',
                 'icon' => 'alert-octagon',
@@ -465,7 +550,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#c62828',
                 'description' => 'Shipment damaged',
             ],
-
             self::REFUSED_DELAYED => [
                 'label' => 'Refused - Delayed',
                 'icon' => 'clock',
@@ -473,7 +557,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#1565c0',
                 'description' => 'Refused delivery due to delay',
             ],
-
             self::CANCELLED => [
                 'label' => 'Cancelled',
                 'icon' => 'x-circle',
@@ -481,8 +564,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#b71c1c',
                 'description' => 'Shipment cancelled',
             ],
-
-
             self::LOST => [
                 'label' => 'Lost',
                 'icon' => 'help-circle',
@@ -490,9 +571,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#6a1b9a',
                 'description' => 'Shipment lost in transit',
             ],
-
-
-
             self::CLOSED => [
                 'label' => 'Closed',
                 'icon' => 'lock',
@@ -500,7 +578,6 @@ enum AwbStatusEnum: string
                 'color_text' => '#424242',
                 'description' => 'Shipment closed',
             ],
-
             self::CRN_IN => [
                 'label' => 'CRN In',
                 'icon' => 'check-circle',
@@ -514,7 +591,95 @@ enum AwbStatusEnum: string
                 'color_bg' => '#c8e6c9',
                 'color_text' => '#000000',
                 'description' => 'AWB has been scanned successfully'
-            ]
+            ],
+
+
+            //old statuses:
+            self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility'],
+            self::CC => ['label' => 'CC', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Processing for Consignee Collection'],
+            self::CR => ['label' => 'CR', 'icon' => 'file-check', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Customs Released'],
+            self::DE => ['label' => 'DE', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delivery Exception'],
+            self::DEX03 => ['label' => 'DEX03', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Has Undeliverable Address'],
+            self::DEX08 => ['label' => 'DEX08', 'icon' => 'clock', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Delivery Attempted - Customer Not Available/Delivery Rescheduled'],
+            self::DEX14 => ['label' => 'DEX14', 'icon' => 'rotate-cw', 'color_bg' => '#f3e5f5', 'color_text' => '#6a1b9a', 'description' => 'Shipment Is Under Return Process To SMSA Facility'],
+            self::DEX29 => ['label' => 'DEX29', 'icon' => 'corner-up-right', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Shipmet Is Being Rerouted To New Address'],
+            self::DEX41 => ['label' => 'DEX41', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At SMSA Facility'],
+            self::DEX42 => ['label' => 'DEX42', 'icon' => 'calendar', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Customer Address Is Closed for Holiday/Weekend - Delivery Will Be Attempted On Next Business Day'],
+            self::DEX93 => ['label' => 'DEX93', 'icon' => 'dollar-sign', 'color_bg' => '#ffebee', 'color_text' => '#c62828', 'description' => 'Attempted Delivery - Unable To Collect Charges From The Customer'],
+            self::DF => ['label' => 'DF', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Departed Facility'],
+            self::DL => ['label' => 'DL', 'icon' => 'check-circle', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Delivered'],
+            self::HIP => ['label' => 'HIP', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Received at SMSA Sorting Facility'],
+            self::HOP => ['label' => 'HOP', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed SMSA Sorting Facility'],
+            self::IC => ['label' => 'IC', 'icon' => 'globe', 'color_bg' => '#f1f8e9', 'color_text' => '#33691e', 'description' => 'Shipment Arrived at Destination Country - Under clearance process'],
+            self::OD => ['label' => 'OD', 'icon' => 'map-pin', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'Out for Delivery'],
+            self::PU => ['label' => 'PU', 'icon' => 'package', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Picked up from the shipper. Delivery is estimated within 10 days from the pick up day.'],
+            self::RTIN => ['label' => 'RTIN', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Awaiting Collection at Retail Center'],
+            self::RTOPS => ['label' => 'RTOPS', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Collected from Retail'],
+            self::SOP => ['label' => 'SOP', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed SMSA Origin Facility'],
+            self::ST44 => ['label' => 'ST44', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At SMSA Facility'],
+            self::ST68 => ['label' => 'ST68', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'In Transit'],
+            self::ST77 => ['label' => 'ST77', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed Origin Country'],
+            self::UTI => ['label' => 'UTI', 'icon' => 'alert-circle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment On Hold - Attempting For Customer Address Validation'],
+            self::UTLX => ['label' => 'UTLX', 'icon' => 'phone', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'At SMSA Facility for calling'],
+            self::CD => ['label' => 'CD', 'icon' => 'file-alert', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Clearance Delay'],
+            self::ST41 => ['label' => 'ST41', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At SMSA Retail Center'],
+            self::ST64 => ['label' => 'ST64', 'icon' => 'file-check', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Shipment Is Under Processign For Customer Broker Clearance'],
+            self::DEX8X => ['label' => 'DEX8X', 'icon' => 'clock', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Recipient not available at residence'],
+            self::DEX09 => ['label' => 'DEX09', 'icon' => 'check-circle', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Delivered'],
+            self::BA => ['label' => 'BA', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Undeliverable Address'],
+            self::CA => ['label' => 'CA', 'icon' => 'lock', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Closed on Arrival'],
+            self::FD => ['label' => 'FD', 'icon' => 'corner-right-up', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Forwarded for delivery'],
+            self::NH => ['label' => 'NH', 'icon' => 'clock', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Recipient not available at residence'],
+            self::MS => ['label' => 'MS', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Miss sort at facility'],
+            self::OH => ['label' => 'OH', 'icon' => 'alert-circle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'On hold for customs'],
+            self::RD => ['label' => 'RD', 'icon' => 'refresh-cw', 'color_bg' => '#f3e5f5', 'color_text' => '#6a1b9a', 'description' => 'Rerouted Delivery'],
+            self::WC => ['label' => 'WC', 'icon' => 'calendar', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Delivery Rescheduled'],
+            self::PRC => ['label' => 'PRC', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Processing for Return to Customer'],
+            self::TN => ['label' => 'TN', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Transit Notification'],
+            self::POD => ['label' => 'POD', 'icon' => 'check-circle', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Proof of Delivery'],
+            self::RPMX => ['label' => 'RPMX', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Return Processed to SMSA Facility'],
+            self::DEX03_1 => ['label' => 'DEX03-1', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Correction Needed'],
+            self::DEX03_2 => ['label' => 'DEX03-2', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Not Available'],
+            self::DEX03_3 => ['label' => 'DEX03-3', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Wrong Address Provided'],
+            self::DEX03_4 => ['label' => 'DEX03-4', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Incomplete Address'],
+            self::DEX03_7 => ['label' => 'DEX03-7', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Incorrect Postal Code'],
+            self::DEX03_8 => ['label' => 'DEX03-8', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Requires Verification'],
+            self::DEX03_9 => ['label' => 'DEX03-9', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Recipient Unreachable'],
+            self::DEX03_10 => ['label' => 'DEX03-10', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Not Found'],
+            self::DEX03_12 => ['label' => 'DEX03-12', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Refused Delivery'],
+            self::DEX03_13 => ['label' => 'DEX03-13', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Returned to Origin'],
+            self::DEX03_14 => ['label' => 'DEX03-14', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Correction Complete'],
+            self::DEX03_15 => ['label' => 'DEX03-15', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delivery Attempt Failed'],
+            self::DEX03_16 => ['label' => 'DEX03-16', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Not Responding'],
+            self::DEX07 => ['label' => 'DEX07', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Delivery In Progress'],
+            self::DEX07_3 => ['label' => 'DEX07-3', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment In Transit'],
+            self::DEX07_4 => ['label' => 'DEX07-4', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment At Hub'],
+            self::DEX07_5 => ['label' => 'DEX07-5', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed Hub'],
+            self::DEX07_6 => ['label' => 'DEX07-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Hub'],
+            self::DEX07_7 => ['label' => 'DEX07-7', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Processing At Facility'],
+            self::DEX07_8 => ['label' => 'DEX07-8', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Ready For Delivery'],
+            self::DEX93_1 => ['label' => 'DEX93-1', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Unable to Deliver'],
+            self::DEX93_2 => ['label' => 'DEX93-2', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Attempted Delivery'],
+            self::DEX93_3 => ['label' => 'DEX93-3', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delivery Postponed'],
+            self::DEX93_4 => ['label' => 'DEX93-4', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Unavailable'],
+            self::DEX93_5 => ['label' => 'DEX93-5', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Recipient Refused Delivery'],
+            self::RTS => ['label' => 'RTS', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Returned To Shipper'],
+            self::RTI => ['label' => 'RTI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Inventory'],
+            self::ST50 => ['label' => 'ST50', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At Facility'],
+            self::Data => ['label' => 'Data', 'icon' => 'database', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'Data Entry Process'],
+            self::RTO => ['label' => 'RTO', 'icon' => 'corner-up-left', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Origin'],
+            self::SMS => ['label' => 'SMS', 'icon' => 'message-circle', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'SMS Sent to Customer'],
+            self::DEX17 => ['label' => 'DEX17', 'icon' => 'file-alert', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Damaged'],
+            self::PUX43 => ['label' => 'PUX43', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Scheduled'],
+            self::ADV => ['label' => 'ADV', 'icon' => 'alert-circle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Advice Given'],
+            self::PUX_17 => ['label' => 'PUX-17', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Processed'],
+            self::PUX03_1 => ['label' => 'PUX03-1', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Attempted'],
+            self::PUX3 => ['label' => 'PUX3', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Confirmed'],
+            self::ST60_10 => ['label' => 'ST60-10', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment In Transit'],
+            self::ST60_5 => ['label' => 'ST60-5', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Processing'],
+            self::ST60_6 => ['label' => 'ST60-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Destination Hub'],
+            self::BTRO => ['label' => 'BTRO', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Origin'],
+            self::BTRI => ['label' => 'BTRI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Inventory'],
         };
     }
 
@@ -976,7 +1141,93 @@ enum AwbStatusEnum: string
                 'color_bg' => '#c8e6c9',
                 'color_text' => '#000000',
                 'description' => 'AWB has been scanned successfully'
-            ]
+            ],
+
+            self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility'],
+            self::CC => ['label' => 'CC', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Processing for Consignee Collection'],
+            self::CR => ['label' => 'CR', 'icon' => 'file-check', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Customs Released'],
+            self::DE => ['label' => 'DE', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delivery Exception'],
+            self::DEX03 => ['label' => 'DEX03', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Has Undeliverable Address'],
+            self::DEX08 => ['label' => 'DEX08', 'icon' => 'clock', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Delivery Attempted - Customer Not Available/Delivery Rescheduled'],
+            self::DEX14 => ['label' => 'DEX14', 'icon' => 'rotate-cw', 'color_bg' => '#f3e5f5', 'color_text' => '#6a1b9a', 'description' => 'Shipment Is Under Return Process To SMSA Facility'],
+            self::DEX29 => ['label' => 'DEX29', 'icon' => 'corner-up-right', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Shipmet Is Being Rerouted To New Address'],
+            self::DEX41 => ['label' => 'DEX41', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At SMSA Facility'],
+            self::DEX42 => ['label' => 'DEX42', 'icon' => 'calendar', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Customer Address Is Closed for Holiday/Weekend - Delivery Will Be Attempted On Next Business Day'],
+            self::DEX93 => ['label' => 'DEX93', 'icon' => 'dollar-sign', 'color_bg' => '#ffebee', 'color_text' => '#c62828', 'description' => 'Attempted Delivery - Unable To Collect Charges From The Customer'],
+            self::DF => ['label' => 'DF', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Departed Facility'],
+            self::DL => ['label' => 'DL', 'icon' => 'check-circle', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Delivered'],
+            self::HIP => ['label' => 'HIP', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Received at SMSA Sorting Facility'],
+            self::HOP => ['label' => 'HOP', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed SMSA Sorting Facility'],
+            self::IC => ['label' => 'IC', 'icon' => 'globe', 'color_bg' => '#f1f8e9', 'color_text' => '#33691e', 'description' => 'Shipment Arrived at Destination Country - Under clearance process'],
+            self::OD => ['label' => 'OD', 'icon' => 'map-pin', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'Out for Delivery'],
+            self::PU => ['label' => 'PU', 'icon' => 'package', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Picked up from the shipper. Delivery is estimated within 10 days from the pick up day.'],
+            self::RTIN => ['label' => 'RTIN', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Awaiting Collection at Retail Center'],
+            self::RTOPS => ['label' => 'RTOPS', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Collected from Retail'],
+            self::SOP => ['label' => 'SOP', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed SMSA Origin Facility'],
+            self::ST44 => ['label' => 'ST44', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At SMSA Facility'],
+            self::ST68 => ['label' => 'ST68', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'In Transit'],
+            self::ST77 => ['label' => 'ST77', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed Origin Country'],
+            self::UTI => ['label' => 'UTI', 'icon' => 'alert-circle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment On Hold - Attempting For Customer Address Validation'],
+            self::UTLX => ['label' => 'UTLX', 'icon' => 'phone', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'At SMSA Facility for calling'],
+            self::CD => ['label' => 'CD', 'icon' => 'file-alert', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Clearance Delay'],
+            self::ST41 => ['label' => 'ST41', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At SMSA Retail Center'],
+            self::ST64 => ['label' => 'ST64', 'icon' => 'file-check', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Shipment Is Under Processign For Customer Broker Clearance'],
+            self::DEX8X => ['label' => 'DEX8X', 'icon' => 'clock', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Recipient not available at residence'],
+            self::DEX09 => ['label' => 'DEX09', 'icon' => 'check-circle', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Delivered'],
+            self::BA => ['label' => 'BA', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Undeliverable Address'],
+            self::CA => ['label' => 'CA', 'icon' => 'lock', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Closed on Arrival'],
+            self::FD => ['label' => 'FD', 'icon' => 'corner-right-up', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Forwarded for delivery'],
+            self::NH => ['label' => 'NH', 'icon' => 'clock', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Recipient not available at residence'],
+            self::MS => ['label' => 'MS', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Miss sort at facility'],
+            self::OH => ['label' => 'OH', 'icon' => 'alert-circle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'On hold for customs'],
+            self::RD => ['label' => 'RD', 'icon' => 'refresh-cw', 'color_bg' => '#f3e5f5', 'color_text' => '#6a1b9a', 'description' => 'Rerouted Delivery'],
+            self::WC => ['label' => 'WC', 'icon' => 'calendar', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'Delivery Rescheduled'],
+            self::PRC => ['label' => 'PRC', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Processing for Return to Customer'],
+            self::TN => ['label' => 'TN', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Transit Notification'],
+            self::POD => ['label' => 'POD', 'icon' => 'check-circle', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Proof of Delivery'],
+            self::RPMX => ['label' => 'RPMX', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Return Processed to SMSA Facility'],
+            self::DEX03_1 => ['label' => 'DEX03-1', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Correction Needed'],
+            self::DEX03_2 => ['label' => 'DEX03-2', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Not Available'],
+            self::DEX03_3 => ['label' => 'DEX03-3', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Wrong Address Provided'],
+            self::DEX03_4 => ['label' => 'DEX03-4', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Incomplete Address'],
+            self::DEX03_7 => ['label' => 'DEX03-7', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Incorrect Postal Code'],
+            self::DEX03_8 => ['label' => 'DEX03-8', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Requires Verification'],
+            self::DEX03_9 => ['label' => 'DEX03-9', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Recipient Unreachable'],
+            self::DEX03_10 => ['label' => 'DEX03-10', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Not Found'],
+            self::DEX03_12 => ['label' => 'DEX03-12', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Refused Delivery'],
+            self::DEX03_13 => ['label' => 'DEX03-13', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Returned to Origin'],
+            self::DEX03_14 => ['label' => 'DEX03-14', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Address Correction Complete'],
+            self::DEX03_15 => ['label' => 'DEX03-15', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delivery Attempt Failed'],
+            self::DEX03_16 => ['label' => 'DEX03-16', 'icon' => 'map-pin-off', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Not Responding'],
+            self::DEX07 => ['label' => 'DEX07', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Delivery In Progress'],
+            self::DEX07_3 => ['label' => 'DEX07-3', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment In Transit'],
+            self::DEX07_4 => ['label' => 'DEX07-4', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment At Hub'],
+            self::DEX07_5 => ['label' => 'DEX07-5', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Departed Hub'],
+            self::DEX07_6 => ['label' => 'DEX07-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Hub'],
+            self::DEX07_7 => ['label' => 'DEX07-7', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Processing At Facility'],
+            self::DEX07_8 => ['label' => 'DEX07-8', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Ready For Delivery'],
+            self::DEX93_1 => ['label' => 'DEX93-1', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Unable to Deliver'],
+            self::DEX93_2 => ['label' => 'DEX93-2', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Attempted Delivery'],
+            self::DEX93_3 => ['label' => 'DEX93-3', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delivery Postponed'],
+            self::DEX93_4 => ['label' => 'DEX93-4', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Customer Unavailable'],
+            self::DEX93_5 => ['label' => 'DEX93-5', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Recipient Refused Delivery'],
+            self::RTS => ['label' => 'RTS', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Returned To Shipper'],
+            self::RTI => ['label' => 'RTI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Inventory'],
+            self::ST50 => ['label' => 'ST50', 'icon' => 'home', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'At Facility'],
+            self::Data => ['label' => 'Data', 'icon' => 'database', 'color_bg' => '#e0f7fa', 'color_text' => '#006064', 'description' => 'Data Entry Process'],
+            self::RTO => ['label' => 'RTO', 'icon' => 'corner-up-left', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Origin'],
+            self::SMS => ['label' => 'SMS', 'icon' => 'message-circle', 'color_bg' => '#fffde7', 'color_text' => '#f9a825', 'description' => 'SMS Sent to Customer'],
+            self::DEX17 => ['label' => 'DEX17', 'icon' => 'file-alert', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Shipment Damaged'],
+            self::PUX43 => ['label' => 'PUX43', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Scheduled'],
+            self::ADV => ['label' => 'ADV', 'icon' => 'alert-circle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Advice Given'],
+            self::PUX_17 => ['label' => 'PUX-17', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Processed'],
+            self::PUX03_1 => ['label' => 'PUX03-1', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Attempted'],
+            self::PUX3 => ['label' => 'PUX3', 'icon' => 'package', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Pickup Confirmed'],
+            self::ST60_10 => ['label' => 'ST60-10', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment In Transit'],
+            self::ST60_5 => ['label' => 'ST60-5', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Processing'],
+            self::ST60_6 => ['label' => 'ST60-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Destination Hub'],
+            self::BTRO => ['label' => 'BTRO', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Origin'],
+            self::BTRI => ['label' => 'BTRI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Inventory'],
         };
     }
 }
