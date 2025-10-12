@@ -460,7 +460,7 @@ if (!function_exists('send_client_otp')) {
         $clientId = env('INFINITO_CLIENT_ID');
         $clientPassword = env('INFINITO_CLIENT_PASSWORD');
         $senderId = env('INFINITO_SENDER_ID');
-        $message = "Your OTP is {$otp}";
+        $message = "This is an OTP code {$otp}";
 
         Log::info("Starting OTP send", [
             'phone' => $phone,
