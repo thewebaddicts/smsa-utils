@@ -36,7 +36,7 @@ enum AwbStatusEnum: string
     case HOLD = 'SHOH'; //was DEX
     case RELEASE_HOLD = 'SHRL';
     case HOLD_CUSTOMS = 'SHCH'; //was DEX
-    case RELEASE_CUSTOMS = 'SHRC';
+    case RELEASE_CUSTOMS = 'SHCR';
     case RETURN_IN = 'SHRI';
     case RETURN_OUT = 'SHRO';
     case RETURN_TO_SHIPPER = 'SHRS';
