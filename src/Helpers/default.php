@@ -318,6 +318,19 @@ if (!function_exists('find_route_by_address')) {
     function find_route_by_address(array $address): ?int
     {
         // First, try to find route by city
+
+        $routeByCity = DB::table('cities')
+        ->where('old_sys_mapping', $address['city'])
+        ->where('province', $address['province'])
+        ->where('country', $address['country'])
+        ->whereNull('deleted_at')
+        ->select('route_id')
+        ->first();
+
+        if ($routeByCity) {
+            return $routeByCity->route_id;
+        }
+
         $routeByCity = DB::table('cities')
             ->where('code', $address['city'])
             ->where('province', $address['province'])
