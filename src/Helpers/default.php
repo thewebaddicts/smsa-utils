@@ -319,7 +319,9 @@ if (!function_exists('find_route_by_address')) {
     {
         // First, try to find route by city
         $routeByCity = DB::table('cities')
-            ->where('name', $address['city'])
+            ->where('code', $address['city'])
+            ->where('province', $address['province'])
+            ->where('country', $address['country'])
             ->whereNull('deleted_at')
             ->select('route_id')
             ->first();
@@ -449,7 +451,7 @@ if (!function_exists('send_push_notification')) {
     function send_push_notification($titles, $messages, $conditions = [], $data = [], $image_url = null, $playerID = null)
     {
         $config = config('omnipush.onesignal');
-        (new OneSignalController($config['data']))->sendPush($titles,$messages,$conditions,$data, $image_url, $playerID);
+        (new OneSignalController($config['data']))->sendPush($titles, $messages, $conditions, $data, $image_url, $playerID);
     }
 }
 
