@@ -214,7 +214,7 @@ if (!function_exists('query_options_response')) {
             $baseQuery->orderBy($columnValue, 'asc');
         }
 
-        return $baseQuery->paginate(20)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator) {
+        return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator) {
 
             $extraFields = collect($extraFields)->map(function ($fieldName) use ($item, $separator) {
 
