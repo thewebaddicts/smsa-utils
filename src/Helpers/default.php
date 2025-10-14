@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 
+
 function send_otp_by_email($email, $otp)
 {
-    try {
+    // try {
         $appName = config('app.name');
 
         $htmlContent = "
@@ -24,25 +25,19 @@ function send_otp_by_email($email, $otp)
                             <p style='font-size: 16px;'>Your OTP is:</p>
                             <h1 style='text-align: center; background: #007bff; color: white; padding: 10px; border-radius: 6px;'>$otp</h1>
                             <p style='font-size: 14px; color: #555;'>This code will expire shortly. Please do not share it with anyone.</p>
-                            <p style='font-size: 14px; color: #777;'>Thank you,<br>$appName Team</p>
+             
                         </div>
                     </body>
                 </html>
             ";
 
-        Mail::send([], [], function ($message) use ($email, $htmlContent) {
+        Mail::html($htmlContent, function ($message) use ($email) {
             $message->to($email)
-                ->subject('Your OTP Code')
-                ->setBody($htmlContent, 'text/html');
+                ->subject('Your OTP Code');
         });
 
         return true;
-    } catch (\Exception $e) {
-        Log::error('Failed to send OTP email: ' . $e->getMessage());
-        return false;
     }
-}
-
 
 
 if (!function_exists('unique_rule')) {
