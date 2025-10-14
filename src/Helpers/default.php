@@ -352,7 +352,7 @@ if (!function_exists('find_route_by_address')) {
 
         $routeByCity = DB::table('cities')
             ->where('old_sys_mapping', $address['city'])
-            ->where('province', $address['province'])
+            // ->where('province', $address['province'])
             ->where('country', $address['country'])
             ->whereNull('deleted_at')
             ->select('route_id')
