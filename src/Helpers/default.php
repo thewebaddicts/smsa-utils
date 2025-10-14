@@ -20,7 +20,7 @@ function send_otp_by_email($email, $otp)
                 <html>
                     <body style='font-family: Arial, sans-serif; background-color: #f8f8f8; padding: 20px;'>
                         <div style='max-width: 500px; margin: auto; background: #fff; border-radius: 8px; padding: 20px;'>
-                            <h2 style='color: #333;'>$appName</h2>
+                            <h2 style='color: #333;'>SMSA EXPRESS</h2>
                             <p style='font-size: 16px;'>Hello,</p>
                             <p style='font-size: 16px;'>Your OTP is:</p>
                             <h1 style='text-align: center; background: #007bff; color: white; padding: 10px; border-radius: 6px;'>$otp</h1>
