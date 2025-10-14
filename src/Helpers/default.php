@@ -7,6 +7,42 @@ use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
 use twa\smsautils\Http\Controllers\OneSignalController;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+
+
+function send_otp_by_email($email, $otp)
+{
+    try {
+        $appName = config('app.name');
+
+        $htmlContent = "
+                <html>
+                    <body style='font-family: Arial, sans-serif; background-color: #f8f8f8; padding: 20px;'>
+                        <div style='max-width: 500px; margin: auto; background: #fff; border-radius: 8px; padding: 20px;'>
+                            <h2 style='color: #333;'>$appName</h2>
+                            <p style='font-size: 16px;'>Hello,</p>
+                            <p style='font-size: 16px;'>Your OTP is:</p>
+                            <h1 style='text-align: center; background: #007bff; color: white; padding: 10px; border-radius: 6px;'>$otp</h1>
+                            <p style='font-size: 14px; color: #555;'>This code will expire shortly. Please do not share it with anyone.</p>
+                            <p style='font-size: 14px; color: #777;'>Thank you,<br>$appName Team</p>
+                        </div>
+                    </body>
+                </html>
+            ";
+
+        Mail::send([], [], function ($message) use ($email, $htmlContent) {
+            $message->to($email)
+                ->subject('Your OTP Code')
+                ->setBody($htmlContent, 'text/html');
+        });
+
+        return true;
+    } catch (\Exception $e) {
+        Log::error('Failed to send OTP email: ' . $e->getMessage());
+        return false;
+    }
+}
+
 
 
 if (!function_exists('unique_rule')) {
@@ -320,12 +356,12 @@ if (!function_exists('find_route_by_address')) {
         // First, try to find route by city
 
         $routeByCity = DB::table('cities')
-        ->where('old_sys_mapping', $address['city'])
-        ->where('province', $address['province'])
-        ->where('country', $address['country'])
-        ->whereNull('deleted_at')
-        ->select('route_id')
-        ->first();
+            ->where('old_sys_mapping', $address['city'])
+            ->where('province', $address['province'])
+            ->where('country', $address['country'])
+            ->whereNull('deleted_at')
+            ->select('route_id')
+            ->first();
 
         if ($routeByCity) {
             return $routeByCity->route_id;
