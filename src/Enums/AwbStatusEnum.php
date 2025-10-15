@@ -16,6 +16,7 @@ enum AwbStatusEnum: string
     case HUB_IN = 'SHHI';
     case HUB_OUT = 'SHHO';
     case OPERATION_INBOUND = 'SHOI';
+    case OPERATION_OUTSTANDING = 'SHOT';
     case OPERATION_OUTBOUND = 'SHOO';
     case DELIVERED = 'SHDL';
     case REVERSE_DELIEVERY = 'SHRD';
@@ -239,6 +240,7 @@ enum AwbStatusEnum: string
                     'color_text' => '#558b2f',
                     'description' => 'Shipment received by operations team',
                 ],
+
                 self::OPERATION_OUTBOUND => [
                     'label' => 'Operations Out',
                     'icon' => 'upload',
@@ -262,6 +264,13 @@ enum AwbStatusEnum: string
                 ],
                 self::DEBRIEFED_OPERATION => [
                     'label' => 'Debrief Operation',
+                    'icon' => 'check-circle',
+                    'color_bg' => '#e8f5e9',
+                    'color_text' => '#2e7d32',
+                    'description' => 'Shipment successfully reversed',
+                ],
+                self::OPERATION_OUTSTANDING => [
+                    'label' => 'Operation Outstanding',
                     'icon' => 'check-circle',
                     'color_bg' => '#e8f5e9',
                     'color_text' => '#2e7d32',
@@ -817,6 +826,13 @@ enum AwbStatusEnum: string
                 'color_text' => '#2e7d32',
                 'description' => 'Shipment successfully reversed',
             ],
+            self::OPERATION_OUTSTANDING => [
+                'label' => 'Operation Outstanding',
+                'icon' => 'check-circle',
+                'color_bg' => '#e8f5e9',
+                'color_text' => '#2e7d32',
+                'description' => 'Shipment successfully reversed',
+            ],
             self::DEBRIEFED_FINANCE => [
                 'label' => 'Debrief Finance',
                 'icon' => 'check-circle',
@@ -824,6 +840,7 @@ enum AwbStatusEnum: string
                 'color_text' => '#2e7d32',
                 'description' => 'Shipment successfully reversed',
             ],
+
             self::ADDRESS_CHANGED => [
                 'label' => 'Address changed',
                 'icon' => 'file-plus',
