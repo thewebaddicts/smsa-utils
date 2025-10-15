@@ -167,6 +167,14 @@ enum AwbStatusEnum: string
     case ST60_6 = 'ST60-6';
     case BTRO = 'BTRO';
     case BTRI = 'BTRI';
+    
+    // Additional status codes from scans.json (not duplicates)
+    case HAL = 'HAL';
+    case DEX34 = 'DEX34';
+    case DEX84 = 'DEX84';
+    case CODRTS = 'CODRTS';
+    case RTSIN = 'RTSIN';
+    case HSSC = 'HSSC';
 
 
 
@@ -698,8 +706,16 @@ enum AwbStatusEnum: string
                 self::ST60_6 => ['label' => 'ST60-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Destination Hub'],
                 self::BTRO => ['label' => 'BTRO', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Origin'],
                 self::BTRI => ['label' => 'BTRI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Inventory'],
+                
+                // Additional status codes from scans.json (not duplicates)
+                self::HAL => ['label' => 'HAL', 'icon' => 'archive', 'color_bg' => '#fff3e0', 'color_text' => '#fb8c00', 'description' => 'Hold At Location'],
+                self::DEX34 => ['label' => 'DEX34', 'icon' => 'trash-2', 'color_bg' => '#ffebee', 'color_text' => '#c62828', 'description' => 'Destroyed At Customer Request'],
+                self::DEX84 => ['label' => 'DEX84', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delay Caused Beyond Our Control'],
+                self::CODRTS => ['label' => 'CODRTS', 'icon' => 'dollar-sign', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'COD Return To Shipper'],
+                self::RTSIN => ['label' => 'RTSIN', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Shipper In'],
+                self::HSSC => ['label' => 'HSSC', 'icon' => 'users', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Handed Over To SSC'],
             };
-        } catch (UnhandledMatchErrorr $e) {
+        } catch (UnhandledMatchError $e) {
             // dump the unhandled enum value
             dd('Unhandled enum value: ' . $this->value);
         }
@@ -1266,6 +1282,14 @@ self::REFUSED_ALREADY_RECEIVED => [
             self::ST60_6 => ['label' => 'ST60-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Destination Hub'],
             self::BTRO => ['label' => 'BTRO', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Origin'],
             self::BTRI => ['label' => 'BTRI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Inventory'],
+            
+            // Additional status codes from scans.json (not duplicates)
+            self::HAL => ['label' => 'HAL', 'icon' => 'archive', 'color_bg' => '#fff3e0', 'color_text' => '#fb8c00', 'description' => 'Hold At Location'],
+            self::DEX34 => ['label' => 'DEX34', 'icon' => 'trash-2', 'color_bg' => '#ffebee', 'color_text' => '#c62828', 'description' => 'Destroyed At Customer Request'],
+            self::DEX84 => ['label' => 'DEX84', 'icon' => 'alert-triangle', 'color_bg' => '#fff3e0', 'color_text' => '#ef6c00', 'description' => 'Delay Caused Beyond Our Control'],
+            self::CODRTS => ['label' => 'CODRTS', 'icon' => 'dollar-sign', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'COD Return To Shipper'],
+            self::RTSIN => ['label' => 'RTSIN', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Shipper In'],
+            self::HSSC => ['label' => 'HSSC', 'icon' => 'users', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Handed Over To SSC'],
         };
     }
 }
