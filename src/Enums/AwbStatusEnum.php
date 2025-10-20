@@ -44,7 +44,9 @@ enum AwbStatusEnum: string
     case RETURN_OUT = 'SHRO';
     case RETURN_TO_SHIPPER = 'SHRS';
     case SCAN_RUNSHEET = 'SHRA';
-    case SCAN_RUNSHEET_VERIFIED = 'SHRU';
+    case SCAN_RUNSHEET_VERIFIED = 'SHRV';
+    case  SCAN_RUNSHEET_UNASSIGNED = 'SHRU';
+
 
 
     case NOT_AVAILABLE_MOBILE_CLOSED  = 'ATMC';
@@ -429,6 +431,14 @@ enum AwbStatusEnum: string
                     'color_bg' => '#f3e5f5',
                     'color_text' => '#6a1b9a',
                     'description' => 'Shipment scanned and assigned to runsheet',
+                ],
+
+                self::SCAN_RUNSHEET_UNASSIGNED => [
+                    'label' => 'Unassigned Runsheet',
+                    'icon' => 'clipboard-list',
+                    'color_bg' => '#f3e5f5',
+                    'color_text' => '#6a1b9a',
+                    'description' => 'Shipment unassigned from the runsheet',
                 ],
                 self::SCAN_RUNSHEET_VERIFIED => [
                     'label' => 'Runsheet Verified',
@@ -987,6 +997,14 @@ enum AwbStatusEnum: string
                 'color_bg' => '#f3e5f5',
                 'color_text' => '#6a1b9a',
                 'description' => 'Shipment scanned and assigned to runsheet',
+            ],
+
+            self::SCAN_RUNSHEET_UNASSIGNED => [
+                'label' => 'Unassigned Runsheet',
+                'icon' => 'clipboard-list',
+                'color_bg' => '#f3e5f5',
+                'color_text' => '#6a1b9a',
+                'description' => 'Shipment unassigned from the runsheet',
             ],
             self::SCAN_RUNSHEET_VERIFIED => [
                 'label' => 'Runsheet Verified',
