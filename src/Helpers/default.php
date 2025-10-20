@@ -112,11 +112,14 @@ if (!function_exists('log_activity')) {
         $activity_by_id = null,
         $activity_by_type = null,
         $comment = null,
-        $files = []
+        $files = [],
+        $activity_by = null,
+        $activity_location = null,
+        $created_at = null
     ) {
 
 
-        $data =   DB::table($table)->insert([
+        $data = DB::table($table)->insert([
             'target' => $target,
             'target_id' => $target_id,
             'status_code' => $status_code,
@@ -124,8 +127,8 @@ if (!function_exists('log_activity')) {
             'activity_by_type' => $activity_by_type,
             'comment' => $comment,
             'files' => $files ? json_encode($files) : null,
-            'created_at' => now(),
-            'updated_at' => now(),
+            'created_at' => $created_at ? $created_at : now(),
+            'updated_at' => $created_at ? $created_at : now()
         ]);
 
         // LogActivityJob::dispatch(
@@ -151,7 +154,10 @@ if (!function_exists('log_awb_activity')) {
         $activity_by_id,
         $activity_by_type,
         $comment = null,
-        $files = []
+        $files = [],
+        $activity_by = null , 
+        $activity_location = null , 
+        $created_at = null
     ) {
 
         log_activity(
@@ -162,7 +168,10 @@ if (!function_exists('log_awb_activity')) {
             $activity_by_id,
             $activity_by_type,
             $comment,
-            $files
+            $files,
+            $activity_by,
+            $activity_location,
+            $created_at
         );
     }
 }
