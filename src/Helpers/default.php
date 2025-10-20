@@ -508,12 +508,12 @@ if (!function_exists('send_client_otp')) {
         $senderId = env('INFINITO_SENDER_ID');
         $message = "This is an OTP code {$otp}";
 
-        Log::info("Starting OTP send", [
-            'phone' => $phone,
-            'otp' => $otp,
-            'clientId' => $clientId,
-            'senderId' => $senderId
-        ]);
+        // Log::info("Starting OTP send", [
+        //     'phone' => $phone,
+        //     'otp' => $otp,
+        //     'clientId' => $clientId,
+        //     'senderId' => $senderId
+        // ]);
 
 
         $query = http_build_query([
@@ -530,21 +530,21 @@ if (!function_exists('send_client_otp')) {
 
             $response = file_get_contents($url);
 
-            Log::info("OTP API raw response", ['response' => $response]);
+            // Log::info("OTP API raw response", ['response' => $response]);
 
 
             parse_str($response, $result);
 
             if (isset($result['statuscode']) && $result['statuscode'] === '0') {
-                Log::info("OTP sent successfully", [
-                    'phone' => $phone,
-                    'otp' => $otp,
-                    'result' => $result
-                ]);
+                // Log::info("OTP sent successfully", [
+                //     'phone' => $phone,
+                //     'otp' => $otp,
+                //     'result' => $result
+                // ]);
                 return true;
             }
 
-            Log::error("Failed to send OTP", ['phone' => $phone, 'response' => $result]);
+            // Log::error("Failed to send OTP", ['phone' => $phone, 'response' => $result]);
             return false;
         } catch (\Exception $e) {
             Log::error("Exception while sending OTP", [
