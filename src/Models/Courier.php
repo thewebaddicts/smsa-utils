@@ -61,6 +61,10 @@ class Courier extends Model
         return $this->courier_id . ' | ' . trim($this->first_name . ' ' . $this->last_name);
     }
 
+    public function getEmployeeReference()
+    {
+      return $this->employee_id;
+    }
 
     public function getDisplayNameAttribute()
     {
