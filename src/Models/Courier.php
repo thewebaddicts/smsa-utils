@@ -58,7 +58,7 @@ class Courier extends Model
 
     public function getFullNameAttribute()
     {
-        return $this->id . ' | ' . trim($this->first_name . ' ' . $this->last_name);
+        return $this->courier_id . ' | ' . trim($this->first_name . ' ' . $this->last_name);
     }
 
 
