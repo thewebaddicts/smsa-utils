@@ -39,6 +39,8 @@ class Shipment extends Model
         'freight_payment_type',
         'sla_delivery_date',
         'dutiable',
+          'source',
+        'created_at',
         // ROZANA
         'eta',
         'etd',
