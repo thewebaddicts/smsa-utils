@@ -34,7 +34,7 @@ class Operator extends Model
         return $this->name;
     }
 
-     public function getEmployeeReference()
+     public function getEmployeeReferenceAttribute()
     {
       return $this->employee_id;
     }
