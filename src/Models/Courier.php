@@ -63,7 +63,7 @@ class Courier extends Model
 
     public function getEmployeeReference()
     {
-      return $this->employee_id;
+      return $this->courier_id;
     }
 
     public function getDisplayNameAttribute()
