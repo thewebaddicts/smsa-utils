@@ -635,7 +635,7 @@ enum AwbStatusEnum: string
                     'icon' => 'check-circle',
                     'color_bg' => '#c8e6c9',
                     'color_text' => '#000000',
-                    'description' => 'Shipment successfully scanned out ofCRN'
+                    'description' => 'Shipment successfully scanned out of CRN'
                 ],
 
 
@@ -1222,15 +1222,15 @@ self::REFUSED_ALREADY_RECEIVED => [
                 'icon' => 'check-circle',
                 'color_bg' => '#c8e6c9',
                 'color_text' => '#000000',
-                'description' => 'AWB has been scanned successfully'
+                'description' => 'Shipment successfully scanned in CRN'
             ],
             self::CRN_OUT => [
                 'label' => 'CRN Out',
                 'icon' => 'check-circle',
                 'color_bg' => '#c8e6c9',
-                'color_text' => '#000000',
-                'description' => 'AWB has been scanned successfully'
-            ],
+                'color_text' => '#000000',  
+                'description' => 'Shipment successfully scanned out of CRN'
+                        ],
 
             self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility'],
             self::CC => ['label' => 'CC', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Processing for Consignee Collection'],
