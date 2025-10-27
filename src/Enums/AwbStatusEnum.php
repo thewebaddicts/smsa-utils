@@ -628,14 +628,14 @@ enum AwbStatusEnum: string
                     'icon' => 'check-circle',
                     'color_bg' => '#c8e6c9',
                     'color_text' => '#000000',
-                    'description' => 'AWB has been scanned successfully'
+                    'description' => 'Shipment successfully scanned in CRN'
                 ],
                 self::CRN_OUT => [
                     'label' => 'CRN Out',
                     'icon' => 'check-circle',
                     'color_bg' => '#c8e6c9',
                     'color_text' => '#000000',
-                    'description' => 'AWB has been scanned successfully'
+                    'description' => 'Shipment successfully scanned out ofCRN'
                 ],
 
 
