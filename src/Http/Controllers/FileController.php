@@ -16,7 +16,10 @@ class FileController extends Controller
     {
         // Validate using Laravel's request validator
         $validator = Validator::make($request->all(), [
-            'file' => 'required|file',
+            'file' => 'required|file'
+        . '|mimes:pdf,png,jpg,jpeg,doc,docx,xls,xlsx'
+        . '|mimetypes:application/pdf,image/png,image/jpeg,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
         ]);
     
         if ($validator->fails()) {
