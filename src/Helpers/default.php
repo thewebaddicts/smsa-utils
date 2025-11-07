@@ -190,35 +190,38 @@ if (!function_exists('query_options_new_record')) {
 }
 
 
-
 if (!function_exists('query_options_response')) {
-    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ", $except = [], $wrapExtraDescriptions = false)
-    {
+    function query_options_response(
+        $table,
+        $columnValue,
+        $columnLabel,
+        $params = [],
+        $extraFields = [],
+        $separator = " ",
+        $except = [],
+        $wrapExtraDescriptions = false,
+        $options = [] // ✅ added options parameter
+    ) {
 
         $values = request()->input('values');
 
         if (is_numeric($values)) {
             $values = [$values];
-        } elseif (is_array($values)) {
-            $values = $values;
-        } else {
+        } elseif (!is_array($values)) {
             $values = [];
         }
 
-
         // Build base query
-        $baseQuery = DB::table($table)->when(is_array($except) && count($except) > 0, function ($query) use ($except, $columnValue) {
-            $query->whereNotIn($columnValue, $except);
-        })->whereNull('deleted_at');
+        $baseQuery = DB::table($table)
+            ->when(is_array($except) && count($except) > 0, function ($query) use ($except, $columnValue) {
+                $query->whereNotIn($columnValue, $except);
+            })
+            ->whereNull('deleted_at');
 
-
+        // Apply filters from params
         foreach ($params as $field => $value) {
-
             if (is_array($value)) {
-
                 $type = $value['type'] ?? null;
-
-
                 switch ($type) {
                     case 'array_to_array':
                         $baseQuery->where(function ($q) use ($value, $field) {
@@ -226,11 +229,10 @@ if (!function_exists('query_options_response')) {
                                 $q->orWhere($field, 'LIKE', '%"' . $item . '"%');
                             }
                         });
-
                         break;
 
                     default:
-                        $baseQuery->where($field, $value['operand'], $value['value']);
+                        $baseQuery->where($field, $value['operand'] ?? '=', $value['value']);
                 }
             } else {
                 $baseQuery->where($field, $value);
@@ -239,34 +241,36 @@ if (!function_exists('query_options_response')) {
 
         // Apply search filter if provided
         if (request()->input('search')) {
-            $baseQuery->where($columnLabel, 'like', '%' . request()->input('search') . '%');
-
-            foreach (collect($extraFields)->flatten()->values()->toArray() as $extraField) {
-                $baseQuery->orWhere($extraField, 'like', '%' . request()->input('search') . '%');
-            }
+            $search = request()->input('search');
+            $baseQuery->where(function ($query) use ($columnLabel, $extraFields, $search) {
+                $query->where($columnLabel, 'like', "%{$search}%");
+                foreach (collect($extraFields)->flatten()->values()->toArray() as $extraField) {
+                    $query->orWhere($extraField, 'like', "%{$search}%");
+                }
+            });
         }
 
-        $sortBy = $options['sort_by'] ?? 'value'; // default sort by value
+        // ✅ Sorting logic
+        $sortBy = $options['sort_by'] ?? 'value'; // 'label' or 'value'
+        $sortDirection = $options['sort_direction'] ?? 'asc';
 
-        // If we have specific values, prioritize them at the top
         if (count($values) > 0) {
-            $baseQuery->orderByRaw("CASE WHEN " . $columnValue . " IN (" . implode(',', array_map('intval', $values)) . ") THEN 0 ELSE 1 END")
-                ->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
+            $baseQuery->orderByRaw("CASE WHEN {$columnValue} IN (" . implode(',', array_map('intval', $values)) . ") THEN 0 ELSE 1 END")
+                ->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, $sortDirection);
         } else {
-            $baseQuery->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
+            $baseQuery->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, $sortDirection);
         }
 
+        // Return paginated results with proper formatting
         return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator, $wrapExtraDescriptions) {
 
             $extraFields = collect($extraFields)->map(function ($fieldName) use ($item, $separator) {
-
                 if (!is_array($fieldName)) {
                     return $item->{$fieldName} ?? null;
                 }
 
-
-                return collect($fieldName)->map(function ($itteration) use ($item, $separator) {
-                    return $item->{$itteration} ?? null;
+                return collect($fieldName)->map(function ($iteration) use ($item) {
+                    return $item->{$iteration} ?? null;
                 })->filter()->values()->implode($separator);
             })->filter()->values()->toArray();
 
@@ -275,7 +279,7 @@ if (!function_exists('query_options_response')) {
                 'label' => $item->$columnLabel,
                 'extra_descriptions' => $wrapExtraDescriptions
                     ? collect($extraFields)->map(fn($desc) => [$desc])->toArray()
-                    : $extraFields
+                    : $extraFields,
             ];
         });
     }
