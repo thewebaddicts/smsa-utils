@@ -251,9 +251,9 @@ if (!function_exists('query_options_response')) {
         // If we have specific values, prioritize them at the top
         if (count($values) > 0) {
             $baseQuery->orderByRaw("CASE WHEN " . $columnValue . " IN (" . implode(',', array_map('intval', $values)) . ") THEN 0 ELSE 1 END")
-                  ->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
+                ->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
         } else {
-        $baseQuery->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
+            $baseQuery->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
         }
 
         return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator, $wrapExtraDescriptions) {
