@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Mail;
 function send_otp_by_email($email, $otp)
 {
     // try {
-        $appName = config('app.name');
+    $appName = config('app.name');
 
-        $htmlContent = "
+    $htmlContent = "
                 <html>
                     <body style='font-family: Arial, sans-serif; background-color: #f8f8f8; padding: 20px;'>
                         <div style='max-width: 500px; margin: auto; background: #fff; border-radius: 8px; padding: 20px;'>
@@ -31,13 +31,13 @@ function send_otp_by_email($email, $otp)
                 </html>
             ";
 
-        Mail::html($htmlContent, function ($message) use ($email) {
-            $message->to($email)
-                ->subject('Your OTP Code');
-        });
+    Mail::html($htmlContent, function ($message) use ($email) {
+        $message->to($email)
+            ->subject('Your OTP Code');
+    });
 
-        return true;
-    }
+    return true;
+}
 
 
 if (!function_exists('unique_rule')) {
@@ -155,8 +155,8 @@ if (!function_exists('log_awb_activity')) {
         $activity_by_type,
         $comment = null,
         $files = [],
-        $activity_by = null , 
-        $activity_location = null , 
+        $activity_by = null,
+        $activity_location = null,
         $created_at = null
     ) {
 
@@ -246,16 +246,17 @@ if (!function_exists('query_options_response')) {
             }
         }
 
+        $sortBy = $options['sort_by'] ?? 'value'; // default sort by value
 
         // If we have specific values, prioritize them at the top
         if (count($values) > 0) {
             $baseQuery->orderByRaw("CASE WHEN " . $columnValue . " IN (" . implode(',', array_map('intval', $values)) . ") THEN 0 ELSE 1 END")
-                ->orderBy($columnValue, 'asc');
+                  ->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
         } else {
-            $baseQuery->orderBy($columnValue, 'asc');
+        $baseQuery->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, 'asc');
         }
 
-        return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator,$wrapExtraDescriptions) {
+        return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator, $wrapExtraDescriptions) {
 
             $extraFields = collect($extraFields)->map(function ($fieldName) use ($item, $separator) {
 
@@ -273,7 +274,7 @@ if (!function_exists('query_options_response')) {
                 'value' => $item->$columnValue,
                 'label' => $item->$columnLabel,
                 'extra_descriptions' => $wrapExtraDescriptions
-                    ? collect($extraFields)->map(fn($desc) => [$desc])->toArray() 
+                    ? collect($extraFields)->map(fn($desc) => [$desc])->toArray()
                     : $extraFields
             ];
         });
