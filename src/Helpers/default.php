@@ -190,8 +190,9 @@ if (!function_exists('query_options_new_record')) {
 }
 
 
+
 if (!function_exists('query_options_response')) {
-    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ", $except = [])
+    function query_options_response($table, $columnValue, $columnLabel, $params = [], $extraFields = [], $separator = " ", $except = [], $wrapExtraDescriptions = false)
     {
 
         $values = request()->input('values');
@@ -254,7 +255,7 @@ if (!function_exists('query_options_response')) {
             $baseQuery->orderBy($columnValue, 'asc');
         }
 
-        return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator) {
+        return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator,$wrapExtraDescriptions) {
 
             $extraFields = collect($extraFields)->map(function ($fieldName) use ($item, $separator) {
 
@@ -271,11 +272,14 @@ if (!function_exists('query_options_response')) {
             return [
                 'value' => $item->$columnValue,
                 'label' => $item->$columnLabel,
-                'extra_descriptions' => $extraFields
+                'extra_descriptions' => $wrapExtraDescriptions
+                    ? collect($extraFields)->map(fn($desc) => [$desc])->toArray() 
+                    : $extraFields
             ];
         });
     }
 }
+
 
 
 if (!function_exists('get_currencies_rates')) {
