@@ -200,7 +200,7 @@ if (!function_exists('query_options_response')) {
         $separator = " ",
         $except = [],
         $wrapExtraDescriptions = false,
-        $options = [] // ✅ added options parameter
+        $options = []
     ) {
 
         $values = request()->input('values');
@@ -239,7 +239,7 @@ if (!function_exists('query_options_response')) {
             }
         }
 
-        // Apply search filter if provided
+
         if (request()->input('search')) {
             $search = request()->input('search');
             $baseQuery->where(function ($query) use ($columnLabel, $extraFields, $search) {
@@ -250,8 +250,8 @@ if (!function_exists('query_options_response')) {
             });
         }
 
-        // ✅ Sorting logic
-        $sortBy = $options['sort_by'] ?? 'value'; // 'label' or 'value'
+
+        $sortBy = $options['sort_by'] ?? 'value';
         $sortDirection = $options['sort_direction'] ?? 'asc';
 
         if (count($values) > 0) {
@@ -261,7 +261,7 @@ if (!function_exists('query_options_response')) {
             $baseQuery->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, $sortDirection);
         }
 
-        // Return paginated results with proper formatting
+
         return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator, $wrapExtraDescriptions) {
 
             $extraFields = collect($extraFields)->map(function ($fieldName) use ($item, $separator) {

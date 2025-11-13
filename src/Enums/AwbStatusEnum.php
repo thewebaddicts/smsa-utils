@@ -9,6 +9,7 @@ enum AwbStatusEnum: string
     case CREATED = 'SHCR';
     case PICKED_UP = 'SHPU';
     case RECEIVED_OPERATION = 'SHOR';
+    case EXPECTED_RECEIVE = 'SHER';
     case CRN_IN = 'SHCI';
     case CRN_OUT = 'SHCO';
     case SHELF_IN = 'SHSI';
@@ -170,8 +171,8 @@ enum AwbStatusEnum: string
     case ST60_6 = 'ST60-6';
     case BTRO = 'BTRO';
     case BTRI = 'BTRI';
-    
-    // Additional status codes from scans.json (not duplicates)
+
+        // Additional status codes from scans.json (not duplicates)
     case HAL = 'HAL';
     case DEX34 = 'DEX34';
     case DEX84 = 'DEX84';
@@ -193,6 +194,14 @@ enum AwbStatusEnum: string
                     'color_text' => '#1565c0',
                     'description' => 'Shipment has been created in the system',
                 ],
+                self::EXPECTED_RECEIVE => [
+                    'label' => 'Expected Receive',
+                    'icon' => 'fa-inbox',
+                    'color_bg' => '#fff8e1',
+                    'color_text' => '#f57f17',
+                    'description' => 'AWB is expected to be received soon',
+                ],
+
                 self::PICKED_UP => [
                     'label' => 'Picked Up',
                     'icon' => 'truck',
@@ -725,7 +734,7 @@ enum AwbStatusEnum: string
                 self::ST60_6 => ['label' => 'ST60-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Destination Hub'],
                 self::BTRO => ['label' => 'BTRO', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Origin'],
                 self::BTRI => ['label' => 'BTRI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Inventory'],
-                
+
                 // Additional status codes from scans.json (not duplicates)
                 self::HAL => ['label' => 'HAL', 'icon' => 'archive', 'color_bg' => '#fff3e0', 'color_text' => '#fb8c00', 'description' => 'Hold At Location'],
                 self::DEX34 => ['label' => 'DEX34', 'icon' => 'trash-2', 'color_bg' => '#ffebee', 'color_text' => '#c62828', 'description' => 'Destroyed At Customer Request'],
@@ -750,7 +759,13 @@ enum AwbStatusEnum: string
                 'color_text' => '#1565c0',
                 'description' => 'Shipment has been created in the system',
             ],
-            
+            self::EXPECTED_RECEIVE => [
+                'label' => 'Expected Receive',
+                'icon' => 'fa-inbox',
+                'color_bg' => '#fff8e1',
+                'color_text' => '#f57f17',
+                'description' => 'AWB is expected to be received soon',
+            ],
             self::PICKED_UP => [
                 'label' => 'Picked Up',
                 'icon' => 'truck',
@@ -1137,20 +1152,20 @@ enum AwbStatusEnum: string
                 'description' => 'Recipient refused to open the shipment before delivery',
             ],
             self::REFUSED_MONEY => [
-    'label' => 'Refused - Money Issue',
-    'icon' => 'fa fa-money-bill-wave',
-    'color' => 'text-red-600',
-    'bg' => 'bg-red-100',
-    'description' => 'Shipment was refused due to payment or money-related issues.',
-],
+                'label' => 'Refused - Money Issue',
+                'icon' => 'fa fa-money-bill-wave',
+                'color' => 'text-red-600',
+                'bg' => 'bg-red-100',
+                'description' => 'Shipment was refused due to payment or money-related issues.',
+            ],
 
-self::REFUSED_ALREADY_RECEIVED => [
-    'label' => 'Refused - Already Received',
-    'icon' => 'fa fa-box-open',
-    'color' => 'text-red-600',
-    'bg' => 'bg-red-100',
-    'description' => 'Recipient refused the shipment, claiming they have already received it.',
-],
+            self::REFUSED_ALREADY_RECEIVED => [
+                'label' => 'Refused - Already Received',
+                'icon' => 'fa fa-box-open',
+                'color' => 'text-red-600',
+                'bg' => 'bg-red-100',
+                'description' => 'Recipient refused the shipment, claiming they have already received it.',
+            ],
             self::REFUSED_NO_LONGER_NEEDED => [
                 'label' => 'Refused – No Longer Needed',
                 'icon' => 'x-circle',
@@ -1228,9 +1243,9 @@ self::REFUSED_ALREADY_RECEIVED => [
                 'label' => 'CRN Out',
                 'icon' => 'check-circle',
                 'color_bg' => '#c8e6c9',
-                'color_text' => '#000000',  
+                'color_text' => '#000000',
                 'description' => 'Shipment successfully scanned out of CRN'
-                        ],
+            ],
 
             self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility'],
             self::CC => ['label' => 'CC', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Processing for Consignee Collection'],
@@ -1317,7 +1332,7 @@ self::REFUSED_ALREADY_RECEIVED => [
             self::ST60_6 => ['label' => 'ST60-6', 'icon' => 'truck', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Shipment Arrived Destination Hub'],
             self::BTRO => ['label' => 'BTRO', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Origin'],
             self::BTRI => ['label' => 'BTRI', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Back To Inventory'],
-            
+
             // Additional status codes from scans.json (not duplicates)
             self::HAL => ['label' => 'HAL', 'icon' => 'archive', 'color_bg' => '#fff3e0', 'color_text' => '#fb8c00', 'description' => 'Hold At Location'],
             self::DEX34 => ['label' => 'DEX34', 'icon' => 'trash-2', 'color_bg' => '#ffebee', 'color_text' => '#c62828', 'description' => 'Destroyed At Customer Request'],
