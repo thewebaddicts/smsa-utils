@@ -9,6 +9,7 @@ use twa\smsautils\Http\Controllers\OneSignalController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
+use Illuminate\Support\Facades\Storage;
 
 
 function send_otp_by_email($email, $otp)
@@ -580,5 +581,28 @@ if (!function_exists('send_client_otp')) {
             ]);
             return false;
         }
+    }
+}
+
+
+
+if (!function_exists('get_file_info')) {
+    function get_file_info($file_id, $disk = 'bucket')
+    {
+        $cacheKey = "file_{$file_id}";
+
+        return Cache::remember($cacheKey, now()->addHours(2), function () use ($file_id, $disk) {
+            $file = DB::table('files')->where('id', $file_id)->first();
+
+            if (!$file) {
+                return null;
+            }
+
+            return [
+                'id' => $file->id,
+                'name' => $file->original_name,
+                'url' => Storage::disk($disk)->url($file->file_path),
+            ];
+        });
     }
 }
