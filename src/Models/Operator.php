@@ -34,9 +34,9 @@ class Operator extends Model
         return $this->name;
     }
 
-     public function getEmployeeReferenceAttribute()
+    public function getEmployeeReferenceAttribute()
     {
-      return $this->employee_id;
+        return $this->employee_id;
     }
 
     public function getDisplayNameAttribute()
@@ -45,24 +45,40 @@ class Operator extends Model
     }
 
     public function format()
-{
-    return [
-        'id' => $this->id,
-        'name' => $this->name,
-        'email' => $this->email,
-        'employee_id' => $this->employee_id,
-        'phone_number' => $this->phone_number,
-        'hub' => $this->hub ? [
-            'id' => $this->hub->id,
-            'label' => $this->hub->label,
-        ] : null,
-        'roles' => $this->roles->map(fn($role) => [
-            'id' => $role->id,
-            'label' => $role->label,
-        ]),
-        'superadmin' => (bool) $this->superadmin,
-        'created_at' => format_date_time($this->created_at),
-    ];
-}
+    {
+        $hub = $this->hub_id
+            ? DB::table('hubs')
+            ->where('id', $this->hub_id)
+            ->whereNull('deleted_at')
+            ->first(['id', 'label'])
+            : null;
 
-} 
+        $rolesIds = json_decode($this->roles_ids, true) ?? [];
+
+        $roles = empty($rolesIds)
+            ? collect()
+            : DB::table('roles')
+            ->whereIn('id', $rolesIds)
+            ->whereNull('deleted_at')
+            ->get(['id', 'label']);
+
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'employee_id' => $this->employee_id,
+            'phone_number' => $this->phone_number,
+            'hub' => $hub ? [
+            'id' => $hub->id,
+            'label' => $hub->label,
+        ] : null,
+
+            'roles' => $roles->map(fn($role) => [
+                'id' => $role->id,
+                'label' => $role->label,
+            ]),
+            'superadmin' => (bool) $this->superadmin,
+            'created_at' => format_date_time($this->created_at),
+        ];
+    }
+}
