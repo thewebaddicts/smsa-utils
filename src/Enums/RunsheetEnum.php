@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace twa\smsautils\Enums;
 
 enum RunsheetEnum: string
 {
