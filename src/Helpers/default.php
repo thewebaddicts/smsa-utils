@@ -42,17 +42,15 @@ function send_otp_by_email($email, $otp)
 
 
 if (!function_exists('unique_rule')) {
-    function unique_rule($table, $column , $ignore_id = null)
+    function unique_rule($table, $column, $ignore_id = null)
     {
-        $rule =  Rule::unique($table, $column)->whereNull('deleted_at');
-        
-        
-        if($ignore_id){
-            $rule->ignore($ignore_id);
-        }
- 
-        return $rule;
-      
+        return Rule::unique($table, $column)
+            ->where(function ($query) use ($ignore_id) {
+                $query->whereNull('deleted_at');
+                if ($ignore_id) {
+                    $query->where('id', '!=', $ignore_id);
+                }
+            });
     }
 }
 
