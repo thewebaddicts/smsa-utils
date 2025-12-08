@@ -189,6 +189,7 @@ enum AwbStatusEnum: string
             return match ($this) {
                 self::CREATED => [
                     'label' => 'Created',
+                    'label_ar' => 'إنشاء',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
@@ -196,6 +197,7 @@ enum AwbStatusEnum: string
                 ],
                 self::EXPECTED_RECEIVE => [
                     'label' => 'Expected Receive',
+                    'label_ar' => 'متوقع الاستلام',
                     'icon' => 'fa-inbox',
                     'color_bg' => '#fff8e1',
                     'color_text' => '#f57f17',
@@ -204,6 +206,7 @@ enum AwbStatusEnum: string
 
                 self::PICKED_UP => [
                     'label' => 'Picked Up',
+                    'label_ar' => 'تم الاستلام',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -211,6 +214,7 @@ enum AwbStatusEnum: string
                 ],
                 self::RECEIVED_OPERATION => [
                     'label' => 'Received',
+                    'label_ar' => 'مستلم',
                     'icon' => 'inbox',
                     'color_bg' => '#f0f9eb',
                     'color_text' => '#2e7d32',
@@ -218,6 +222,7 @@ enum AwbStatusEnum: string
                 ],
                 self::SHELF_IN => [
                     'label' => 'Shelf In',
+                    'label_ar' => 'دخول الرف',
                     'icon' => 'archive',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -225,6 +230,7 @@ enum AwbStatusEnum: string
                 ],
                 self::SHELF_OUT => [
                     'label' => 'Shelf Out',
+                    'label_ar' => 'خروج الرف',
                     'icon' => 'archive',
                     'color_bg' => '#e1f5fe',
                     'color_text' => '#0288d1',
@@ -232,6 +238,7 @@ enum AwbStatusEnum: string
                 ],
                 self::HUB_IN => [
                     'label' => 'Received Hub',
+                    'label_ar' => 'استلام المحور',
                     'icon' => 'home',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
@@ -239,6 +246,7 @@ enum AwbStatusEnum: string
                 ],
                 self::HUB_OUT => [
                     'label' => 'Hub Departure',
+                    'label_ar' => 'مغادرة المحور',
                     'icon' => 'log-out',
                     'color_bg' => '#ffe0b2',
                     'color_text' => '#ef6c00',
@@ -246,6 +254,7 @@ enum AwbStatusEnum: string
                 ],
                 self::OPERATION_INBOUND => [
                     'label' => 'Received Operations',
+                    'label_ar' => 'استلام العمليات',
                     'icon' => 'download',
                     'color_bg' => '#dcedc8',
                     'color_text' => '#558b2f',
@@ -254,6 +263,7 @@ enum AwbStatusEnum: string
 
                 self::OPERATION_OUTBOUND => [
                     'label' => 'Operations Out',
+                    'label_ar' => 'خروج العمليات',
                     'icon' => 'upload',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -261,6 +271,7 @@ enum AwbStatusEnum: string
                 ],
                 self::DELIVERED => [
                     'label' => 'Delivered',
+                    'label_ar' => 'تم التسليم',
                     'icon' => 'check-circle',
                     'color_bg' => '#e8f5e9',
                     'color_text' => '#2e7d32',
@@ -268,6 +279,7 @@ enum AwbStatusEnum: string
                 ],
                 self::REVERSE_DELIEVERY => [
                     'label' => 'Reverse Delivery',
+                    'label_ar' => 'تسليم عكسي',
                     'icon' => 'check-circle',
                     'color_bg' => '#e8f5e9',
                     'color_text' => '#2e7d32',
@@ -275,6 +287,7 @@ enum AwbStatusEnum: string
                 ],
                 self::DEBRIEFED_OPERATION => [
                     'label' => 'Debrief Operation',
+                    'label_ar' => 'تقرير العمليات',
                     'icon' => 'check-circle',
                     'color_bg' => '#e8f5e9',
                     'color_text' => '#2e7d32',
@@ -282,6 +295,7 @@ enum AwbStatusEnum: string
                 ],
                 self::OPERATION_OUTSTANDING => [
                     'label' => 'Operation Outstanding',
+                    'label_ar' => 'عمليات معلقة',
                     'icon' => 'check-circle',
                     'color_bg' => '#e8f5e9',
                     'color_text' => '#2e7d32',
@@ -289,6 +303,7 @@ enum AwbStatusEnum: string
                 ],
                 self::DEBRIEFED_FINANCE => [
                     'label' => 'Debrief Finance',
+                    'label_ar' => 'تقرير المالية',
                     'icon' => 'check-circle',
                     'color_bg' => '#e8f5e9',
                     'color_text' => '#2e7d32',
@@ -296,6 +311,7 @@ enum AwbStatusEnum: string
                 ],
                 self::ADDRESS_CHANGED => [
                     'label' => 'Address changed',
+                    'label_ar' => 'تم تغيير العنوان',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#15c0a4ff',
@@ -303,6 +319,7 @@ enum AwbStatusEnum: string
                 ],
                 self::ADDRESS_VALIDATED => [
                     'label' => 'Address validated',
+                    'label_ar' => 'تم التحقق من العنوان',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#d482d8ff',
@@ -310,6 +327,7 @@ enum AwbStatusEnum: string
                 ],
                 self::UPDATED_DIMENSIONS => [
                     'label' => 'Updated Dimensions',
+                    'label_ar' => 'تم تحديث الأبعاد',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#82add8ff',
@@ -317,6 +335,7 @@ enum AwbStatusEnum: string
                 ],
                 self::UPDATED_WEIGHT => [
                     'label' => 'Updated Weight',
+                    'label_ar' => 'تم تحديث الوزن',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#82add8ff',
@@ -331,6 +350,7 @@ enum AwbStatusEnum: string
                 ],
                 self::CHANGE_ROUTE => [
                     'label' => 'Change Route',
+                    'label_ar' => 'تغيير المسار',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#82add8ff',
@@ -338,6 +358,7 @@ enum AwbStatusEnum: string
                 ],
                 self::OUT_FOR_DELIVERY => [
                     'label' => 'Out for Delivery',
+                    'label_ar' => 'خارج للتسليم',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -345,6 +366,7 @@ enum AwbStatusEnum: string
                 ],
                 self::SMS_SENT => [
                     'label' => 'SMS Sent',
+                    'label_ar' => 'تم إرسال الرسالة',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -352,6 +374,7 @@ enum AwbStatusEnum: string
                 ],
                 self::SHIPPER_CANCELED => [
                     'label' => 'Cancelled by shipper',
+                    'label_ar' => 'ملغي من المرسل',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -359,6 +382,7 @@ enum AwbStatusEnum: string
                 ],
                 self::IN_TRANSIT => [
                     'label' => 'In Transit',
+                    'label_ar' => 'قيد النقل',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -366,6 +390,7 @@ enum AwbStatusEnum: string
                 ],
                 self::GATEWAY_INBOUND => [
                     'label' => 'Gateway inbound',
+                    'label_ar' => 'دخول البوابة',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -373,6 +398,7 @@ enum AwbStatusEnum: string
                 ],
                 self::GATEWAY_OUTBOUND => [
                     'label' => 'Gateway Outbound',
+                    'label_ar' => 'خروج البوابة',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -380,6 +406,7 @@ enum AwbStatusEnum: string
                 ],
                 self::HOLD_FOR_PICKUP => [
                     'label' => 'Hold For Pickup',
+                    'label_ar' => 'معلق للاستلام',
                     'icon' => 'truck',
                     'color_bg' => '#e6f7ff',
                     'color_text' => '#007bff',
@@ -387,6 +414,7 @@ enum AwbStatusEnum: string
                 ],
                 self::HOLD => [
                     'label' => 'On Hold',
+                    'label_ar' => 'معلق',
                     'icon' => 'pause-circle',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#ef6c00',
@@ -394,6 +422,7 @@ enum AwbStatusEnum: string
                 ],
                 self::RELEASE_HOLD => [
                     'label' => 'Release Hold',
+                    'label_ar' => 'إلغاء التعليق',
                     'icon' => 'pause-circle',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#ef6c00',
@@ -401,6 +430,7 @@ enum AwbStatusEnum: string
                 ],
                 self::HOLD_CUSTOMS => [
                     'label' => 'On Hold - Customs',
+                    'label_ar' => 'معلق - الجمارك',
                     'icon' => 'shield',
                     'color_bg' => '#ede7f6',
                     'color_text' => '#4527a0',
@@ -408,6 +438,7 @@ enum AwbStatusEnum: string
                 ],
                 self::RELEASE_CUSTOMS => [
                     'label' => 'Release Customs',
+                    'label_ar' => 'إطلاق الجمارك',
                     'icon' => 'shield',
                     'color_bg' => '#ede7f6',
                     'color_text' => '#4527a0',
@@ -415,6 +446,7 @@ enum AwbStatusEnum: string
                 ],
                 self::RETURN_IN => [
                     'label' => 'Return In',
+                    'label_ar' => 'إرجاع داخلي',
                     'icon' => 'shield',
                     'color_bg' => '#ede7f6',
                     'color_text' => '#4527a0',
@@ -422,6 +454,7 @@ enum AwbStatusEnum: string
                 ],
                 self::RETURN_OUT => [
                     'label' => 'Return Out',
+                    'label_ar' => 'إرجاع خارجي',
                     'icon' => 'shield',
                     'color_bg' => '#ede7f6',
                     'color_text' => '#4527a0',
@@ -429,6 +462,7 @@ enum AwbStatusEnum: string
                 ],
                 self::RETURN_TO_SHIPPER => [
                     'label' => 'Return to shipper',
+                    'label_ar' => 'إرجاع للمرسل',
                     'icon' => 'shield',
                     'color_bg' => '#ede7f6',
                     'color_text' => '#4527a0',
@@ -436,6 +470,7 @@ enum AwbStatusEnum: string
                 ],
                 self::SCAN_RUNSHEET => [
                     'label' => 'Scan Runsheet',
+                    'label_ar' => 'مسح الجدول',
                     'icon' => 'clipboard-list',
                     'color_bg' => '#f3e5f5',
                     'color_text' => '#6a1b9a',
@@ -444,6 +479,7 @@ enum AwbStatusEnum: string
 
                 self::SCAN_RUNSHEET_UNASSIGNED => [
                     'label' => 'Unassigned Runsheet',
+                    'label_ar' => 'جدول غير مخصص',
                     'icon' => 'clipboard-list',
                     'color_bg' => '#f3e5f5',
                     'color_text' => '#6a1b9a',
@@ -451,6 +487,7 @@ enum AwbStatusEnum: string
                 ],
                 self::SCAN_RUNSHEET_VERIFIED => [
                     'label' => 'Runsheet Verified',
+                    'label_ar' => 'تم التحقق من الجدول',
                     'icon' => 'clipboard-check',
                     'color_bg' => '#e8f5e9',
                     'color_text' => '#2e7d32',
@@ -458,6 +495,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_MOBILE_CLOSED => [
                     'label' => 'Mobile Closed',
+                    'label_ar' => 'الجوال مغلق',
                     'icon' => 'phone-off',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -465,6 +503,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_NO_ANSWER => [
                     'label' => 'No Answer',
+                    'label_ar' => 'لا يوجد رد',
                     'icon' => 'phone-missed',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -472,6 +511,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_RESCHEDULE => [
                     'label' => 'Reschedule',
+                    'label_ar' => 'إعادة الجدولة',
                     'icon' => 'calendar',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -479,6 +519,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_TRAVELING => [
                     'label' => 'Traveling',
+                    'label_ar' => 'مسافر',
                     'icon' => 'map-pin',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -486,6 +527,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_WRONG_PHONE => [
                     'label' => 'Wrong Phone Number',
+                    'label_ar' => 'رقم هاتف خاطئ',
                     'icon' => 'phone-slash',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -493,6 +535,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_WRONG_CUSTOMER => [
                     'label' => 'Wrong Customer',
+                    'label_ar' => 'عميل خاطئ',
                     'icon' => 'user-x',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -500,6 +543,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_WRONG_CITY => [
                     'label' => 'Wrong City',
+                    'label_ar' => 'مدينة خاطئة',
                     'icon' => 'map',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -507,6 +551,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_ROUTE => [
                     'label' => 'Route Issue',
+                    'label_ar' => 'مشكلة في المسار',
                     'icon' => 'map-signs',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -514,6 +559,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_AVAILABLE_OUT_OF_AREA => [
                     'label' => 'Out of Delivery Area',
+                    'label_ar' => 'خارج منطقة التسليم',
                     'icon' => 'map-pin-off',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -521,6 +567,7 @@ enum AwbStatusEnum: string
                 ],
                 self::HOLD_PICKUP => [
                     'label' => 'Hold for Pickup',
+                    'label_ar' => 'معلق للاستلام',
                     'icon' => 'archive',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -528,6 +575,7 @@ enum AwbStatusEnum: string
                 ],
                 self::ATTEMPTED => [
                     'label' => 'Attempted',
+                    'label_ar' => 'محاولة',
                     'icon' => 'alert-circle',
                     'color_bg' => '#fff4e5',
                     'color_text' => '#b36b00',
@@ -535,6 +583,7 @@ enum AwbStatusEnum: string
                 ],
                 self::REFUSED => [
                     'label' => 'Refused',
+                    'label_ar' => 'مرفوض',
                     'icon' => 'x-circle',
                     'color_bg' => '#ffebee',
                     'color_text' => '#b71c1c',
@@ -542,6 +591,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_PICKED_UP_RESCHEDULE => [
                     'label' => 'Reschedule Pickup',
+                    'label_ar' => 'إعادة جدولة الاستلام',
                     'icon' => 'calendar',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -549,6 +599,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_PICKED_UP_NO_ANSWER => [
                     'label' => 'No Answer',
+                    'label_ar' => 'لا يوجد رد',
                     'icon' => 'phone-missed',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -556,6 +607,7 @@ enum AwbStatusEnum: string
                 ],
                 self::NOT_PICKED_UP_ADDRESS_CHANGED => [
                     'label' => 'Address Changed',
+                    'label_ar' => 'تم تغيير العنوان',
                     'icon' => 'map-pin',
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
@@ -563,6 +615,7 @@ enum AwbStatusEnum: string
                 ],
                 self::REFUSED_OPEN_SHIPMENT => [
                     'label' => 'Refused to Open Shipment',
+                    'label_ar' => 'رفض فتح الشحنة',
                     'icon' => 'x-circle',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -570,6 +623,7 @@ enum AwbStatusEnum: string
                 ],
                 self::REFUSED_NO_LONGER_NEEDED => [
                     'label' => 'Refused – No Longer Needed',
+                    'label_ar' => 'مرفوض - لم يعد مطلوباً',
                     'icon' => 'x-circle',
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
@@ -577,6 +631,7 @@ enum AwbStatusEnum: string
                 ],
                 self::OVERAGE => [
                     'label' => 'Overage',
+                    'label_ar' => 'فائض',
                     'icon' => 'plus-circle',
                     'color_bg' => '#fbe9e7',
                     'color_text' => '#bf360c',
@@ -584,6 +639,7 @@ enum AwbStatusEnum: string
                 ],
                 self::DAMAGED => [
                     'label' => 'Damaged',
+                    'label_ar' => 'تالف',
                     'icon' => 'alert-octagon',
                     'color_bg' => '#ffebee',
                     'color_text' => '#c62828',
@@ -591,6 +647,7 @@ enum AwbStatusEnum: string
                 ],
                 self::REFUSED_DELAYED => [
                     'label' => 'Refused - Delayed',
+                    'label_ar' => 'مرفوض - متأخر',
                     'icon' => 'clock',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
@@ -598,6 +655,7 @@ enum AwbStatusEnum: string
                 ],
                 self::REFUSED_MONEY => [
                     'label' => 'Refused - Money Issue',
+                    'label_ar' => 'مرفوض - مشكلة مالية',
                     'icon' => 'fa fa-money-bill-wave',
                     'color' => 'text-red-600',
                     'bg' => 'bg-red-100',
@@ -606,6 +664,7 @@ enum AwbStatusEnum: string
 
                 self::REFUSED_ALREADY_RECEIVED => [
                     'label' => 'Refused - Already Received',
+                    'label_ar' => 'مرفوض - تم الاستلام مسبقاً',
                     'icon' => 'fa fa-box-open',
                     'color' => 'text-red-600',
                     'bg' => 'bg-red-100',
@@ -620,6 +679,7 @@ enum AwbStatusEnum: string
                 ],
                 self::LOST => [
                     'label' => 'Lost',
+                    'label_ar' => 'مفقود',
                     'icon' => 'help-circle',
                     'color_bg' => '#f3e5f5',
                     'color_text' => '#6a1b9a',
@@ -627,6 +687,7 @@ enum AwbStatusEnum: string
                 ],
                 self::CLOSED => [
                     'label' => 'Closed',
+                    'label_ar' => 'مغلق',
                     'icon' => 'lock',
                     'color_bg' => '#eeeeee',
                     'color_text' => '#424242',
@@ -634,6 +695,7 @@ enum AwbStatusEnum: string
                 ],
                 self::CRN_IN => [
                     'label' => 'CRN In',
+                    'label_ar' => 'دخول CRN',
                     'icon' => 'check-circle',
                     'color_bg' => '#c8e6c9',
                     'color_text' => '#000000',
@@ -641,6 +703,7 @@ enum AwbStatusEnum: string
                 ],
                 self::CRN_OUT => [
                     'label' => 'CRN Out',
+                    'label_ar' => 'خروج CRN',
                     'icon' => 'check-circle',
                     'color_bg' => '#c8e6c9',
                     'color_text' => '#000000',
