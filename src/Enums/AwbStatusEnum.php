@@ -354,7 +354,7 @@ enum AwbStatusEnum: string
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#82add8ff',
-                    'description' => 'Shipment created in system',
+                    'description' => 'Shipment changed route',
                 ],
                 self::OUT_FOR_DELIVERY => [
                     'label' => 'Out for Delivery',
