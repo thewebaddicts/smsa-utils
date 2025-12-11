@@ -30,7 +30,7 @@ class AuthMandatoryMiddleware
         }
 
         if (!$access_token) {
-            return $this->response(notification()->error("Access Token is required", "Access Token is required"));
+            return $this->response(notification()->error("Access Token is required", "Access Token is required",100));
         }
 
         $access_token = DB::table('access_tokens')->where('token', $access_token)
