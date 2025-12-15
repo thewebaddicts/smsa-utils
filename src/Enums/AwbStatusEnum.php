@@ -47,6 +47,7 @@ enum AwbStatusEnum: string
     case SCAN_RUNSHEET = 'SHRA';
     case SCAN_RUNSHEET_VERIFIED = 'SHRV';
     case  SCAN_RUNSHEET_UNASSIGNED = 'SHRU';
+    case  DOCUMENT_UPLOAD = 'SHUD';
 
 
 
@@ -203,6 +204,15 @@ enum AwbStatusEnum: string
                     'color_text' => '#f57f17',
                     'description' => 'AWB is expected to be received soon',
                 ],
+                self::DOCUMENT_UPLOAD => [
+                    'label' => 'Document Upload',
+                    'label_ar' => 'رفع المستندات',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+'description' => 'Required shipment documents have been uploaded',
+                ],
+
 
                 self::PICKED_UP => [
                     'label' => 'Picked Up',
