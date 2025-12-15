@@ -209,8 +209,8 @@ enum AwbStatusEnum: string
                     'label_ar' => 'رفع المستندات',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
-                    'color_text' => '#1565c0',
-'description' => 'Required shipment documents have been uploaded',
+                    'color_text' => '#99b7dcff',
+                    'description' => 'Required shipment documents have been uploaded',
                 ],
 
 
