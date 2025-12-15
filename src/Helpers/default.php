@@ -604,3 +604,32 @@ if (!function_exists('get_file_info')) {
         });
     }
 }
+
+
+if (!function_exists('get_files_info')) {
+    function get_files_info(array $file_ids, $disk = 'bucket')
+    {
+        $filesInfo = [];
+
+        foreach ($file_ids as $file_id) {
+            $cacheKey = "file_{$file_id}";
+
+            $filesInfo[] = Cache::remember($cacheKey, now()->addHours(2), function () use ($file_id, $disk) {
+                $file = DB::table('files')->where('id', $file_id)->first();
+
+                if (!$file) {
+                    return null;
+                }
+
+                return [
+                    'id' => $file->id,
+                    'name' => $file->original_name,
+                    'url' => Storage::disk($disk)->url($file->file_path),
+                ];
+            });
+        }
+
+
+        return array_filter($filesInfo);
+    }
+}
