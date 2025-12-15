@@ -186,10 +186,14 @@ enum AwbStatusEnum: string
 
     public function info()
     {
+        $lang = app()->getLocale();
+
+
         try {
             return match ($this) {
                 self::CREATED => [
-                    'label' => 'Created',
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'Created',
+
                     'label_ar' => 'إنشاء',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
