@@ -62,7 +62,7 @@ enum AwbStatusEnum: string
     case NOT_AVAILABLE_ROUTE = 'ATLR'; //to be checked by hovig
     case NOT_AVAILABLE_OUT_OF_AREA = 'ATOA';
 
-    case HOLD_PICKUP = 'ATHP';
+    case HOLD_PICKUP = 'SHHP';
 
     case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
     case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
@@ -978,7 +978,7 @@ enum AwbStatusEnum: string
                 'icon' => 'truck',
                 'color_bg' => '#e6f7ff',
                 'color_text' => '#007bff',
-                'description' => 'shipment in gateway',
+                'description' => 'Shipment is held for pickup by recipient',
             ],
             self::HOLD => [
                 'label' => 'On Hold',
