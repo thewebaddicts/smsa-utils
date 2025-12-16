@@ -17,8 +17,9 @@ class AwbItem extends Model
         'unit_currency',
     ];
 
+   
     public function awb()
     {
-        return $this->belongsTo(\twa\smsautils\Models\Awb::class, 'awb', 'awb');
+        return $this->belongsTo(\twa\smsautils\Models\Awb::class, 'awb_id', 'id');
     }
 }
