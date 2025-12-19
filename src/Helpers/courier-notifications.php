@@ -308,8 +308,8 @@ if(!function_exists('unassign_courier_from_pickup')){
     );
   }
 }
-if(!function_exists('change_address_alert')){
-    function change_address_alert($courier_id , $awb, $data = null){
+if(!function_exists('notify_courier_change_address')){
+    function notify_courier_change_address($courier_id , $awb, $data = null){
         $title_en = "Change Address Alert for shipment " . $awb;
         $title_ar = "تنبيه تغيير العنوان للشحنة " . $awb;
         $message_en = "You have a new address for shipment $awb";
