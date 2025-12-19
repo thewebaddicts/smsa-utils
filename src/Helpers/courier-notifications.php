@@ -309,11 +309,11 @@ if(!function_exists('unassign_courier_from_pickup')){
   }
 }
 if(!function_exists('change_address_alert')){
-    function change_address_alert($courier_id , $address_id, $shipment_id, $data = null){
-        $title_en = "Change Address Alert" . $address_id . " for shipment " . $shipment_id;
-        $title_ar = "تنبيه تغيير العنوان" . $address_id . " للشحنة " . $shipment_id;
-        $message_en = "You have a new address change to $address_id for shipment $shipment_id";
-        $message_ar = "لديك تغيير عنوان جديد للشحنة $shipment_id" . $address_id;
+    function change_address_alert($courier_id , $awb, $data = null){
+        $title_en = "Change Address Alert for shipment " . $awb;
+        $title_ar = "تنبيه تغيير العنوان للشحنة " . $awb;
+        $message_en = "You have a new address for shipment $awb";
+        $message_ar = "لديك تغيير عنوان جديد للشحنة $awb";
     
     send_notification_helper(
         $title_en,
