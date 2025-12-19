@@ -335,14 +335,14 @@ enum AwbStatusEnum: string
                     'label' => $lang === 'ar' ? 'تم تحديث الأبعاد' : 'Updated Dimensions',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
-                    'color_text' => '#82add8ff',
+                    'color_text' => '#2580db',
                     'description' => 'the dimensions of this shipment is changed',
                 ],
                 self::UPDATED_WEIGHT => [
                     'label' => $lang === 'ar' ? 'تم تحديث الوزن' : 'Updated Weight',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
-                    'color_text' => '#82add8ff',
+                    'color_text' => '#2580db',
                     'description' => 'the weight of this shipment is changed',
                 ],
                 self::CANCELLED => [
