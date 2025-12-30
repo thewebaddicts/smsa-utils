@@ -9,14 +9,14 @@ class Awb extends Model
 {
     use HasFactory;
 
-     protected $table = 'awbs';
+    protected $table = 'awbs';
 
     protected $fillable = [
         'shipment_id',
         'awb',
         'master_awb',
         'runsheet_id',
-    
+
         'package_reference',
         'package_description',
         'packaging_unit',
@@ -80,7 +80,9 @@ class Awb extends Model
         'actual_cod_amount',
         'deleted_at',
         'updated_at',
-        'created_at'
+        'created_at',
+        'origin_code',
+        'destination_code'
     ];
 
     public function shipment()
