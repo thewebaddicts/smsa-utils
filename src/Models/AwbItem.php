@@ -16,7 +16,7 @@ class AwbItem extends Model
         'unit_price',
         'unit_currency',
         'declared_unit_amount',
-        'declared_unit_amount_currency'
+        'declared_unit_currency'
         
     ];
 
