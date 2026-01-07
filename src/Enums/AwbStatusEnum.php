@@ -13,10 +13,8 @@ enum AwbStatusEnum: string
     case CRN_IN = 'SHCI';
     case CRN_OUT = 'SHCO';
 
-
     case HST_IN = 'SHTI';
     case HST_OUT = 'SHTO';
-
 
     case SHELF_IN = 'SHSI';
     case SHELF_OUT = 'SHSO';
