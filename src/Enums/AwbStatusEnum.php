@@ -12,6 +12,12 @@ enum AwbStatusEnum: string
     case EXPECTED_RECEIVE = 'SHER';
     case CRN_IN = 'SHCI';
     case CRN_OUT = 'SHCO';
+
+
+    case HST_IN = 'SHTI';
+    case HST_OUT = 'SHTO';
+
+
     case SHELF_IN = 'SHSI';
     case SHELF_OUT = 'SHSO';
     case HUB_IN = 'SHHI';
@@ -670,6 +676,21 @@ enum AwbStatusEnum: string
                     'description' => 'Shipment successfully scanned out of CRN'
                 ],
 
+                self::HST_IN => [
+                    'label' => $lang === 'ar' ? 'دخول HST' : 'HST In',
+                    'icon' => 'check-circle',
+                    'color_bg' => '#c8e6c9',
+                    'color_text' => '#000000',
+                    'description' => 'Shipment successfully scanned in HST'
+                ],
+                self::HST_OUT => [
+                    'label' => $lang === 'ar' ? 'خروج HST' : 'HST Out',
+                    'icon' => 'check-circle',
+                    'color_bg' => '#c8e6c9',
+                    'color_text' => '#000000',
+                    'description' => 'Shipment successfully scanned out of HST'
+                ],
+
 
                 //old statuses:
                 self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility'],
@@ -1268,6 +1289,22 @@ enum AwbStatusEnum: string
                 'color_bg' => '#c8e6c9',
                 'color_text' => '#000000',
                 'description' => 'Shipment successfully scanned out of CRN'
+            ],
+
+
+            self::HST_IN => [
+                'label' => 'HST In',
+                'icon' => 'check-circle',
+                'color_bg' => '#c8e6c9',
+                'color_text' => '#000000',
+                'description' => 'Shipment successfully scanned in HST'
+            ],
+            self::HST_OUT => [
+                'label' => 'HST Out',
+                'icon' => 'check-circle',
+                'color_bg' => '#c8e6c9',
+                'color_text' => '#000000',
+                'description' => 'Shipment successfully scanned out of HST'
             ],
 
             self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility'],
