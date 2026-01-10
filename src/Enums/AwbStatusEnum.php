@@ -88,6 +88,7 @@ enum AwbStatusEnum: string
     case DAMAGED = 'EXDM'; // was exp
     case LOST = 'EXLO';
 
+    case NOT_RECEIVED = 'SHNR';
 
         //old statuses:
 
@@ -203,6 +204,13 @@ enum AwbStatusEnum: string
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
                     'description' => 'Shipment has been created in the system',
+                ],
+                self::NOT_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'لم يتم الاستلام' : 'Not Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has not been received',
                 ],
                 self::EXPECTED_RECEIVE => [
                     'label' => $lang === 'ar' ? 'متوقع الاستلام' : 'Expected Receive',
@@ -800,6 +808,13 @@ enum AwbStatusEnum: string
                 'color_bg' => '#e3f2fd',
                 'color_text' => '#1565c0',
                 'description' => 'Shipment has been created in the system',
+            ],
+            self::NOT_RECEIVED => [
+                'label' => 'Not Received',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Shipment has not been received',
             ],
             self::EXPECTED_RECEIVE => [
                 'label' => 'Expected Receive',
