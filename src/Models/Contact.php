@@ -4,7 +4,7 @@ namespace twa\smsautils\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Customer extends Model
+class Contact extends Model
 {
     use SoftDeletes;
 
