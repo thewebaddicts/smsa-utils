@@ -8,10 +8,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Account extends Model
+class Shipper extends Model
 {
     use HasFactory, SoftDeletes;
     
+    protected $table = 'shippers';
+
     protected $fillable = [
         'name',
         'email',
