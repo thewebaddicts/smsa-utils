@@ -55,7 +55,7 @@ class Shipment extends Model
 
   public function client()
   {
-    return $this->belongsTo(\twa\smsautils\Models\Account::class);
+    return $this->belongsTo(\twa\smsautils\Models\Shipper::class);
   }
 
   public function customer()
