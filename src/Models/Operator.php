@@ -44,6 +44,10 @@ class Operator extends Model
     {
         return $this->name;
     }
+    public function getDisplayFullNameAttribute()
+    {
+        return $this->employee_id . ' | ' . $this->name;
+    }
 
     public function format()
     {

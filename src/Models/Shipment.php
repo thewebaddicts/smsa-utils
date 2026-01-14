@@ -53,6 +53,8 @@ class Shipment extends Model
     return $this->hasMany(\twa\smsautils\Models\Awb::class);
   }
 
+ 
+
   public function client()
   {
     return $this->belongsTo(\twa\smsautils\Models\Shipper::class);

@@ -142,4 +142,6 @@ class Awb extends Model
     {
         return $this->hasMany(AwbItem::class, 'awb_id');
     }
+
+   
 }
