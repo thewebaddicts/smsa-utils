@@ -60,6 +60,6 @@ class Shipment extends Model
 
   public function customer()
   {
-    return $this->belongsTo(\twa\smsautils\Models\Contact::class);
+    return $this->belongsTo(\twa\smsautils\Models\Consignee::class);
   }
 }
