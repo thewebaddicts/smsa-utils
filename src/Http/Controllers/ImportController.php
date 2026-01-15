@@ -35,11 +35,18 @@ class ImportController
         }
 
 
+
+
         $config = config('import-config.' . $identifier);
 
         $function = $config['target'];
 
-        return eval(str_replace('$data', '$form_data["data"]', $function));
+        $function = str_replace('$data', '$form_data["data"]', $function) . ";";
+
+
+        $callback =  eval($function);
+
+        return $callback;
     }
 
     public function getValidationRules($identifier)
