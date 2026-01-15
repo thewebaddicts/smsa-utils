@@ -18,8 +18,8 @@ class FileController extends Controller
             'file' => [
                 'required',
                 'file',
-                'mimes:pdf,png,jpg,jpeg,doc,docx,xls,xlsx',
-                'mimetypes:application/pdf,image/png,image/jpeg,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'mimes:pdf,png,jpg,jpeg,doc,docx,xls,xlsx,heic,heif',
+                'mimetypes:application/pdf,image/png,image/jpeg,image/heic,image/heif,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ],
         ]);
 
