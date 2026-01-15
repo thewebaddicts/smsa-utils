@@ -23,42 +23,14 @@ class ImportController
 
         $form_data = clean_request([]);
 
-        $validations = $this->getValidationRules($identifier);
-
-        $validator = Validator::make($form_data, [
-            'data' => 'required|array',
-            ...$validations
-        ]);
-
-        if ($validator->fails()) {
-            return $this->responseValidation($validator);
-        }
-
-
-
-
         $config = config('import-config.' . $identifier);
 
         $function = $config['target'];
 
-        $function = str_replace('$data', '$form_data["data"]', $function) . ";";
+        $function = str_replace('$data', '$form_data["data"], $identifier', $function) . ";";
 
+        $callback = eval("return $function");
 
-        $callback =  eval($function);
-
-        return $callback;
-    }
-
-    public function getValidationRules($identifier)
-    {
-
-        $fields = collect(config('import-config.' . $identifier . '.columns'))->where('required', true)->pluck('column')->toArray();
-
-        $validations = [];
-        foreach ($fields as $field) {
-            $validations['data.*.' . $field] = 'required';
-        };
-
-        return $validations;
+        return $this->responseData($callback);
     }
 }
