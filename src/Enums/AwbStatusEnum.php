@@ -17,6 +17,7 @@ enum AwbStatusEnum: string
     case HST_OUT = 'SHTO';
 
     case DISPATCHED_HST = 'SHDH';
+    case DISPATCHED_MAWB = 'SHDM';
 
     case SHELF_IN = 'SHSI';
     case SHELF_OUT = 'SHSO';
@@ -208,6 +209,14 @@ enum AwbStatusEnum: string
                     'description' => 'Shipment has been created in the system',
                 ],
                
+                self::DISPATCHED_MAWB => [
+                    'label' => $lang === 'ar' ? 'تم التفريغ' : 'Debriefed HST',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been debriefed in HST',
+                ],
+
                 self::DISPATCHED_HST => [
                     'label' => $lang === 'ar' ? 'تم التفريغ' : 'Debriefed HST',
                     'icon' => 'file-plus',
@@ -825,6 +834,13 @@ enum AwbStatusEnum: string
                 'color_bg' => '#e3f2fd',
                 'color_text' => '#1565c0',
                 'description' => 'Shipment has been dispatched in HST',
+            ],
+            self::DISPATCHED_MAWB => [
+                'label' => 'Dispatched MAWB',
+                'icon' => 'file-plus',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Shipment has been dispatched in MAWB',
             ],
             self::NOT_RECEIVED => [
                 'label' => 'Not Received',
