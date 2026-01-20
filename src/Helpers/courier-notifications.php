@@ -43,13 +43,13 @@ if (!function_exists('notify_new_pickup_request')) {
      * @param array|null $data Additional data
      * @return void
      */
-    function notify_new_pickup_request($courier_id,$pickup_id, $data = null)
+    function notify_new_pickup_request($courier_id, $pickup_id, $data = null)
     {
         $title_en = "New Pickup Request";
         $title_ar = "طلب استلام جديد";
         $message_en = "You have a new pickup request";
         $message_ar = "لديك طلب استلام جديد";
-        
+
         send_notification_helper(
             $title_en,
             $title_ar,
@@ -80,7 +80,7 @@ if (!function_exists('notify_new_delivery_trip')) {
         $title_ar = "رحلة تسليم جديدة";
         $message_en = "You have a new delivery trip";
         $message_ar = "لديك رحلة تسليم جديدة";
-        
+
         send_notification_helper(
             $title_en,
             $title_ar,
@@ -111,7 +111,7 @@ if (!function_exists('notify_shipment_delivered')) {
         $title_ar = "تم تسليم الشحنة";
         $message_en = "Your shipment has been delivered successfully";
         $message_ar = "تم تسليم شحنتك بنجاح";
-        
+
         send_notification_helper(
             $title_en,
             $title_ar,
@@ -141,7 +141,7 @@ if (!function_exists('notify_pickup_completed')) {
         $title_ar = "تم الاستلام";
         $message_en = "Pickup has been completed successfully";
         $message_ar = "تم الاستلام بنجاح";
-        
+
         send_notification_helper(
             $title_en,
             $title_ar,
@@ -345,5 +345,6 @@ if(!function_exists('notify_courier_change_address')){
                 $data
             );
         }
+}
     }
 }
