@@ -227,68 +227,72 @@ if(!function_exists('mission_transfer_request_approved')){
         $message_ar = "تم الموافقة على طلب تحويل مهمتك";
     
 
-    send_notification_helper(
-        $title_en,
-        $title_ar,
-        $message_en,
-        $message_ar,
-        ["condition" => ["user_id"], "value" => [$courier_id]],
-        $data
-    );
+
+        send_notification_helper(
+            $title_en,
+            $title_ar,
+            $message_en,
+            $message_ar,
+            ["condition" => ["user_id"], "value" => [$courier_id]],
+            $data
+        );
+    }
 }
-}
-if(!function_exists('mission_transfer_request_rejected')){
-    function mission_transfer_request_rejected($courier_id, $data = null){
+if (!function_exists('mission_transfer_request_rejected')) {
+    function mission_transfer_request_rejected($courier_id, $data = null)
+    {
         $title_en = "Mission Transfer Request Rejected";
         $title_ar = "تم رفض طلب تحويل مهمة";
         $message_en = "Your mission transfer request has been rejected";
         $message_ar = "تم رفض طلب تحويل مهمتك";
-    
-    send_notification_helper(
-        $title_en,
-        $title_ar,
-        $message_en,
-        $message_ar,
-        ["condition" => ["user_id"], "value" => [$courier_id]],
-        $data
-    );
+
+        send_notification_helper(
+            $title_en,
+            $title_ar,
+            $message_en,
+            $message_ar,
+            ["condition" => ["user_id"], "value" => [$courier_id]],
+            $data
+        );
+    }
 }
-}
-if(!function_exists('mission_transfer_request_completed')){
-    function mission_transfer_request_completed($courier_id, $data = null){
+if (!function_exists('mission_transfer_request_completed')) {
+    function mission_transfer_request_completed($courier_id, $data = null)
+    {
         $title_en = "Mission Transfer Request Completed";
         $title_ar = "تم إكمال طلب تحويل مهمة";
         $message_en = "Your mission transfer request has been completed";
         $message_ar = "تم إكمال طلب تحويل مهمتك";
-    
-    send_notification_helper(
-        $title_en,
-        $title_ar,
-        $message_en,
-        $message_ar,
-        ["condition" => ["user_id"], "value" => [$courier_id]],
-        $data
-    );
-  }
+
+        send_notification_helper(
+            $title_en,
+            $title_ar,
+            $message_en,
+            $message_ar,
+            ["condition" => ["user_id"], "value" => [$courier_id]],
+            $data
+        );
+    }
 }
- 
-if(!function_exists('assign_courier_to_runsheet')){
-    function assign_courier_to_runsheet($courier_id, $data = null){
+
+if (!function_exists('assign_courier_to_runsheet')) {
+    function assign_courier_to_runsheet($courier_id, $data = null)
+    {
         $title_en = "Assign Courier to Runsheet";
         $title_ar = "تم تعيين موظف للرحلة";
         $message_en = "You have a new runsheet assigned to you";
         $message_ar = "لديك رحلة جديدة";
-    
 
-    send_notification_helper(
-        $title_en,
-        $title_ar,
-        $message_en,
-        $message_ar,
-        ["condition" => ["user_id"], "value" => [$courier_id]],
-        $data
-    );
-  }
+
+        send_notification_helper(
+            $title_en,
+            $title_ar,
+            $message_en,
+            $message_ar,
+            ["condition" => ["user_id"], "value" => [$courier_id]],
+            $data
+        );
+    }
 }
 
 if(!function_exists('unassign_courier_from_pickup')){
@@ -323,5 +327,22 @@ if(!function_exists('notify_courier_change_address')){
         ["condition" => ["user_id"], "value" => [$courier_id]],
         $data
     );
-}
+    if (!function_exists('notify_courier_change_route')) {
+        function notify_courier_change_route($courier_id, $awb, $data = null)
+        {
+            $title_en = "Change Route Alert for shipment " . $awb;
+            $title_ar = "تنبيه تغيير الرحلة للشحنة " . $awb;
+            $message_en = "You have a new route for shipment $awb";
+            $message_ar = "لديك تغيير رحلة جديد للشحنة $awb";
+
+            send_notification_helper(
+                $title_en,
+                $title_ar,
+                $message_en,
+                $message_ar,
+                ["condition" => ["user_id"], "value" => [$courier_id]],
+                $data
+            );
+        }
+    }
 }
