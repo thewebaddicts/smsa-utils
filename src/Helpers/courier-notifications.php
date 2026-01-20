@@ -327,6 +327,7 @@ if(!function_exists('notify_courier_change_address')){
         ["condition" => ["user_id"], "value" => [$courier_id]],
         $data
     );
+    }
     if (!function_exists('notify_courier_change_route')) {
         function notify_courier_change_route($courier_id, $awb, $data = null)
         {
