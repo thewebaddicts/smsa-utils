@@ -26,6 +26,7 @@ class Address extends Model
         'client_id',
         'user_id',
         'address_for',
-        'target_id'
+        'target_id',
+        'area_code'
     ];
 }
