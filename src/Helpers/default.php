@@ -8,6 +8,7 @@ use Illuminate\Database\Query\Builder;
 use twa\smsautils\Http\Controllers\OneSignalController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -631,5 +632,25 @@ if (!function_exists('get_files_info')) {
 
 
         return array_filter($filesInfo);
+    }
+}
+
+if (!function_exists('format_date_time')) {
+    
+    function format_date_time($date, $format = 'd-m-Y H:i:s')
+    {
+        if (!$date) {
+            return null;
+        }
+
+        if ($date instanceof \Carbon\Carbon) {
+            return $date->format($format);
+        }
+
+        try {
+            return Carbon::parse($date)->format($format);
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }
