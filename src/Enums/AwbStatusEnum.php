@@ -1296,7 +1296,13 @@ enum AwbStatusEnum: string
                 'color_text' => '#4527a0',
                 'description' => 'Shipment on hold for customs clearance',
             ],
-
+            self::DOCUMENT_UPLOAD => [
+                'label' => 'Documents Uploaded',
+                'icon' => 'file-upload',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Shipment documents uploaded',
+            ],
             self::DAMAGED => [
                 'label' => 'Damaged',
                 'icon' => 'alert-octagon',
