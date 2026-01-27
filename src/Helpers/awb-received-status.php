@@ -3,23 +3,32 @@
 use twa\smsautils\Models\Awb;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
-USE twa\smsautils\Enums\AwbStatusEnum;
+use twa\smsautils\Enums\AwbStatusEnum;
+use Illuminate\Support\Facades\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('update_awb_received_status')) {
 
-    function update_awb_received_status(Awb &$awb, $hub_id, $save = true)
+    function update_awb_received_status(Awb &$awb, $hub_id, $location = null, $save = true)
     {
+$user = Auth::user();
+$location = $location ?? 'operations';
         $awb = extract_awb_model_from_record($awb);
-        if($awb->origin_hub_id == $hub_id && $awb->origin_received_at == null) {
+        if ($awb->origin_hub_id == $hub_id && $awb->origin_received_at == null) {
             $awb->status = AwbStatusEnum::ORIGIN_RECEIVED;
-        }elseif($awb->origin_hub_id != $awb->destination_hub_id && $awb->origin_received_at  && $awb->destination_received_at == null) {
+            $awb->origin_received_at = Carbon::now();
+            log_awb_activity(AwbStatusEnum::ORIGIN_RECEIVED, $awb->id,  $user->id, $user->type, 'Origin received from '.$location);
+        } elseif ($awb->origin_hub_id != $awb->destination_hub_id && $awb->origin_received_at  && $awb->destination_received_at == null) {
             $awb->status = AwbStatusEnum::DESTINATION_RECEIVED;
-        }else{
+            $awb->destination_received_at = Carbon::now();
+            log_awb_activity(AwbStatusEnum::DESTINATION_RECEIVED, $awb->id, $user->id, $user->type, 'Destination received from '.$location);
+        } else {
             $awb->status = AwbStatusEnum::RECEIVED_OPERATION;
+            log_awb_activity(AwbStatusEnum::RECEIVED_OPERATION, $awb->id,  $user->id, $user->type, 'Received operation from '.$location);
         }
 
         if ($save) {
-            $awb->saveQuietly();
+            $awb->save();
             return $awb;
         }
     }
