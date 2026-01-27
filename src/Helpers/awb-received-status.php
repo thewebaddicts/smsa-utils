@@ -16,7 +16,9 @@ if (!function_exists('update_awb_received_status')) {
         $location = $location ?? 'operations';
         $awb = extract_awb_model_from_record($awb);
 
-        if ($awb->origin_hub_id == $hub_id && $awb->origin_received_at == null) {
+        // Origin receive: first time the AWB is received at its origin hub
+        // Use empty() so we also treat "zero" dates as not received yet.
+        if ($awb->origin_hub_id == $hub_id && empty($awb->origin_received_at)) {
 
             $awb->last_status = AwbStatusEnum::ORIGIN_RECEIVED;
             $awb->origin_received_at = Carbon::now();
@@ -29,8 +31,14 @@ if (!function_exists('update_awb_received_status')) {
                 $user_type ?? null,
                 'Origin received from ' . $location
             );
-        } 
-        elseif ($awb->origin_hub_id != $awb->destination_hub_id && $awb->origin_received_at!= null && $awb->destination_received_at == null) {
+        }
+        // Destination receive: international only (different origin/destination hubs)
+        // and origin already received, but destination not yet.
+        elseif (
+            $awb->origin_hub_id != $awb->destination_hub_id
+            && !empty($awb->origin_received_at)
+            && empty($awb->destination_received_at)
+        ) {
 
             $awb->last_status = AwbStatusEnum::DESTINATION_RECEIVED;
 
