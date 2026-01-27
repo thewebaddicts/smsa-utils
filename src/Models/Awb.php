@@ -83,7 +83,9 @@ class Awb extends Model
         'created_at',
         'origin_code',
         'destination_code',
-        'cancelled_at'
+        'cancelled_at',
+        'origin_received_at',
+        'destination_received_at'
     ];
 
     public function shipment()
