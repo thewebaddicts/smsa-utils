@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use twa\smsautils\Enums\AwbStatusEnum;
 use Illuminate\Support\Facades\Carbon;
 use Illuminate\Support\Facades\Request;
-
+use Illuminate\Support\Facades\Log;
 if (!function_exists('update_awb_received_status')) {
 
     function update_awb_received_status(Awb &$awb, $hub_id = null, $location = null, $save = true)
