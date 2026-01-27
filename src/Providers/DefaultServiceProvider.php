@@ -29,5 +29,6 @@ class DefaultServiceProvider extends ServiceProvider
         include_once(__DIR__ . '/../Helpers/awbLocationChange.php');
         include_once(__DIR__ . '/../Helpers/courier-notifications.php');
         include_once(__DIR__ . '/../Helpers/importHelper.php');
+        include_once(__DIR__ . '/../Helpers/awb-received-status.php');
     }
 }
