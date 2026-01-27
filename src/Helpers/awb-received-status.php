@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('update_awb_received_status')) {
 
-    function update_awb_received_status(Awb &$awb, $hub_id, $location = null, $save = true)
+    function update_awb_received_status(Awb &$awb, $hub_id = null, $location = null, $save = true)
     {
 $user = Auth::user();
 $location = $location ?? 'operations';
