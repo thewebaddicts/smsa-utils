@@ -8,7 +8,13 @@ enum AwbStatusEnum: string
 {
     case CREATED = 'SHCR';
     case PICKED_UP = 'SHPU';
-    case RECEIVED_OPERATION = 'SHOR';
+
+    case RECEIVED_OPERATION = 'SHIB';
+
+    case ORIGIN_RECEIVED = 'SHOR';
+    case DESTINATION_RECEIVED = 'SHDR';
+
+
     case EXPECTED_RECEIVE = 'SHER';
     case CRN_IN = 'SHCI';
     case CRN_OUT = 'SHCO';
@@ -258,12 +264,26 @@ enum AwbStatusEnum: string
                     'description' => 'Shipment has been picked up from sender',
                 ],
                 self::RECEIVED_OPERATION => [
-                    'label' => $lang === 'ar' ? 'مستلم' : 'Received',
-                   
+                    'label' => $lang === 'ar' ? 'مستلم' : 'Inbound Scan',
+
                     'icon' => 'inbox',
                     'color_bg' => '#f0f9eb',
                     'color_text' => '#2e7d32',
-                    'description' => 'Shipment received in operations',
+                    'description' => 'Shipment is  inbound scanned',
+                ],
+                self::ORIGIN_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'مستلم في المنشأ' : 'Origin Received',
+                    'icon' => 'home',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment received at origin location',
+                ],
+                self::DESTINATION_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'مستلم في الوجهة' : 'Destination Received',
+                    'icon' => 'map-pin',
+                    'color_bg' => '#e0f7fa',
+                    'color_text' => '#006064',
+                    'description' => 'Shipment received at destination location',
                 ],
                 self::SHELF_IN => [
                     'label' => $lang === 'ar' ? 'دخول الرف' : 'Shelf In',
@@ -864,11 +884,25 @@ enum AwbStatusEnum: string
                 'description' => 'Shipment has been picked up from sender',
             ],
             self::RECEIVED_OPERATION => [
-                'label' => 'Received',
+                'label' => 'Inbound Scan',
                 'icon' => 'inbox',
                 'color_bg' => '#f0f9eb',
                 'color_text' => '#2e7d32',
-                'description' => 'Shipment received in operations',
+                'description' => 'Shipment is inbound scanned',
+            ],
+            self::ORIGIN_RECEIVED => [
+                'label' => 'Origin Received',
+                'icon' => 'home',
+                'color_bg' => '#e3f2fd',
+                'color_text' => '#1565c0',
+                'description' => 'Shipment received at origin location',
+            ],
+            self::DESTINATION_RECEIVED => [
+                'label' => 'Destination Received',
+                'icon' => 'map-pin',
+                'color_bg' => '#e0f7fa',
+                'color_text' => '#006064',
+                'description' => 'Shipment received at destination location',
             ],
 
             self::ATTEMPTED => [
