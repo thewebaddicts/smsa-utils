@@ -30,7 +30,7 @@ if (!function_exists('update_awb_received_status')) {
                 'Origin received from ' . $location
             );
         } 
-        elseif ($awb->origin_hub_id != $awb->destination_hub_id && $awb->origin_received_at  && $awb->destination_received_at == null) {
+        elseif ($awb->origin_hub_id != $awb->destination_hub_id && $awb->origin_received_at!= null && $awb->destination_received_at == null) {
 
             $awb->last_status = AwbStatusEnum::DESTINATION_RECEIVED;
 
