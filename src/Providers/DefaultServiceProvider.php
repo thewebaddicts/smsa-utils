@@ -5,13 +5,14 @@ namespace twa\smsautils\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Relations\Relation;
+
 class DefaultServiceProvider extends ServiceProvider
 {
 
 
     public function boot()
     {
-        
+
         Relation::enforceMorphMap([
             'operator' => 'twa\smsautils\Models\Operator',
             'courier' => 'twa\smsautils\Models\Courier',
@@ -30,7 +31,6 @@ class DefaultServiceProvider extends ServiceProvider
         include_once(__DIR__ . '/../Helpers/courier-notifications.php');
         include_once(__DIR__ . '/../Helpers/importHelper.php');
         include_once(__DIR__ . '/../Helpers/awb-received-status.php');
-           include_once(__DIR__ . '/../Helpers/awbLogsActivities');
-
+        include_once(__DIR__ . '/../Helpers/awbLogsActivities.php');
     }
 }
