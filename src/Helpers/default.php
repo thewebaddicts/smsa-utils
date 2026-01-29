@@ -123,7 +123,8 @@ if (!function_exists('log_activity')) {
         $files = [],
         $activity_by = null,
         $activity_location = null,
-        $created_at = null
+        $created_at = null,
+        $source = null
     ) {
 
 
@@ -136,7 +137,8 @@ if (!function_exists('log_activity')) {
             'comment' => $comment,
             'files' => $files ? json_encode($files) : null,
             'created_at' => $created_at ? $created_at : now(),
-            'updated_at' => $created_at ? $created_at : now()
+            'updated_at' => $created_at ? $created_at : now(),
+            'source' => $source ?? null
         ]);
 
         // LogActivityJob::dispatch(
@@ -165,7 +167,8 @@ if (!function_exists('log_awb_activity')) {
         $files = [],
         $activity_by = null,
         $activity_location = null,
-        $created_at = null
+        $created_at = null,
+        $source = null
     ) {
 
         log_activity(
@@ -179,7 +182,9 @@ if (!function_exists('log_awb_activity')) {
             $files,
             $activity_by,
             $activity_location,
-            $created_at
+            $created_at,
+            $source
+
         );
     }
 }
