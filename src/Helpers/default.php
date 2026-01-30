@@ -16,12 +16,13 @@ use Illuminate\Support\Facades\Storage;
 
 
 if (!function_exists('operation_activity_log')) {
-    function operation_activity_log($mode, $operator_id, $record_id, $record_type, $payload, $created_at = null)
+    function operation_activity_log($mode, $operator_id, $operator_email, $record_id, $record_type, $payload, $created_at = null)
     {
 
         $log = new ActivityLog();
         $log->mode = $mode;
         $log->operator_id = $operator_id;
+        $log->operator_email = $operator_email;
         $log->record_id = $record_id;
         $log->record_type = $record_type;
         $log->payload = $payload;

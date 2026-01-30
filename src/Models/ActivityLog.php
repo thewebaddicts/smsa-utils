@@ -15,6 +15,7 @@ class ActivityLog extends Model
         'payload',
         'created_at',
         'operator_id',
+        'operator_email',
     ];
 
     protected $casts = [
