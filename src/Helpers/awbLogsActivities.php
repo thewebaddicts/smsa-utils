@@ -19,3 +19,12 @@ if (!function_exists('get_branch_info')) {
         return $branchName . ' | ' . $branch_identifier;
     }
 }
+
+  if (!function_exists('get_user_info')) {
+        function get_user_info($user)
+        {
+            $id = $user->id;
+            $name = $user->first_name . ' ' . $user->last_name;
+            return $id . ' | ' . $name;
+        }
+    }
