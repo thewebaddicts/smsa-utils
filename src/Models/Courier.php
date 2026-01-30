@@ -44,6 +44,10 @@ class Courier extends Model
         return $this->belongsTo(\twa\smsautils\Models\Company::class, 'company_id');
     }
 
+    public function hub()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'hub_id');
+    }
     public function assignedRoutes()
     {
         return $this->belongsToMany(
