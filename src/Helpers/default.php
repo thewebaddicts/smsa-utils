@@ -9,8 +9,26 @@ use twa\smsautils\Http\Controllers\OneSignalController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
+use twa\smsautils\Models\ActivityLog;
 
 use Illuminate\Support\Facades\Storage;
+
+
+
+if (!function_exists('operation_activity_log')) {
+    function operation_activity_log($mode, $operator_id, $record_id, $record_type, $payload, $created_at = null)
+    {
+
+        $log = new ActivityLog();
+        $log->mode = $mode;
+        $log->operator_id = $operator_id;
+        $log->record_id = $record_id;
+        $log->record_type = $record_type;
+        $log->payload = $payload;
+        $log->created_at = $created_at ? $created_at : now();
+        $log->save();
+    }
+}
 
 
 function send_otp_by_email($email, $otp)
