@@ -530,7 +530,7 @@ if (!function_exists('courier_assignment_on_route')) {
             $courier_id = $assignment->courier_id;
         }
 
-        return $courier_id;
+        return $courier_id ?? null;
     }
 }
 
