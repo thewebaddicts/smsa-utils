@@ -14,7 +14,8 @@ if (!function_exists('update_awb_received_status')) {
     {
         $user = request()->user();
         $user_type = request()->input('user_type');
-
+        $activity_location = get_branch_info($hub);
+        $activity_by = get_operator_info($user);
         $location = $location ?? 'operations';
         $awb = extract_awb_model_from_record($awb);
 
@@ -29,7 +30,12 @@ if (!function_exists('update_awb_received_status')) {
                 $awb->id,
                 $user->id ?? null,
                 $user_type ?? null,
-                'Origin received from ' . $location
+                'Origin received from ' . $location,
+                [],
+                $activity_by,
+                $activity_location,
+                now(),
+                'web'
             );
         } elseif (
             $awb->origin_hub_id != $awb->destination_hub_id
@@ -50,7 +56,13 @@ if (!function_exists('update_awb_received_status')) {
                 $awb->id,
                 $user->id ?? null,
                 $user_type ?? null,
-                'Destination received from ' . $location
+                'Destination received from ' . $location,
+                [],
+                $activity_by,
+                $activity_location,
+                now(),
+                'web'
+
             );
 
         } else {
@@ -63,7 +75,12 @@ if (!function_exists('update_awb_received_status')) {
                 $awb->id,
                 $user->id ?? null,
                 $user_type ?? null,
-                'Received operation from ' . $location
+                'Received operation from ' . $location,
+                [],
+                $activity_by,
+                $activity_location,
+                now(),
+                'web'
             );
         }
 

@@ -16,7 +16,6 @@ class Awb extends Model
         'awb',
         'master_awb',
         'runsheet_id',
-
         'package_reference',
         'package_description',
         'packaging_unit',
