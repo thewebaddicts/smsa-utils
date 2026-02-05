@@ -7,6 +7,7 @@ use twa\smsautils\Enums\AwbStatusEnum;
 use Illuminate\Support\Facades\Carbon;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Log;
+use twa\smsautils\Models\Hub;
 
 if (!function_exists('update_awb_received_status')) {
 
@@ -14,6 +15,8 @@ if (!function_exists('update_awb_received_status')) {
     {
         $user = request()->user();
         $user_type = request()->input('user_type');
+        $hub = Hub::find($hub_id);
+       
         $activity_location = get_branch_info($hub);
         $activity_by = get_operator_info($user);
         $location = $location ?? 'operations';
