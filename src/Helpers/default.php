@@ -158,6 +158,8 @@ if (!function_exists('log_activity')) {
             'activity_by_type' => $activity_by_type,
             'comment' => $comment,
             'files' => $files ? json_encode($files) : null,
+            'activity_location' => $activity_location ?? null,
+            'activity_by' => $activity_by ?? null,
             'created_at' => $created_at ? $created_at : now(),
             'updated_at' => $created_at ? $created_at : now(),
             'source' => $source ?? null
