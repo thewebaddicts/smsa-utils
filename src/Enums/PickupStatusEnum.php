@@ -21,7 +21,7 @@ enum PickupStatusEnum: string
     case DUPLICATE_PICKUP = 'duplicate_pickup';
     case NO_SHIPMENTS = 'no_shipments';
     case DROPPED_AT_RETAILR = 'dropped_at_retail';
-
+    case OUT_OF_PICKUP_AREA = 'out_of_pickup_area';
 
     public function info(): array
     {
@@ -209,6 +209,18 @@ enum PickupStatusEnum: string
                 'category' => [
                     'label' => 'Cancelled',
                     'key' => 'cancelled',
+                ],
+            ],
+            self::OUT_OF_PICKUP_AREA => [
+                'label' => 'Out of Pickup Area',
+                "icon" => "map",
+                "color_bg" => "#FEF9C3",
+                "color_text" => "#92400E", // amber-800
+                'description' => 'Out of Pickup Area',
+                'tags' => ["EXCEPTION"],
+                'category' => [
+                    'label' => 'Other',
+                    'key' => 'other',
                 ],
             ],
         };
