@@ -248,12 +248,34 @@ if (!function_exists('query_options_response')) {
             $values = [];
         }
 
-        // Build base query
-        $baseQuery = DB::table($table)
-            ->when(is_array($except) && count($except) > 0, function ($query) use ($except, $columnValue) {
-                $query->whereNotIn($columnValue, $except);
-            })
-            ->whereNull('deleted_at');
+        if ($table instanceof \Illuminate\Database\Query\Builder) {
+            $baseQuery = (clone $table)
+                ->when(is_array($except) && count($except) > 0, function ($query) use ($except, $columnValue) {
+                    $query->whereNotIn($columnValue, $except);
+                });
+            
+            // Check if deleted_at condition already exists
+            $hasDeletedAt = false;
+            $wheres = $baseQuery->getQuery()->wheres ?? [];
+            foreach ($wheres as $where) {
+                if (($where['column'] === 'deleted_at' && $where['type'] === 'Null') || 
+                    (is_string($where['column']) && strpos($where['column'], 'deleted_at') !== false)) {
+                    $hasDeletedAt = true;
+                    break;
+                }
+            }
+            
+            if (!$hasDeletedAt) {
+                $baseQuery->whereNull('deleted_at');
+            }
+        } else {
+            // For table names, start a new query (original behavior)
+            $baseQuery = DB::table($table)
+                ->when(is_array($except) && count($except) > 0, function ($query) use ($except, $columnValue) {
+                    $query->whereNotIn($columnValue, $except);
+                })
+                ->whereNull('deleted_at');
+        }
 
         // Apply filters from params
         foreach ($params as $field => $value) {
@@ -298,8 +320,18 @@ if (!function_exists('query_options_response')) {
             $baseQuery->orderBy($sortBy === 'label' ? $columnLabel : $columnValue, $sortDirection);
         }
 
-
-        return $baseQuery->paginate(400)->through(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator, $wrapExtraDescriptions) {
+        $perPage = 400;
+        $page = request()->input('page', 1);
+        
+        $countQuery = clone $baseQuery;
+        $total = $countQuery->count();
+        
+        $items = $baseQuery
+            ->skip(($page - 1) * $perPage)
+            ->take($perPage)
+            ->get();
+        
+        $transformedItems = $items->map(function ($item) use ($columnValue, $columnLabel, $extraFields, $separator, $wrapExtraDescriptions) {
 
             $extraFields = collect($extraFields)->map(function ($fieldName) use ($item, $separator) {
                 if (!is_array($fieldName)) {
@@ -319,6 +351,18 @@ if (!function_exists('query_options_response')) {
                     : $extraFields,
             ];
         });
+
+        // Create LengthAwarePaginator with transformed items (same as paginate()->through())
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $transformedItems,
+            $total,
+            $perPage,
+            $page,
+            [
+                'path' => request()->url(),
+                'query' => request()->query()
+            ]
+        );
     }
 }
 
