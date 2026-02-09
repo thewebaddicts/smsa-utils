@@ -687,7 +687,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all"],
+                    'tags' => ["all","TRIP EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_WRONG_PHONE => [
                     'label' => $lang === 'ar' ? 'رقم هاتف خاطئ' : 'Wrong Phone Number',
@@ -695,7 +695,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Delivery could not be completed due to wrong phone number',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'أخرى' : 'Other',
+                        'key' => 'other',
+                    ],
                     'tags' => ["all", "TRIP EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_WRONG_CUSTOMER => [
@@ -1006,7 +1009,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Delivery could not be completed due to wrong location',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'أخرى' : 'Other',
+                        'key' => 'other',
+                    ],
                     'tags' => ["all","TRIP EXCEPTION"],
                 ],
 
@@ -1016,7 +1022,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Delivery could not be completed due to wrong location',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'أخرى' : 'Other',
+                        'key' => 'other',
+                    ],
                     'tags' => ["all","TRIP EXCEPTION"],
                 ],
                 self::CANCELLED => [
