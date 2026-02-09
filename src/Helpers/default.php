@@ -683,3 +683,125 @@ if (!function_exists('format_date_time')) {
         }
     }
 }
+
+function send_awb_to_consignee(string $senderEmail, array $awbs = []): bool
+{
+    $appName = config('app.name', 'SMSA EXPRESS');
+    $trackBaseUrl = config('services.smsa.track_url', 'https://track.smsaexpress.com/?awb=');
+
+    $awbsHtml = '';
+
+    foreach (($awbs ?? []) as $row) {
+        $awb = e((string)($row['awb'] ?? ''));
+
+        if (!$awb) continue;
+
+        $trackUrl = e($trackBaseUrl . $awb);
+
+        $awbsHtml .= "
+            <div style='border:1px solid #eee; padding:12px; border-radius:10px; margin-bottom:10px;'>
+                <div style='font-size:14px; color:#555;'>AWB</div>
+                <div style='font-size:20px; font-weight:700; color:#111; margin:6px 0 10px;'>$awb</div>
+
+                <a href='$trackUrl' target='_blank'
+                   style='display:inline-block; padding:10px 14px; background:#28a745; color:#fff; text-decoration:none; border-radius:8px; font-size:14px;'>
+                    Track Shipment
+                </a>
+            </div>
+        ";
+    }
+
+    if ($awbsHtml === '') {
+        $awbsHtml = "<div style='font-size:14px; color:#777;'>Your AWB will appear shortly.</div>";
+    }
+
+    $htmlContent = "
+        <html>
+            <body style='font-family: Arial, sans-serif; background:#f8f8f8; padding:20px;'>
+                <div style='max-width:560px; margin:auto; background:#fff; border-radius:12px; padding:22px;'>
+                    <h2 style='color:#111; margin:0;'>$appName</h2>
+                    <p style='font-size:15px; color:#555; margin:8px 0 18px;'>
+                        Your shipment is on the way 🚚
+                    </p>
+
+                    $awbsHtml
+                </div>
+
+                <div style='max-width:560px; margin:12px auto 0; text-align:center; font-size:12px; color:#999;'>
+                    © " . date('Y') . " " . e($appName) . "
+                </div>
+            </body>
+        </html>
+    ";
+
+    Mail::html($htmlContent, function ($message) use ($senderEmail) {
+        $message->to($senderEmail)
+            ->subject('Your shipment is on the way');
+    });
+
+    return true;
+}
+
+
+
+function send_shipment_success_to_sender(string $consigneeEmail, array $awbs): bool
+{
+    $appName = config('app.name', 'SMSA EXPRESS');
+
+    $awbsHtml = '';
+
+    foreach (($awbs ?? []) as $row) {
+        $awb = e((string)($row['awb'] ?? ''));
+        $url = (string)($row['awb_url'] ?? '');
+        $safeUrl = $url ? e($url) : '';
+
+        if (!$awb) continue;
+
+        $awbsHtml .= "
+            <div style='border:1px solid #eee; padding:12px; border-radius:10px; margin-bottom:10px;'>
+                <div style='font-size:14px; color:#555;'>AWB</div>
+                <div style='font-size:20px; font-weight:700; color:#111; margin:6px 0 10px;'>$awb</div>
+
+                " . ($safeUrl ? "
+                    <a href='$safeUrl' target='_blank'
+                       style='display:inline-block; padding:10px 14px; background:#007bff; color:#fff; text-decoration:none; border-radius:8px; font-size:14px;'>
+                        Download AWB
+                    </a>
+                " : "
+                    <div style='font-size:13px; color:#777;'>AWB link not available.</div>
+                ") . "
+            </div>
+        ";
+    }
+
+    if ($awbsHtml === '') {
+        $awbsHtml = "<div style='font-size:14px; color:#777;'>No AWB available.</div>";
+    }
+
+    $htmlContent = "
+        <html>
+            <body style='font-family: Arial, sans-serif; background:#f8f8f8; padding:20px;'>
+                <div style='max-width:560px; margin:auto; background:#fff; border-radius:12px; padding:22px;'>
+                    <h2 style='color:#111; margin:0;'>$appName</h2>
+                    <p style='font-size:15px; color:#555; margin:8px 0 18px;'>
+                        Your Air Waybill (AWB)
+                    </p>
+
+                    $awbsHtml
+                </div>
+
+                <div style='max-width:560px; margin:12px auto 0; text-align:center; font-size:12px; color:#999;'>
+                    © " . date('Y') . " " . e($appName) . "
+                </div>
+            </body>
+        </html>
+    ";
+
+    Mail::html($htmlContent, function ($message) use ($consigneeEmail) {
+        $message->to($consigneeEmail)
+            ->subject('Your AWB');
+    });
+
+    return true;
+
+}
