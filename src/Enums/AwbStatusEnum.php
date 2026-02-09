@@ -707,8 +707,11 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Delivery could not be completed due to wrong recipient',
-                    'category' => null,
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
+                        'key' => 'not-available',
+                    ],
+                    'tags' => ["all"],
                 ],
                 self::NOT_AVAILABLE_WRONG_CITY => [
                     'label' => $lang === 'ar' ? 'مدينة خاطئة' : 'Wrong City',
@@ -717,7 +720,7 @@ enum AwbStatusEnum: string
                     'color_text' => '#c62828',
                     'description' => 'Shipment address does not match city',
                     'category' => null,
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all"],
                 ],
                 self::NOT_AVAILABLE_ROUTE => [
                     'label' => $lang === 'ar' ? 'مشكلة في المسار' : 'Route Issue',
@@ -787,7 +790,7 @@ enum AwbStatusEnum: string
                     'color_text' => '#b71c1c',
                     'description' => 'Recipient refused the shipment',
                     'category' => null,
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all"],
                 ],
                 self::NOT_PICKED_UP_RESCHEDULE => [
                     'label' => $lang === 'ar' ? 'إعادة جدولة الاستلام' : 'Reschedule Pickup',
