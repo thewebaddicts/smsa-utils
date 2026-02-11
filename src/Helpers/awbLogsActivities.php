@@ -9,6 +9,15 @@ if (!function_exists('get_operator_info')) {
     }
 }
 
+if (!function_exists('get_guest_info')) {
+    function get_guest_info($user)
+    {
+        $id = $user->id;
+        $name = $user->name ?? '';
+        return $id . ' | ' . $name;
+    }
+}
+
 
 
 if (!function_exists('get_branch_info')) {
