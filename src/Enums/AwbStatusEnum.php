@@ -251,11 +251,11 @@ enum AwbStatusEnum: string
                 ],
 
                 self::DISPATCHED_HST => [
-                    'label' => $lang === 'ar' ? 'تم التفريغ' : 'Debriefed HST',
+                    'label' => $lang === 'ar' ? 'تم التفريغ' : ' Dispatched HST',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
-                    'description' => 'Shipment has been debriefed in HST',
+                    'description' => 'Shipment has been dispatched in HST',
                     'category' => null,
                     'tags' => ["all"],
                 ],
