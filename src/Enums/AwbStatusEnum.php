@@ -227,11 +227,9 @@ enum AwbStatusEnum: string
 
 
 
-
     public function info()
     {
         $lang = app()->getLocale();
-
 
         try {
             return match ($this) {
@@ -272,7 +270,7 @@ enum AwbStatusEnum: string
                     'category' => null,
                     'tags' => ["all"],
                 ],
-                
+
                 self::CREATED => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'Created',
                     'icon' => 'file-plus',
@@ -1898,8 +1896,6 @@ enum AwbStatusEnum: string
             self::HSSC => ['label' => 'HSSC', 'icon' => 'users', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Handed Over To SSC'],
         };
     }
-
-
 
     public static function statuses(): array
     {
