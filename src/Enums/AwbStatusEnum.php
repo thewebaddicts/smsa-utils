@@ -121,6 +121,14 @@ enum AwbStatusEnum: string
 
     case NOT_RECEIVED = 'SHNR';
 
+
+    case GATEWAY_RECEIVED = 'CRGR'; //USED
+    case STATION_RECEIVED = 'CRSR'; // USED
+    case HUB_RECEIVED = 'CRHR'; // USED
+    case RETAIL_RECEIVED = 'CRRR'; // USED
+
+
+
         //old statuses:
 
     case AF = 'AF';
@@ -227,6 +235,44 @@ enum AwbStatusEnum: string
 
         try {
             return match ($this) {
+
+                self::GATEWAY_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'تم الاستلام' : 'Gateway Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been received at gateway',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::STATION_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'تم الاستلام' : 'Station Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been received at station',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::HUB_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'تم الاستلام' : 'Hub Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been received at hub',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::RETAIL_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'تم الاستلام' : 'Retail Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been received at retail',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                
                 self::CREATED => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'Created',
                     'icon' => 'file-plus',
