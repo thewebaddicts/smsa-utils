@@ -45,7 +45,7 @@ enum AwbStatusEnum: string
     case CANCELLED = 'SHCN';
     case CHANGE_ROUTE = 'SHRC';
     case OUT_FOR_DELIVERY = 'SHOD';
-    case SMS_SENT = 'SHSM';
+    case SMS_SENT = 'SHSS';
     case SHIPPER_CANCELED = 'SHSC';
     case IN_TRANSIT = 'SHIT';
     case GATEWAY_INBOUND = 'SHGI';
