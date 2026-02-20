@@ -122,15 +122,15 @@ enum AwbStatusEnum: string
     case NOT_RECEIVED = 'SHNR';
 
 
-    case GATEWAY_RECEIVED = 'CRGR'; //USED
-    case STATION_RECEIVED = 'CRSR'; // USED
-    case HUB_RECEIVED = 'CRHR'; // USED
-    case RETAIL_RECEIVED = 'CRRR'; // USED
+    case GATEWAY_RECEIVED = 'SHGR'; //USED
+    case STATION_RECEIVED = 'SHSR'; // USED
+    case HUB_RECEIVED = 'SHHR'; // USED
+    case RETAIL_RECEIVED = 'SHRR'; // USED
 
-    case GATEWAY_NOT_RECEIVED = 'CRGN'; //USED
-    case STATION_NOT_RECEIVED = 'CRSN'; // USED
-    case HUB_NOT_RECEIVED = 'CRHN'; // USED
-    case RETAIL_NOT_RECEIVED = 'CRRN'; // USED
+    case GATEWAY_NOT_RECEIVED = 'SHGN'; //USED
+    case STATION_NOT_RECEIVED = 'SHSN'; // USED
+    case HUB_NOT_RECEIVED = 'SHHN'; // USED
+    case RETAIL_NOT_RECEIVED = 'SHRN'; // USED
 
 
 
