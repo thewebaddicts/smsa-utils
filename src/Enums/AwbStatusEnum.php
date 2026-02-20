@@ -127,6 +127,13 @@ enum AwbStatusEnum: string
     case HUB_RECEIVED = 'CRHR'; // USED
     case RETAIL_RECEIVED = 'CRRR'; // USED
 
+    case GATEWAY_NOT_RECEIVED = 'CRGN'; //USED
+    case STATION_NOT_RECEIVED = 'CRSN'; // USED
+    case HUB_NOT_RECEIVED = 'CRHN'; // USED
+    case RETAIL_NOT_RECEIVED = 'CRRN'; // USED
+
+
+
 
 
         //old statuses:
@@ -234,6 +241,42 @@ enum AwbStatusEnum: string
         try {
             return match ($this) {
 
+                self::GATEWAY_NOT_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'لم يتم الاستلام' : 'Gateway Not Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has not been received at gateway',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::STATION_NOT_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'لم يتم الاستلام' : 'Station Not Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has not been received at station',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::HUB_NOT_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'لم يتم الاستلام' : 'Hub Not Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has not been received at hub',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::RETAIL_NOT_RECEIVED => [
+                    'label' => $lang === 'ar' ? 'لم يتم الاستلام' : 'Retail Not Received',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has not been received at retail',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
                 self::GATEWAY_RECEIVED => [
                     'label' => $lang === 'ar' ? 'تم الاستلام' : 'Gateway Received',
                     'icon' => 'file-plus',
@@ -1243,6 +1286,10 @@ enum AwbStatusEnum: string
     public function  infoHub(): array
     {
         return match ($this) {
+
+
+
+
             self::CREATED => [
                 'label' => 'Created',
                 'icon' => 'file-plus',
