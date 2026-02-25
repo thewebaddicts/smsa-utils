@@ -50,7 +50,7 @@ class FileController extends Controller
 
         return $this->responseData(
             $data,
-            notification()->success('File created', 'File created successfully')
+            notification()->success('File uploaded', 'File Uploaded successfully')
         );
     }
 }
