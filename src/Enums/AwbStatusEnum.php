@@ -246,6 +246,24 @@ enum AwbStatusEnum: string
             return match ($this) {
 
 
+                self::MAWB_IN => [
+                    'label' => $lang === 'ar' ? 'متوفر في ماوب' : 'Mawb In',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been received in Mawb',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::MAWB_OUT => [
+                    'label' => $lang === 'ar' ? 'تم الاستلام' : 'Mawb Out',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been dispatched in Mawb',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
 
                 self::OFFLOADED => [
                     'label' => $lang === 'ar' ? 'تم التفريغ' : 'Offloaded',
