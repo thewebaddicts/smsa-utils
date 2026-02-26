@@ -10,6 +10,7 @@ enum AwbStatusEnum: string
     case CREATED = 'SHCR';
     case PICKED_UP = 'SHPU';
 
+    case OFFLOADED = 'SHOF';
     case RECEIVED_OPERATION = 'SHIB';
 
     case ORIGIN_RECEIVED = 'SHOR';
@@ -241,6 +242,18 @@ enum AwbStatusEnum: string
         try {
             return match ($this) {
 
+
+
+                self::OFFLOADED => [
+                    'label' => $lang === 'ar' ? 'تم التفريغ' : 'Offloaded',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Shipment has been offloaded',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+
                 self::GATEWAY_NOT_RECEIVED => [
                     'label' => $lang === 'ar' ? 'لم يتم الاستلام' : 'Gateway Not Received',
                     'icon' => 'file-plus',
@@ -328,11 +341,11 @@ enum AwbStatusEnum: string
                 ],
 
                 self::DISPATCHED_MAWB => [
-                    'label' => $lang === 'ar' ? 'تم التفريغ' : 'Debriefed HST',
+                    'label' => $lang === 'ar' ? 'تم التفريغ' : 'Dispatched Mawb',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
-                    'description' => 'Shipment has been debriefed in HST',
+                    'description' => 'Shipment has been dispatched in Mawb',
                     'category' => null,
                     'tags' => ["all"],
                 ],
