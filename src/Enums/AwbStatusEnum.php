@@ -24,6 +24,9 @@ enum AwbStatusEnum: string
     case HST_IN = 'SHTI';
     case HST_OUT = 'SHTO';
 
+    case MAWB_IN = 'SHMI';
+    case MAWB_OUT = 'SHMO';
+
     case DISPATCHED_HST = 'SHDH';
     case DISPATCHED_MAWB = 'SHDM';
 
