@@ -20,13 +20,15 @@ enum AwbStatusEnum: string
     case EXPECTED_RECEIVE = 'SHER';
     case CRN_IN = 'SHCI';
     case CRN_OUT = 'SHCO';
+    case CRN_MOVED = 'SHCM';
 
     case HST_IN = 'SHTI';
     case HST_OUT = 'SHTO';
-    case HST_CHANGED = 'SHHC';
+    case HST_MOVED = 'SHTM';
 
     case MAWB_IN = 'SHMI';
     case MAWB_OUT = 'SHMO';
+    case MAWB_MOVED = 'SHMM';
 
     case DISPATCHED_HST = 'SHDH';
     case DISPATCHED_MAWB = 'SHDM';
@@ -246,12 +248,32 @@ enum AwbStatusEnum: string
         try {
             return match ($this) {
 
-                self::HST_CHANGED => [
-                    'label' => $lang === 'ar' ? 'تم التغيير' : 'HST Changed',
+                self::CRN_MOVED => [
+                    'label' => $lang === 'ar' ? 'تم التحرك' : 'CRN Moved',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'CRN has been changed',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+
+
+                self::HST_MOVED => [
+                    'label' => $lang === 'ar' ? 'تم التحرك' : 'HST Moved',
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
                     'description' => 'HST has been changed',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::MAWB_MOVED => [
+                    'label' => $lang === 'ar' ? 'تم التحرك' : 'MAWB Moved',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'MAWB has been changed',
                     'category' => null,
                     'tags' => ["all"],
                 ],
