@@ -23,6 +23,7 @@ enum AwbStatusEnum: string
 
     case HST_IN = 'SHTI';
     case HST_OUT = 'SHTO';
+    case HST_CHANGED = 'SHHC';
 
     case MAWB_IN = 'SHMI';
     case MAWB_OUT = 'SHMO';
@@ -244,6 +245,17 @@ enum AwbStatusEnum: string
 
         try {
             return match ($this) {
+
+                self::HST_CHANGED => [
+                    'label' => $lang === 'ar' ? 'تم التغيير' : 'HST Changed',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'HST has been changed',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+
 
 
                 self::MAWB_IN => [
