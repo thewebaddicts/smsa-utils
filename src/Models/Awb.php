@@ -144,6 +144,10 @@ class Awb extends Model
     {
         return $this->hasMany(AwbItem::class, 'awb_id');
     }
+    public function rtsBranch()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'rts_branch_id');
+    }
 
    
 }
