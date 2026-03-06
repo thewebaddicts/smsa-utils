@@ -143,6 +143,7 @@ enum AwbStatusEnum: string
 
 
   case  RTS_INITIATED = 'SHRT';
+  case FINAL_RTS='SHFR';
 
         //old statuses:
 
@@ -249,6 +250,16 @@ enum AwbStatusEnum: string
         try {
             return match ($this) {
 
+
+                self::FINAL_RTS => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'Final RTS',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'Final RTS has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
                 self::RTS_INITIATED => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'RTS Initiated',
                     'icon' => 'file-plus',
