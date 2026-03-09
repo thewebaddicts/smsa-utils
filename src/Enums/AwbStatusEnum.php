@@ -142,9 +142,13 @@ enum AwbStatusEnum: string
 
 
 
-  case  RTS_INITIATED = 'SHRT';
-  case FINAL_RTS='SHFR';
+    case  RTS_INITIATED = 'SHRT';
+    case FINAL_RTS = 'SHFR';
+    case RTS_INBOUND = 'SHRTIN';
+    case RTS_SHELF_IN = 'SHRTSI';
+    case RTS_SHELF_OUT = 'SHRTSO';
 
+    case REVOKED = 'SHRE';
         //old statuses:
 
     case AF = 'AF';
@@ -243,6 +247,7 @@ enum AwbStatusEnum: string
 
 
 
+
     public function info()
     {
         $lang = app()->getLocale();
@@ -250,6 +255,25 @@ enum AwbStatusEnum: string
         try {
             return match ($this) {
 
+                self::RTS_INBOUND => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'RTS Inbound',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'RTS has been inbound',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+
+                self::REVOKED => [
+                    'label' => $lang === 'ar' ? 'ملغي' : 'Revoked',
+                    'icon' => 'x-circle',
+                    'color_bg' => '#ffebee',
+                    'color_text' => '#b71c1c',
+                    'description' => 'Shipment revoked',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
 
                 self::FINAL_RTS => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'Final RTS',
@@ -829,7 +853,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all","TRIP EXCEPTION","PICKUP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_NO_ANSWER => [
                     'label' => $lang === 'ar' ? 'لا يوجد رد' : 'No Answer',
@@ -841,7 +865,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION","PICKUP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_RESCHEDULE => [
                     'label' => $lang === 'ar' ? 'إعادة الجدولة' : 'Reschedule',
@@ -853,7 +877,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION","PICKUP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_TRAVELING => [
                     'label' => $lang === 'ar' ? 'مسافر' : 'Traveling',
@@ -865,7 +889,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all","TRIP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_WRONG_PHONE => [
                     'label' => $lang === 'ar' ? 'رقم هاتف خاطئ' : 'Wrong Phone Number',
@@ -929,7 +953,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
                         'key' => 'capacity-issue',
                     ],
-                    'tags' => ["all","PICKUP EXCEPTION"],
+                    'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
                 self::CAPACITY_ISSUE_VEHICLE_OVERLOADED => [
                     'label' => $lang === 'ar' ? 'مشكلة في السعة - سيارة مشحونة' : 'Capacity Issue - Vehicle Overloaded',
@@ -941,7 +965,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
                         'key' => 'capacity-issue',
                     ],
-                    'tags' => ["all","PICKUP EXCEPTION"],
+                    'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
                 self::HOLD_PICKUP => [
                     'label' => $lang === 'ar' ? 'معلق للاستلام' : 'Hold for Pickup',
@@ -1006,7 +1030,7 @@ enum AwbStatusEnum: string
                     'category' => null,
                     'tags' => ["all"],
                 ],
-              
+
                 self::OVERAGE => [
                     'label' => $lang === 'ar' ? 'فائض' : 'Overage',
                     'icon' => 'plus-circle',
@@ -1050,7 +1074,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'مرفوض' : 'Refused',
                         'key' => 'refused',
                     ],
-                    'tags' => ["all","TRIP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION"],
                 ],
 
                 self::REFUSED_MONEY => [
@@ -1080,7 +1104,7 @@ enum AwbStatusEnum: string
                 ],
 
 
-            self::CANCELLED_DUPLICATE_PICKUP => [
+                self::CANCELLED_DUPLICATE_PICKUP => [
                     'label' => $lang === 'ar' ? 'ملغي - تم الاستلام مسبقاً' : 'Cancelled - Already Received',
                     'icon' => 'x-circle',
                     'color_bg' => '#ffcdd2',
@@ -1154,7 +1178,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
                         'key' => 'location-changed',
                     ],
-                    'tags' => ["all","TRIP EXCEPTION","PICKUP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
                 ],
                 self::LOCATION_CHANGED_OUT_OF_AREA => [
                     'label' => $lang === 'ar' ? 'موقع خاطئ - خارج المنطقة' : 'Wrong Location - Out of Area',
@@ -1166,7 +1190,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
                         'key' => 'location-changed',
                     ],
-                    'tags' => ["all","TRIP EXCEPTION","PICKUP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
                 ],
 
                 self::LOCATION_CHANGED_WRONG_ASSIGMENT => [
@@ -1179,10 +1203,10 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
                         'key' => 'location-changed',
                     ],
-                    'tags' => ["all","PICKUP EXCEPTION"],
+                    'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
 
-                
+
 
                 self::CUSTOMER_REQUESTED_HOLD_FOR_PICKUP => [
                     'label' => $lang === 'ar' ? 'طلب العميل - تعليق للاستلام' : 'Customer Requested Hold for Pickup',
@@ -1194,7 +1218,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'أخرى' : 'Other',
                         'key' => 'other',
                     ],
-                    'tags' => ["all","TRIP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION"],
                 ],
 
                 self::OUT_OF_DELIVERY_AREA => [
@@ -1207,7 +1231,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'أخرى' : 'Other',
                         'key' => 'other',
                     ],
-                    'tags' => ["all","TRIP EXCEPTION"],
+                    'tags' => ["all", "TRIP EXCEPTION"],
                 ],
                 self::CANCELLED => [
                     'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
