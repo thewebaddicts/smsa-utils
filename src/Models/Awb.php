@@ -84,7 +84,10 @@ class Awb extends Model
         'destination_code',
         'cancelled_at',
         'origin_received_at',
-        'destination_received_at'
+        'destination_received_at',
+        
+        'rts_initiated_at',
+        'rts_delivered_at'
     ];
 
     public function shipment()
