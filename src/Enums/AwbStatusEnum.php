@@ -147,6 +147,7 @@ enum AwbStatusEnum: string
     case RTS_INBOUND = 'SHRTIN';
     case RTS_SHELF_IN = 'SHRTSI';
     case RTS_SHELF_OUT = 'SHRTSO';
+    case RTS_DELIVERED = 'SHRTSD';
 
     case REVOKED = 'SHRE';
         //old statuses:
@@ -264,7 +265,33 @@ enum AwbStatusEnum: string
                     'category' => null,
                     'tags' => ["all"],
                 ],
-
+                self::RTS_DELIVERED => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'RTS Delivered',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'RTS has been delivered',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::RTS_SHELF_IN => [
+                    'label' => $lang === 'ar' ? 'دخول الرف' : 'RTS Shelf In',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'RTS has been shelf in',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::RTS_SHELF_OUT => [
+                    'label' => $lang === 'ar' ? 'خروج الرف' : 'RTS Shelf Out',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'RTS has been shelf out',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
                 self::REVOKED => [
                     'label' => $lang === 'ar' ? 'ملغي' : 'Revoked',
                     'icon' => 'x-circle',
