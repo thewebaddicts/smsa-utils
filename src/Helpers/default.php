@@ -15,6 +15,98 @@ use Illuminate\Support\Facades\Storage;
 
 
 
+
+if (!function_exists('create_pickup_from_shipment')) {
+    function create_pickup_from_shipment(
+        int $shipmentId,
+        $hub,
+        $operator,
+        array $form_data,
+    ) {
+        $shipment = DB::table('shipments')->where('id', $shipmentId)->first();
+        if (!$shipment) {
+            return null;
+        }
+
+        $awbs = \twa\smsautils\Models\Awb::where('shipment_id', $shipmentId)
+            ->where('current_location', 'LIKE', 'shipper_address_%')
+            ->get();
+
+        if ($awbs->isEmpty()) {
+            return null;
+        }
+
+        $total_height = 0;
+        $total_width = 0;
+        $total_length = 0;
+        $total_weight = 0;
+        foreach ($awbs as $awb) {
+            $total_height += $awb->declared_height_cm;
+            $total_width += $awb->declared_width_cm;
+            $total_length += $awb->declared_length_cm;
+            $total_weight += $awb->declared_weight_g / 1000;
+        }
+
+        $pickupTimes = explode('-', $form_data['pickup_time']);
+        $pickupTimeFrom = isset($pickupTimes[0]) ? now()->parse(trim($pickupTimes[0]))->format('H:i') : null;
+        $pickupTimeTo   = isset($pickupTimes[1]) ? now()->parse(trim($pickupTimes[1]))->format('H:i') : null;
+        $pickupDate = now()->parse($form_data['pickup_date'])->format('Y-m-d');
+
+        $firstAwb = $awbs->first();
+
+        $address = DB::table('addresses')->where('id', $firstAwb->sender_address_id)->first();
+
+        $route_id = $address ? find_route_by_address([
+            'city' => $address->city ?? null,
+            'province' => $address->province ?? null,
+            'postal_code' => $address->postal_code ?? null,
+            'country' => $address->country ?? null,
+        ]) : null;
+
+        $courier_id = null;
+        if ($route_id) {
+            $assignment = DB::table('route_assignments')
+                ->where('route_id', $route_id)
+                ->whereNull('deleted_at')
+                ->orderByDesc('assigned_at')
+                ->first();
+
+            if ($assignment) {
+                $courier_id = $assignment->courier_id;
+            }
+        }
+
+        $pickupRequest = new PickupRequest();
+
+        $pickupRequest->operator_id = $operator->id;
+        $pickupRequest->hub_id = $hub->id;
+        $pickupRequest->address_id = $firstAwb->sender_address_id;
+        $pickupRequest->nb_packages = $awbs->count();
+        $pickupRequest->total_weight = $total_weight;
+        $pickupRequest->dimension_height = $total_height;
+        $pickupRequest->dimension_width = $total_width;
+        $pickupRequest->dimension_length = $total_length;
+        $pickupRequest->client_id = $shipment->client_id;
+
+        $pickupRequest->pickup_date = $pickupDate;
+        $pickupRequest->pickup_time_from = $pickupTimeFrom;
+        $pickupRequest->pickup_time_to = $pickupTimeTo;
+        $pickupRequest->instruction = $form_data['instruction'] ?? null;
+        $pickupRequest->route_id = $route_id;
+        $pickupRequest->courier_id = $courier_id;
+        $pickupRequest->assigned_at = now();
+
+        $pickupRequest->status = PickupStatusEnum::PENDING->value;
+
+        $pickupRequest->save();
+
+        return $pickupRequest;
+    }
+}
+
+
+
+
 if (!function_exists('operation_activity_log')) {
     function operation_activity_log($mode, $operator_id, $operator_email, $record_id, $record_type, $payload, $created_at = null)
     {
@@ -665,7 +757,7 @@ if (!function_exists('get_files_info')) {
 }
 
 if (!function_exists('format_date_time')) {
-    
+
     function format_date_time($date, $format = 'd-m-Y H:i:s')
     {
         if (!$date) {
@@ -803,5 +895,4 @@ function send_shipment_success_to_sender(string $consigneeEmail, array $awbs): b
     });
 
     return true;
-
 }
