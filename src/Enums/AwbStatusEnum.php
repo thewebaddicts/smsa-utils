@@ -148,7 +148,7 @@ enum AwbStatusEnum: string
     case RTS_SHELF_IN = 'SHRTSI';
     case RTS_SHELF_OUT = 'SHRTSO';
     case RTS_DELIVERED = 'SHRTSD';
-
+    case CIR = 'SHCIR';
     case REVOKED = 'SHRE';
         //old statuses:
 
@@ -256,6 +256,15 @@ enum AwbStatusEnum: string
         try {
             return match ($this) {
 
+                self::CIR => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'CIR',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'CIR has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
                 self::RTS_INBOUND => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'RTS Inbound',
                     'icon' => 'file-plus',
