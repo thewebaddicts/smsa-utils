@@ -47,8 +47,8 @@ class PickupRequest extends Model
             $delayedTime = \Carbon\Carbon::parse($pickupRequest->pickup_time_to)->addMinute();
             $failedTime = \Carbon\Carbon::parse($pickupRequest->pickup_time_to)->addMinutes($failMinutes);
 
-            \App\Jobs\CheckPickupRequestStatus::dispatch($pickupRequest->id, 'delayed')->delay($delayedTime);
-            \App\Jobs\CheckPickupRequestStatus::dispatch($pickupRequest->id, 'failed')->delay($failedTime);
+            \twa\smsautils\Jobs\CheckPickupRequestStatus::dispatch($pickupRequest->id, 'delayed')->delay($delayedTime);
+            \twa\smsautils\Jobs\CheckPickupRequestStatus::dispatch($pickupRequest->id, 'failed')->delay($failedTime);
         });
     }
 
