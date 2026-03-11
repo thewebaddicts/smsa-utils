@@ -18,22 +18,18 @@ use Illuminate\Support\Facades\Storage;
 
 if (!function_exists('create_pickup_from_shipment')) {
     function create_pickup_from_shipment(
-        int $shipmentId,
+        \twa\smsautils\Models\Shipment $shipment,
         $hub,
         $operator,
         array $form_data,
     ) {
-        $shipment = DB::table('shipments')->where('id', $shipmentId)->first();
-        if (!$shipment) {
-            return null;
-        }
 
-        $awbs = \twa\smsautils\Models\Awb::where('shipment_id', $shipmentId)
+        $awbs = \twa\smsautils\Models\Awb::where('shipment_id', $shipment->id)
             ->where('current_location', 'LIKE', 'shipper_address_%')
             ->get();
 
-        if ($awbs->isEmpty()) {
-            return null;
+        if (count($awbs) === 0) {
+            return false;
         }
 
         $total_height = 0;
@@ -99,6 +95,8 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest->status = 'pending';
 
         $pickupRequest->save();
+
+        $pickupRequest->logActivity('Pickup request created', $operator);
 
         return $pickupRequest;
     }
