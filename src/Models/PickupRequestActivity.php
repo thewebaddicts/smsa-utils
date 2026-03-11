@@ -2,7 +2,7 @@
 
 namespace twa\smsautils\Models;
 
-use App\Models\Traits\HasPolymorphicActivity;
+use twa\smsautils\Models\Traits\HasPolymorphicActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
