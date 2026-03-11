@@ -22,6 +22,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         $hub,
         $operator,
         array $form_data,
+        bool $has_client = true
     ) {
 
         $awbs = \twa\smsautils\Models\Awb::where('shipment_id', $shipment->id)
@@ -82,7 +83,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest->dimension_height = $total_height;
         $pickupRequest->dimension_width = $total_width;
         $pickupRequest->dimension_length = $total_length;
-        $pickupRequest->client_id = $shipment->client_id;
+        $pickupRequest->client_id = $has_client ? $shipment->client_id : null;
 
         $pickupRequest->pickup_date = $pickupDate;
         $pickupRequest->pickup_time_from = $pickupTimeFrom;
