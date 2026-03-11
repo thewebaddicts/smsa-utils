@@ -76,7 +76,7 @@ if (!function_exists('create_pickup_from_shipment')) {
             }
         }
 
-        $pickupRequest = new PickupRequest();
+        $pickupRequest = new \twa\smsautils\Models\PickupRequest();
 
         $pickupRequest->operator_id = $operator->id;
         $pickupRequest->hub_id = $hub->id;
@@ -96,7 +96,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest->courier_id = $courier_id;
         $pickupRequest->assigned_at = now();
 
-        $pickupRequest->status = PickupStatusEnum::PENDING->value;
+        $pickupRequest->status = 'pending';
 
         $pickupRequest->save();
 
