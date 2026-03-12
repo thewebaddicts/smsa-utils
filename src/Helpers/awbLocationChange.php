@@ -93,6 +93,10 @@ function on_awb_operation_received(Awb|string|int &$record, $hub_id, $save = tru
 
     $location = 'hub_' . $hub_id . '_operations';
 
+    if ($awb->reexport_at && $awb->rts_branch_id == $hub_id) {
+        $awb->rts_inbounded_at = now();
+    }
+
     awb_location_change($awb, $location, $save);
 }
 
