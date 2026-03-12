@@ -15,6 +15,14 @@ use Illuminate\Support\Facades\Storage;
 
 
 
+if (!function_exists('format_date_time_with_timezone')) {
+    function format_date_time_with_timezone($datetime, $timezone)
+    {
+        return now()->parse($datetime)->setTimezone($timezone)->format('d M Y H:i');
+    }
+}
+
+
 
 if (!function_exists('create_pickup_from_shipment')) {
     function create_pickup_from_shipment(
