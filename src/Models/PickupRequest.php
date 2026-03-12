@@ -38,6 +38,7 @@ class PickupRequest extends Model
     protected $casts = [
         'pickup_date' => 'datetime',
         'pickup_time' => 'datetime',
+        'expected_awbs' => 'array'
     ];
 
     protected static function booted()
