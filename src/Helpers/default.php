@@ -30,7 +30,8 @@ if (!function_exists('create_pickup_from_shipment')) {
         $hub,
         $operator,
         array $form_data,
-        bool $has_client = true
+        bool $has_client = true,
+        array $expected_awbs = []
     ) {
 
         $awbs = \twa\smsautils\Models\Awb::where('shipment_id', $shipment->id)
@@ -100,6 +101,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest->route_id = $route_id;
         $pickupRequest->courier_id = $courier_id;
         $pickupRequest->assigned_at = now();
+        $pickupRequest->expected_awbs = $expected_awbs;
 
         $pickupRequest->status = 'pending';
 
