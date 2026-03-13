@@ -13,6 +13,47 @@ use twa\smsautils\Models\ActivityLog;
 
 use Illuminate\Support\Facades\Storage;
 
+
+if (!function_exists('awb_format')) {
+    function awb_format($awb, $include_files = null, $product_group = null)
+    {
+        $data = [
+            'awb' => $awb->awb,
+            'awb_sequence' => $awb->awb_sequence,
+            'id' => $awb->id,
+            'nb_packages' => $awb->nb_packages,
+            'master_awb' => $awb->master_awb,
+            'shipment_id' => $awb->shipment_id,
+            'status' => AwbStatusEnum::from($awb->last_status)->info(),
+        ];
+
+        if (!is_null($include_files)) {
+            $data['files'] = (new twa\smsautils\Http\Controllers\DocumentSchemaController)
+                ->getDocumentSchema('HAWB', $awb->destination_code, null, $include_files, $product_group);
+        }
+
+        return $data;
+    }
+}
+
+if(!function_exists('identify_type')) {
+    function identify_type($type) {
+        switch ($type) {
+            case 'rts':
+                return 'rts';
+            case 'cir':
+                return 'cir';
+            case 'ops-inbound':
+                return 'ops-inbound';
+            default:
+                return null;
+        }
+        return null;
+    }
+}
+
+
+
 if(!function_exists('validate_supervisor_credentials')) {
     function validate_supervisor_credentials( $hub_id, $supervisor_email, $supervisor_password)
     {
