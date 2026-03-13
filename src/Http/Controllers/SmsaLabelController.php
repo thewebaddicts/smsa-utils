@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use Milon\Barcode\DNS1D;
 use Milon\Barcode\DNS2D;
 use Illuminate\Support\Facades\DB;
-
+use App\Http\Controllers\Controller;
 
 class SmsaLabelController extends Controller
 {
