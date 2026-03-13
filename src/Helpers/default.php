@@ -12,7 +12,21 @@ use Carbon\Carbon;
 use twa\smsautils\Models\ActivityLog;
 
 use Illuminate\Support\Facades\Storage;
+use twa\smsautils\Enums\AwbStatusEnum;
 
+if (!function_exists('format_code_branch')) {
+
+    function format_code_branch(?string $code, ?string $branch): ?string
+    {
+        if (!$code) return $branch ?? null;
+
+        if (!$branch || $code === $branch) {
+            return $code;
+        }
+
+        return "{$code} ({$branch})";
+    }
+}
 
 if (!function_exists('awb_format')) {
     function awb_format($awb, $include_files = null, $product_group = null)
