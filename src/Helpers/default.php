@@ -36,6 +36,9 @@ if (!function_exists('create_pickup_from_shipment')) {
 
         $awbs = \twa\smsautils\Models\Awb::where('shipment_id', $shipment->id)
             ->where('current_location', 'LIKE', 'shipper_address_%')
+            ->when(!empty($expected_awbs), function ($query) use ($expected_awbs) {
+                $query->whereIn('awb', $expected_awbs);
+            })
             ->get();
 
         if (count($awbs) === 0) {
@@ -112,7 +115,6 @@ if (!function_exists('create_pickup_from_shipment')) {
         return $pickupRequest;
     }
 }
-
 
 
 
