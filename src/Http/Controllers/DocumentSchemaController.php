@@ -3,8 +3,8 @@
 namespace twa\smsautils\Http\Controllers;
 
 
-use App\Http\Controllers\Controller;
-use App\Models\DocumentSchema;
+
+use twa\smsautils\Models\DocumentSchema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use twa\apiutils\Traits\APITrait;

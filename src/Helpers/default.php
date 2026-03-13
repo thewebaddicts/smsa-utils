@@ -13,6 +13,38 @@ use twa\smsautils\Models\ActivityLog;
 
 use Illuminate\Support\Facades\Storage;
 
+if(!function_exists('validate_supervisor_credentials')) {
+    function validate_supervisor_credentials( $hub_id, $supervisor_email, $supervisor_password)
+    {
+
+        $credentials = get_supervisor_credentials($hub_id);
+
+        $supervisor = collect($credentials)->first(function ($sup) use ($supervisor_email, $supervisor_password) {
+            return $sup->email === $supervisor_email && $sup->password === md5($supervisor_password);
+        });
+
+        if (! $supervisor) {
+            return false;   
+        }
+         return $supervisor;
+       
+     
+    }
+}
+
+
+if (!function_exists('get_supervisor_credentials')) {
+    function get_supervisor_credentials($hub_id)
+    {
+        return DB::table('operators')
+            ->where('hub_id', $hub_id)
+            ->where('superadmin', 1)
+            ->select('id', 'email', 'password','employee_id','name')
+            ->get()
+            ->toArray();
+    }
+}
+
 
 
 if (!function_exists('format_date_time_with_timezone')) {
