@@ -47,12 +47,16 @@ class DocumentSchemaController extends Controller
         return $this->response(notification()->success('Document schema created successfully', 'Document schema created successfully'));
     }
 
-    public function update(Request $request,  $documentSchemaId)
+    public function update(Request $request, $documentSchemaId)
     {
         $data = clean_request([]);
 
+
+$documentSchema= DocumentSchema::find($documentSchemaId);
+// dd($documentSchema->id);
+
         $validator = Validator::make($data, [
-            'document_name' => ["string", "max:255", unique_rule('document_schemas', 'document_name', $documentSchemaId)],
+            'document_name' => ["string", "max:255", unique_rule('document_schemas', 'document_name', $documentSchema->id)],
             'document_for' => 'string|in:CRN,MAWB,HST,HAWB',
             'ports' => 'array',
             'ports.*' => 'required|string|size:3',
@@ -64,10 +68,6 @@ class DocumentSchemaController extends Controller
 
         if ($validator->fails()) {
             return $this->responseValidation($validator);
-        }
-        $documentSchema = DocumentSchema::find($documentSchemaId);
-        if (!$documentSchema) {
-            return $this->response(notification()->error('Document schema not found', 'Document schema not found'));
         }
 
         if (isset($data['document_name'])) {
