@@ -873,6 +873,47 @@ if (!function_exists('format_date_time')) {
         }
     }
 }
+if (!function_exists('is_valid_awb')) {
+    function is_valid_awb($awb)
+    {
+        // Must be exactly 12 digits
+        if (!preg_match('/^\d{12}$/', $awb)) {
+            return false;
+        }
+
+        // First 11 digits
+        $awbWithoutChecksum = substr($awb, 0, 11);
+
+        // Provided checksum
+        $givenChecksum = (int) substr($awb, 11, 1);
+
+        $multipliers = [1, 5, 7];
+        $sum = 0;
+        $multiplierIndex = 0;
+
+        $digits = str_split($awbWithoutChecksum);
+
+        // Apply multipliers from right to left
+        for ($i = count($digits) - 1; $i >= 0; $i--) {
+            $digit = (int) $digits[$i];
+            $multiplier = $multipliers[$multiplierIndex];
+
+            $sum += $digit * $multiplier;
+
+            $multiplierIndex = ($multiplierIndex + 1) % 3;
+        }
+
+        $remainder = $sum % 11;
+
+        if ($remainder === 10 || $remainder === 0) {
+            $calculatedChecksum = 0;
+        } else {
+            $calculatedChecksum = $remainder;
+        }
+
+        return $calculatedChecksum === $givenChecksum;
+    }
+}
 
 function send_awb_to_consignee(string $senderEmail, array $awbs = []): bool
 {
