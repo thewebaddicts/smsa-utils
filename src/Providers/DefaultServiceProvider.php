@@ -22,7 +22,7 @@ class DefaultServiceProvider extends ServiceProvider
         ], 'smsa-utils-config');
         $this->publishes([
             __DIR__ . '/../Configs/event-config.php' => config_path('event-config.php'),
-        ], 'event-config');
+        ], 'laravel-assets');
     }
 
     public function register()
