@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace twa\smsautils\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
