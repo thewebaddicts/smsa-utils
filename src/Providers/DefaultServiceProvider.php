@@ -20,6 +20,9 @@ class DefaultServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Configs/smsa-utils.php' => config_path('smsa-utils.php'),
         ], 'smsa-utils-config');
+        $this->publishes([
+            __DIR__ . '/../Configs/event-config.php' => config_path('event-config.php'),
+        ], 'event-config');
     }
 
     public function register()
