@@ -400,6 +400,8 @@ if (!function_exists('log_awb_activity')) {
             $source
 
         );
+       TreatWorkflowActivity::dispatch($awb_activity_log->id);
+        (new TreatWorkflowActivity($awb_activity_log->id))->handle();
     }
 }
 if (!function_exists('log_awbs_activity')) {
@@ -873,6 +875,75 @@ if (!function_exists('format_date_time')) {
         }
     }
 }
+if (!function_exists('convert_status_to_number')) {
+    function convert_status_to_number($status)
+    {
+
+        // ABCD
+
+        //A = 1.
+        //B = 2.
+        // C = 3.
+        // D = 4.
+
+        // the value will be (1*4) + (2*3) + (3*2) + (4*1) = 4 + 6 + 6 + 4 = 20
+
+        // Please implement this function to convert the status to number
+        // The status is a string like "ABCD"
+        // The function should return the number
+        // The function should return the number    
+
+
+        $statuses = get_workflow_statuses()->pluck('value_code', 'value')->toArray();
+
+        if (!isset($statuses[$status])) {
+            return null;
+        }
+
+        return $statuses[$status];
+
+        // $status_array = str_split($status);
+
+        // $number = 0;
+        // foreach ($status_array as $index => $letter) {
+
+        //     $letter_value = ord($letter) - ord('A') + 1;
+
+        //     $number += ($index + 1) * $letter_value;
+        // }
+        // return $number;
+    }
+}
+
+if (!function_exists('get_workflow_statuses')) {
+    function get_workflow_statuses()
+    {
+        $except = [AwbStatusEnum::CANCELLED->value, AwbStatusEnum::PICKED_UP->value, AwbStatusEnum::DELIVERED->value];
+
+        $statuses = collect([
+            AwbStatusEnum::CREATED,
+            AwbStatusEnum::PICKED_UP,
+            AwbStatusEnum::ORIGIN_RECEIVED,
+            AwbStatusEnum::DESTINATION_RECEIVED,
+            AwbStatusEnum::OUT_FOR_DELIVERY,
+
+
+
+
+            AwbStatusEnum::DELIVERED,
+            AwbStatusEnum::CANCELLED,
+        ])
+            ->filter(function ($case) use ($except) {
+                return !in_array($case->value, $except);
+            })
+            ->map(function ($case, $index) {
+
+                return array_merge(['value' => $case->value, "value_code" => 100 + $index], $case->info());
+            });
+
+        return $statuses;
+    }
+}
 if (!function_exists('is_valid_awb')) {
     function is_valid_awb($awb)
     {
@@ -914,7 +985,47 @@ if (!function_exists('is_valid_awb')) {
         return $calculatedChecksum === $givenChecksum;
     }
 }
+if (!function_exists('get_event_handler_label')) {
+    /**
+     * Get the label from an event handler class by event ID
+     *
+     * @param string|null $eventId
+     * @return string|null
+     */
+    function get_event_handler_label(?string $eventId): ?string
+    {
+        if (!$eventId) {
+            return null;
+        }
 
+        $config = config('event-config');
+
+        if (!isset($config[$eventId])) {
+            return null;
+        }
+
+        $handlerClass = is_array($config[$eventId])
+            ? ($config[$eventId]['class'] ?? null)
+            : $config[$eventId];
+
+        if (!$handlerClass || !class_exists($handlerClass)) {
+            return null;
+        }
+
+        try {
+            $handler = app($handlerClass);
+            if (method_exists($handler, 'label')) {
+                return $handler->label();
+            }
+        } catch (\Exception $e) {
+            Log::warning("Error getting label from handler: {$handlerClass}", [
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        return null;
+    }
+}
 function send_awb_to_consignee(string $senderEmail, array $awbs = []): bool
 {
     $appName = config('app.name', 'SMSA EXPRESS');

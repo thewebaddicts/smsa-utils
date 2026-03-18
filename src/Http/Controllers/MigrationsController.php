@@ -4,7 +4,7 @@ namespace twa\smsautils\Http\Controllers;
 
 use App\Models\File;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use twa\smsautils\Http\Controllers\Controller;
 use twa\apiutils\Traits\APITrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
