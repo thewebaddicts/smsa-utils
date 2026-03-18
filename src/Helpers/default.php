@@ -1146,3 +1146,43 @@ function send_shipment_success_to_sender(string $consigneeEmail, array $awbs): b
 
     return true;
 }
+if (!function_exists('render_dictionary_template')) {
+    function render_dictionary_template($variables)
+    {
+
+        $flatten = function ($value, string $prefix = '') use (&$flatten) {
+            $result = [];
+
+            if (is_object($value)) {
+                $value = (array) $value;
+            }
+
+            if (is_array($value)) {
+                foreach ($value as $k => $v) {
+                    $path = $prefix === '' ? (string) $k : $prefix . '.' . $k;
+
+                    if (is_array($v) || is_object($v)) {
+                        $result += $flatten($v, $path);
+                        continue;
+                    }
+
+                    $result['{{' . $path . '}}'] = $v;
+                }
+
+                return $result;
+            }
+
+            if ($prefix !== '') {
+                return ['{{' . $prefix . '}}' => $value];
+            }
+
+            return [];
+        };
+
+        if (!is_array($variables) && !is_object($variables)) {
+            return [];
+        }
+
+        return $flatten($variables);
+    }
+}

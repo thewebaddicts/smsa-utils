@@ -8,7 +8,7 @@ use twa\smsautils\Models\DocumentSchema;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use twa\apiutils\Traits\APITrait;
-use App\Http\Controllers\Controller;
+use twa\smsautils\Http\Controllers\Controller;
 
 class DocumentSchemaController extends Controller
 {
