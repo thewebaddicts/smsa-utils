@@ -13,6 +13,7 @@ use twa\smsautils\Models\ActivityLog;
 
 use Illuminate\Support\Facades\Storage;
 use twa\smsautils\Enums\AwbStatusEnum;
+use twa\smsautils\Jobs\TreatWorkflowActivity;
 
 if (!function_exists('format_code_branch')) {
 
@@ -340,7 +341,7 @@ if (!function_exists('log_activity')) {
     ) {
 
 
-        $data = DB::table($table)->insert([
+        $data = DB::table($table)->insertGetId([
             'target' => $target,
             'target_id' => $target_id,
             'status_code' => $status_code,
@@ -354,6 +355,7 @@ if (!function_exists('log_activity')) {
             'updated_at' => $created_at ? $created_at : now(),
             'source' => $source ?? null
         ]);
+        return $data;
 
         // LogActivityJob::dispatch(
         //     $table,
@@ -385,7 +387,7 @@ if (!function_exists('log_awb_activity')) {
         $source = null
     ) {
 
-        log_activity(
+        $awb_activity_log_id = log_activity(
             'awb_activities',
             $status_code,
             $target,
@@ -400,8 +402,8 @@ if (!function_exists('log_awb_activity')) {
             $source
 
         );
-       TreatWorkflowActivity::dispatch($awb_activity_log->id);
-        (new TreatWorkflowActivity($awb_activity_log->id))->handle();
+       TreatWorkflowActivity::dispatch($awb_activity_log_id);
+        // (new TreatWorkflowActivity($awb_activity_log->id))->handle();
     }
 }
 if (!function_exists('log_awbs_activity')) {
