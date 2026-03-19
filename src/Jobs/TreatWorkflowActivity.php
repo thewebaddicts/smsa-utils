@@ -95,7 +95,7 @@ class TreatWorkflowActivity implements ShouldQueue
 
                 $class = config('event-config.' . $event->workflow_event);
                 $class = new $class();
-                $result = $class->handle($variables, $event->payload);
+                $result = $class->handle($variables, json_encode($event->payload, true));
 
            
              $event_status = new WorkflowActivityEventStatus();
