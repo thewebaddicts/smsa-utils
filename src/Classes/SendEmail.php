@@ -55,6 +55,7 @@ class SendEmail
     {
 
         if (!$payload) {
+            Log::warning('SendEmail: Empty payload provided.');
             return false;
         }
 
@@ -65,10 +66,14 @@ class SendEmail
         try {
             $payload = json_decode($payload, true);
         } catch (\Throwable $th) {
+            Log::error('SendEmail: Failed to decode payload JSON.', [
+                'error' => $th->getMessage(),
+            ]);
             return false;
         }
 
         if (!is_array($payload)) {
+            Log::warning('SendEmail: Decoded payload is not an array.');
             return false;
         }
 
@@ -77,16 +82,38 @@ class SendEmail
             $subject = $payload['subject'];
             $message = $payload['message'];
         } catch (\Throwable $th) {
+            Log::error('SendEmail: Missing required payload keys.', [
+                'error' => $th->getMessage(),
+                'payload_keys' => array_keys($payload),
+            ]);
             return false;
         }
 
+        $emailShape = [
+            'to' => $to,
+            'subject' => $subject,
+            'message' => $message,
+        ];
+
 
         try {
+            Log::info('SendEmail: Attempting to send email.', [
+                'email' => $emailShape,
+            ]);
+
             Mail::to($to)->send(new EmailTemplate(
                 email_subject: $subject,
                 email_body: $message,
             ));
+
+            Log::info('SendEmail: Email sent successfully.', [
+                'email' => $emailShape,
+            ]);
         } catch (\Throwable $th) {
+            Log::error('SendEmail: Failed to send email.', [
+                'email' => $emailShape ?? null,
+                'error' => $th->getMessage(),
+            ]);
             return false;
         }
 
