@@ -38,20 +38,7 @@ class SendEmail
                 'required' => true,
                 'placeholder' => 'Enter email message',
             ],
-            [
-                'column' => 'button_text',
-                'label' => 'Button Text (optional)',
-                'type' => 'textfield',
-                'required' => false,
-                'placeholder' => 'e.g. Track shipment',
-            ],
-            [
-                'column' => 'button_url',
-                'label' => 'Button URL (optional)',
-                'type' => 'textfield',
-                'required' => false,
-                'placeholder' => 'e.g. https://example.com/track/{{awb}}',
-            ],
+       
 
         ];
     }
