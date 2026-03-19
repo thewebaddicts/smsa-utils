@@ -10,11 +10,7 @@ class DefaultServiceProvider extends EventServiceProvider
 {
 
 
-    protected $listen = [
-        \twa\smsautils\Events\OnAWBActivityLog::class => [
-            \twa\smsautils\Listeners\HandleWorkflowActivityLog::class,
-        ]
-    ];
+  
 
     public function boot()
     {
