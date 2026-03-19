@@ -4,6 +4,7 @@ namespace twa\smsautils\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 use twa\smsautils\Models\AwbActivity;
 use twa\smsautils\Models\WorkflowActivityEventStatus;
 use twa\smsautils\Models\Workflow;
@@ -94,6 +95,20 @@ class TreatWorkflowActivity implements ShouldQueue
 
 
                 $class = config('event-config.' . $event->workflow_event);
+                if (!$class) {
+                    $eventKey = (string) $event->workflow_event;
+                    $eventConfig = config('event-config', []);
+                    Log::error('Workflow event handler not resolved from config', [
+                        'event_identifier_raw' => $event->workflow_event,
+                        'event_identifier_trimmed' => trim($eventKey),
+                        'event_identifier_hex' => bin2hex($eventKey), // helps detect hidden chars/spaces/newlines
+                        'event_identifier_length' => strlen($eventKey),
+                        'config_loaded' => is_array($eventConfig),
+                        'config_keys_count' => is_array($eventConfig) ? count($eventConfig) : null,
+                        'has_exact_key' => is_array($eventConfig) ? array_key_exists($eventKey, $eventConfig) : false,
+                        'has_trimmed_key' => is_array($eventConfig) ? array_key_exists(trim($eventKey), $eventConfig) : false,
+                    ]);
+                }
                 $class = new $class();
                 $result = $class->handle($variables, json_encode($event->payload, true));
 
