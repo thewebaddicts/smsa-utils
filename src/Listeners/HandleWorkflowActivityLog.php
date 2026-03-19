@@ -1,42 +1,30 @@
 <?php
 
-namespace twa\smsautils\Jobs;
+namespace twa\smsautils\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Support\Facades\Log;
+use twa\smsautils\Events\OnAWBActivityLog;
+use Illuminate\Support\Facades\DB;
+use twa\smsautils\Models\Route;
+
 use twa\smsautils\Models\AwbActivity;
 use twa\smsautils\Models\WorkflowActivityEventStatus;
 use twa\smsautils\Models\Workflow;
 use twa\smsautils\Http\Controllers\EventController;
 use twa\smsautils\Services\WorkflowEventConditionEvaluator;
-class TreatWorkflowActivity implements ShouldQueue
+use Illuminate\Support\Facades\Log;
+
+class HandleWorkflowActivityLog
 {
-    use Queueable;
-
-    /**
-     * Create a new job instance.
-     */
-
-
-    public $awb_activity_id;
-
-    public function __construct($awb_activity_id)
+    public function handle(OnAWBActivityLog $event)
     {
-
-        $this->awb_activity_id = $awb_activity_id;
-    }
+        $awb_activity_log_id = $event->awb_activity_id;
 
 
-
-    public function handle(): void
-    {
-
-        $awb_activity =  AwbActivity::where('id', $this->awb_activity_id)->first();
+        $awb_activity =  AwbActivity::where('id', $awb_activity_log_id)->first();
         $awb_activity->workflow_started_at = now();
         $awb_activity->save();
 
-     
+
 
         $awb_number = $awb_activity->target;
         $variables = (new EventController())->getVariables($awb_number, false);
@@ -112,16 +100,14 @@ class TreatWorkflowActivity implements ShouldQueue
                 $class = new $class();
                 $result = $class->handle($variables, json_encode($event->payload, true));
 
-           
-             $event_status = new WorkflowActivityEventStatus();
-             $event_status->awb_activity_id = $awb_activity->id;
-             $event_status->event_identifier = $event->workflow_event;
-             $event_status->status = $result ? 'SUCCESS' : 'FAILED';
-             $event_status->payload = $event->payload;
-             $event_status->variables = $variables;
-             $event_status->save();
 
-
+                $event_status = new WorkflowActivityEventStatus();
+                $event_status->awb_activity_id = $awb_activity->id;
+                $event_status->event_identifier = $event->workflow_event;
+                $event_status->status = $result ? 'SUCCESS' : 'FAILED';
+                $event_status->payload = $event->payload;
+                $event_status->variables = $variables;
+                $event_status->save();
             }
         }
         $awb_activity->workflow_ended_at = now();

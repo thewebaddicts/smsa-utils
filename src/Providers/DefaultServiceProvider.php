@@ -6,9 +6,16 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
+
 class DefaultServiceProvider extends ServiceProvider
 {
 
+
+    protected $listen = [
+        \twa\smsautils\Events\OnAWBActivityLog::class => [
+            \twa\smsautils\Listeners\HandleWorkflowActivityLog::class,
+        ]
+    ];
 
     public function boot()
     {

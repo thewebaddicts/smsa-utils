@@ -52,8 +52,8 @@ class DocumentSchemaController extends Controller
         $data = clean_request([]);
 
 
-$documentSchema= DocumentSchema::find($documentSchemaId);
-// dd($documentSchema->id);
+        $documentSchema = DocumentSchema::find($documentSchemaId);
+
 
         $validator = Validator::make($data, [
             'document_name' => ["string", "max:255", unique_rule('document_schemas', 'document_name', $documentSchema->id)],

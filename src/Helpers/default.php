@@ -51,8 +51,9 @@ if (!function_exists('awb_format')) {
     }
 }
 
-if(!function_exists('identify_type')) {
-    function identify_type($type) {
+if (!function_exists('identify_type')) {
+    function identify_type($type)
+    {
         switch ($type) {
             case 'rts':
                 return 'rts';
@@ -69,8 +70,8 @@ if(!function_exists('identify_type')) {
 
 
 
-if(!function_exists('validate_supervisor_credentials')) {
-    function validate_supervisor_credentials( $hub_id, $supervisor_email, $supervisor_password)
+if (!function_exists('validate_supervisor_credentials')) {
+    function validate_supervisor_credentials($hub_id, $supervisor_email, $supervisor_password)
     {
 
         $credentials = get_supervisor_credentials($hub_id);
@@ -80,11 +81,9 @@ if(!function_exists('validate_supervisor_credentials')) {
         });
 
         if (! $supervisor) {
-            return false;   
+            return false;
         }
-         return $supervisor;
-       
-     
+        return $supervisor;
     }
 }
 
@@ -95,7 +94,7 @@ if (!function_exists('get_supervisor_credentials')) {
         return DB::table('operators')
             ->where('hub_id', $hub_id)
             ->where('superadmin', 1)
-            ->select('id', 'email', 'password','employee_id','name')
+            ->select('id', 'email', 'password', 'employee_id', 'name')
             ->get()
             ->toArray();
     }
@@ -402,8 +401,9 @@ if (!function_exists('log_awb_activity')) {
             $source
 
         );
-    //    TreatWorkflowActivity::dispatch($awb_activity_log_id);
-        (new TreatWorkflowActivity($awb_activity_log_id))->handle();
+
+        \twa\smsautils\Events\OnAWBActivityLog::dispatch($awb_activity_log_id);
+        // (new TreatWorkflowActivity($awb_activity_log_id))->handle();
     }
 }
 if (!function_exists('log_awbs_activity')) {
