@@ -63,60 +63,30 @@ class SendOTP
 
     public function handle(array $variables, string|null $payload): bool
     {
-        try {
-            $payload = json_decode(json_encode($payload), true) ?: [];
-
-            $toTemplate = (string) ($payload['to'] ?? '');
-            $messageTemplate = (string) ($payload['message'] ?? '');
-            $otpLength = (int) ($payload['otp_length'] ?? 6);
-
-            $otp = $this->generateOtp($otpLength);
-            $context = array_merge($variables, [
-                'payload' => $payload,
-                'otp' => $otp,
-            ]);
-
-            $to = trim($this->renderTemplate($toTemplate, $context));
-            $message = $this->renderTemplate($messageTemplate, $context);
-
-
-
-            if ($to === '' || trim($message) === '') {
-
-                Log::warning('SendOTP missing fields', ['to' => $to]);
-                return false;
-            }
-
-            if (strpos($to, '@') !== false) {
-                $mailable = new EmailTemplate(
-                    email_subject: 'Your OTP Code',
-                    email_body: $message
-                );
-
-                Mail::to($to)->send($mailable);
-
-                $sent = true;
-            } else {
-                // Use existing OTP helper (sends OTP via provider)
-                if (empty(env('INFINITO_CLIENT_ID')) || empty(env('INFINITO_CLIENT_PASSWORD')) || empty(env('INFINITO_SENDER_ID'))) {
-                    Log::error('SendOTP missing INFINITO env vars', [
-                        'has_client_id' => !empty(env('INFINITO_CLIENT_ID')),
-                        'has_client_password' => !empty(env('INFINITO_CLIENT_PASSWORD')),
-                        'has_sender_id' => !empty(env('INFINITO_SENDER_ID')),
-                    ]);
-                    return false;
-                }
-
-                $sent = send_client_otp($to, $otp);
-            }
-
-
-
-            Log::info('SendOTP result', ['to' => $to, 'sent' => $sent]);
-            return (bool) $sent;
-        } catch (\Throwable $e) {
-            Log::error('SendOTP failed', ['error' => $e->getMessage()]);
-            return false;
+        if (!$payload) return false;
+    
+        $otp = $this->generateOtp(6);
+    
+        $dictionary = render_dictionary_template($variables);
+        $dictionary['{{otp}}'] = $otp;
+    
+        $payload = str_replace(array_keys($dictionary), array_values($dictionary), $payload);
+    
+        $payload = json_decode($payload, true);
+        if (!is_array($payload)) return false;
+    
+        $to = $payload['to'] ?? null;
+        $message = $payload['message'] ?? null;
+        if (!$to || !$message) return false;
+    
+        if (strpos($to, '@') !== false) {
+            Mail::to($to)->send(new EmailTemplate(
+                email_subject: 'Your OTP Code',
+                email_body: $message
+            ));
+            return true;
         }
+    
+        return send_client_otp($to, $otp);
     }
 }
