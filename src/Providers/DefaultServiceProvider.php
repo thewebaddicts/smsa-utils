@@ -2,12 +2,11 @@
 
 namespace twa\smsautils\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 
-class DefaultServiceProvider extends ServiceProvider
+class DefaultServiceProvider extends EventServiceProvider
 {
 
 
