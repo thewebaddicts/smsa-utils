@@ -14,6 +14,7 @@ use twa\smsautils\Models\ActivityLog;
 use Illuminate\Support\Facades\Storage;
 use twa\smsautils\Enums\AwbStatusEnum;
 use twa\smsautils\Jobs\TreatWorkflowActivity;
+use twa\smsautils\Models\AccessToken;
 
 if (!function_exists('format_code_branch')) {
 
@@ -1180,4 +1181,23 @@ if (!function_exists('render_dictionary_template')) {
 
         return $flatten($variables);
     }
+}
+
+
+function create_access_token($id, $type, $duration_minutes = 525600)
+{
+    $token = sprintf(
+        '%s%s%s',
+        '',
+        $tokenEntropy = Str::random(40),
+        hash('crc32b', $tokenEntropy)
+    );
+    $access_token = new AccessToken();
+    $access_token->token = $id . "|" . $token;
+    $access_token->tokenable_id = $id;
+    $access_token->tokenable_type = $type;
+    $access_token->expires_at = now()->addMinutes($duration_minutes);
+    $access_token->save();
+
+    return $access_token;
 }

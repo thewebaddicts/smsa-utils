@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use twa\apiutils\Traits\APITrait;
 use twa\smsautils\Models\ClientApiKey;
 use twa\smsautils\Models\Operator;
+use twa\smsautils\Models\SystemUser;
 use twa\smsautils\Models\User;
 
 class AuthMandatoryMiddleware
@@ -30,7 +31,7 @@ class AuthMandatoryMiddleware
         }
 
         if (!$access_token) {
-            return $this->response(notification()->error("Access Token is required", "Access Token is required",100));
+            return $this->response(notification()->error("Access Token is required", "Access Token is required", 100));
         }
 
         $access_token = DB::table('access_tokens')->where('token', $access_token)
@@ -66,6 +67,12 @@ class AuthMandatoryMiddleware
                 $performer = $user->id . ' | ' . $user->first_name . ' ' . $user->last_name;
 
                 break;
+            case 'workflow':
+
+                $user = SystemUser::whereId($access_token->tokenable_id)->first();
+                $performer = $user->id . ' | ' . $user->name;
+
+                break;
         }
 
         request()->merge([
@@ -74,7 +81,7 @@ class AuthMandatoryMiddleware
             'user_performer' => $performer
         ]);
 
-          $request->setUserResolver(function () use ($user) {
+        $request->setUserResolver(function () use ($user) {
             return $user;
         });
 
