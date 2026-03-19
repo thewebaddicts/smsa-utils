@@ -34,7 +34,7 @@ class SendEmail
             [
                 'column' => 'message',
                 'label' => 'Message',
-                'type' => 'textarea',
+                'type' => 'texteditor',
                 'required' => true,
                 'placeholder' => 'Enter email message',
             ],
