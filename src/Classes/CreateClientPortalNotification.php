@@ -6,6 +6,7 @@ use App\Contracts\EventHandlerInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use twa\smsautils\Models\AccessToken;
+use twa\smsautils\Models\ClientPortalNotification;
 
 class CreateClientPortalNotification extends HandlerParent
 {
@@ -19,11 +20,18 @@ class CreateClientPortalNotification extends HandlerParent
 
         return [
             [
-                'column' => 'awb',
-                'label' => 'AWB',
+                'column' => 'title',
+                'label' => 'Title',
                 'type' => 'textfield',
                 'required' => true,
-                'placeholder' => 'Enter AWB',
+                'placeholder' => 'Enter Title',
+            ],
+            [
+                'column' => 'message',
+                'label' => 'Message',
+                'type' => 'textarea',
+                'required' => true,
+                'placeholder' => 'Enter Message',
             ],
         ];
     }
