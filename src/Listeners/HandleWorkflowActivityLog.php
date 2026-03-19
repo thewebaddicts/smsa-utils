@@ -5,7 +5,7 @@ namespace twa\smsautils\Listeners;
 use twa\smsautils\Events\OnAWBActivityLog;
 use Illuminate\Support\Facades\DB;
 use twa\smsautils\Models\Route;
-
+use Illuminate\Contracts\Queue\ShouldQueue;
 use twa\smsautils\Models\AwbActivity;
 use twa\smsautils\Models\WorkflowActivityEventStatus;
 use twa\smsautils\Models\Workflow;
@@ -13,7 +13,7 @@ use twa\smsautils\Http\Controllers\EventController;
 use twa\smsautils\Services\WorkflowEventConditionEvaluator;
 use Illuminate\Support\Facades\Log;
 
-class HandleWorkflowActivityLog
+class HandleWorkflowActivityLog implements ShouldQueue
 {
     public function handle(OnAWBActivityLog $event)
     {

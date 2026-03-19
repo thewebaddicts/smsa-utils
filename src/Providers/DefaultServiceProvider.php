@@ -4,7 +4,7 @@ namespace twa\smsautils\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
-
+use Illuminate\Support\Facades\Event;
 
 class DefaultServiceProvider extends EventServiceProvider
 {
@@ -29,6 +29,8 @@ class DefaultServiceProvider extends EventServiceProvider
         $this->publishes([
             __DIR__ . '/../Configs/event-config.php' => config_path('event-config.php'),
         ], 'laravel-assets');
+
+        Event::listen(\twa\smsautils\Events\OnAWBActivityLog::class, \twa\smsautils\Listeners\HandleWorkflowActivityLog::class);
     }
 
     public function register()
