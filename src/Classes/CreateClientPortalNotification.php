@@ -37,12 +37,19 @@ class CreateClientPortalNotification extends HandlerParent
     }
     public function handle(array $variables, string|null $payload): bool
     {
-        $client_portal_notification = new ClientPortalNotification();
-        $client_portal_notification->title = $variables['title'];
-        $client_portal_notification->message = $variables['message'];
-        $client_portal_notification->type = $variables['type'];
-        $client_portal_notification->data = $variables['data'];
-        $client_portal_notification->save();
+
+        $payload = $this->validatePayload($variables, $payload);
+        if (!$payload) {
+            return false;
+        }
+
+        $client_portal_notifications = new ClientPortalNotification();
+        $client_portal_notifications->shipper_id = $variables['shipper']['id'];
+        $client_portal_notifications->title = $payload['title'];
+        $client_portal_notifications->message = $payload['message'];
+        $client_portal_notifications->save();
+
+
 
         return true;
     }
