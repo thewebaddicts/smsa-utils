@@ -402,8 +402,8 @@ if (!function_exists('log_awb_activity')) {
             $source
 
         );
-       TreatWorkflowActivity::dispatch($awb_activity_log_id);
-        // (new TreatWorkflowActivity($awb_activity_log->id))->handle();
+    //    TreatWorkflowActivity::dispatch($awb_activity_log_id);
+        (new TreatWorkflowActivity($awb_activity_log_id))->handle();
     }
 }
 if (!function_exists('log_awbs_activity')) {
