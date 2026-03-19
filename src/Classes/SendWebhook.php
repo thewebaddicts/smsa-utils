@@ -3,9 +3,10 @@
 namespace twa\smsautils\Classes;
 
 use App\Contracts\EventHandlerInterface;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class SendWebhook
+class SendWebhook extends HandlerParent
 {
     public function label(): string
     {
@@ -16,18 +17,30 @@ class SendWebhook
     {
         return [
             [
-                'column' => 'label',
-                'label' => 'Label',
+                'column' => 'url',
+                'label' => 'Webhook POST URL',
                 'type' => 'textfield',
                 'required' => true,
-                'placeholder' => 'Enter label',
+                'placeholder' => 'Enter Webhook POST URL',
             ],
 
         ];
     }
+
     public function handle(array $variables, string|null $payload): bool
     {
-        Log::info('SendWebhook', ['variables' => $variables, 'payload' => $payload]);
+        $payload = $this->validatePayload($variables, $payload);
+        if (!$payload) {
+            return false;
+        }
+
+        $url = $payload['url'];
+
+        $response = Http::post($url);
+        if ($response->failed()) {
+            return false;
+        }
+
         return true;
     }
 }

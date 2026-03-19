@@ -757,13 +757,6 @@ if (!function_exists('send_client_otp')) {
         $senderId = env('INFINITO_SENDER_ID');
         $message = "This is an OTP code {$otp}";
 
-        // Log::info("Starting OTP send", [
-        //     'phone' => $phone,
-        //     'otp' => $otp,
-        //     'clientId' => $clientId,
-        //     'senderId' => $senderId
-        // ]);
-
 
         $query = http_build_query([
             'clientid' => $clientId,

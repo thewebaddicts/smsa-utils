@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use twa\smsautils\Mail\EmailTemplate;
 
-class SendEmail
+class SendEmail extends HandlerParent
 {
     public function label(): string
     {
@@ -38,39 +38,21 @@ class SendEmail
                 'required' => true,
                 'placeholder' => 'Enter email message',
             ],
-       
+
 
         ];
     }
 
-    private function renderTemplate(string $template, array $context): string
-    {
-        return str_replace(array_keys($context), array_values($context), $template);
-    }
-
-
-
-
     public function handle(array $variables, string|null $payload): bool
     {
 
+
+        $payload = $this->validatePayload($variables, $payload);
+
         if (!$payload) {
-            Log::warning('SendEmail: Empty payload provided.');
             return false;
         }
 
-        $dictionary = render_dictionary_template($variables);
-
-        $payload = $this->renderTemplate($payload, $dictionary);
-
-        try {
-            $payload = json_decode($payload, true);
-        } catch (\Throwable $th) {
-            Log::error('SendEmail: Failed to decode payload JSON.', [
-                'error' => $th->getMessage(),
-            ]);
-            return false;
-        }
 
         if (!is_array($payload)) {
             Log::warning('SendEmail: Decoded payload is not an array.');
