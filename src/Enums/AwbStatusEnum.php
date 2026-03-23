@@ -121,6 +121,16 @@ enum AwbStatusEnum: string
     case OVERAGE = 'SHOV'; // was exp
     case ATTEMPTED = 'SHAT';
     case REFUSED = 'SHRF';
+    case ATTEMPTED_1 = 'SHAT-1';
+    case ATTEMPTED_2 = 'SHAT-2';
+    case ATTEMPTED_3 = 'SHAT-3';
+    case ATTEMPTED_4 = 'SHAT-4';
+    case ATTEMPTED_5 = 'SHAT-5';
+    case ATTEMPTED_6 = 'SHAT-6';
+    case ATTEMPTED_7 = 'SHAT-7';
+    case ATTEMPTED_8 = 'SHAT-8';
+    case ATTEMPTED_9 = 'SHAT-9';
+    case ATTEMPTED_10 = 'SHAT-10';
 
 
     case DAMAGED = 'EXDM'; // was exp
@@ -255,7 +265,96 @@ enum AwbStatusEnum: string
 
         try {
             return match ($this) {
-
+                self::ATTEMPTED_1 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-1',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-1 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_2 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-2',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-2 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_3 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-3',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-3 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_4 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-4',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-4 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_5 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-5',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-5 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_6 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-6',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-6 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_7 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-7',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-7 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_8 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-8',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-8 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_9 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-9',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-9 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::ATTEMPTED_10 => [
+                    'label' => $lang === 'ar' ? 'تم الإنشاء' : 'ATTEMPTED-10',
+                    'icon' => 'file-plus',
+                    'color_bg' => '#e3f2fd',
+                    'color_text' => '#1565c0',
+                    'description' => 'ATTEMPTED-10 has been initiated',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
                 self::CIR => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'CIR',
                     'icon' => 'file-plus',

@@ -914,20 +914,68 @@ if (!function_exists('convert_status_to_number')) {
 if (!function_exists('get_workflow_statuses')) {
     function get_workflow_statuses()
     {
-        $statuses = collect([
+
+        $attempts = request()->input('nb_attempts', 1);
+
+        $status_codes = [
             AwbStatusEnum::CREATED,
             AwbStatusEnum::PICKED_UP,
             AwbStatusEnum::ORIGIN_RECEIVED,
+            AwbStatusEnum::RECEIVED_OPERATION,
+            AwbStatusEnum::GATEWAY_RECEIVED,
+            AwbStatusEnum::STATION_RECEIVED,
+            AwbStatusEnum::HUB_RECEIVED,
+            AwbStatusEnum::RETAIL_RECEIVED,
             AwbStatusEnum::DESTINATION_RECEIVED,
+
+
+            AwbStatusEnum::GATEWAY_NOT_RECEIVED,
+            AwbStatusEnum::STATION_NOT_RECEIVED,
+            AwbStatusEnum::HUB_NOT_RECEIVED,
+            AwbStatusEnum::RETAIL_NOT_RECEIVED,
+
+            AwbStatusEnum::OFFLOADED,
+
+
+            AwbStatusEnum::RTS_INITIATED,
+            AwbStatusEnum::REVOKED,
+
+            AwbStatusEnum::ADDRESS_CHANGED,
+            AwbStatusEnum::ADDRESS_VALIDATED,
+            AwbStatusEnum::UPDATED_DIMENSIONS,
+            AwbStatusEnum::UPDATED_WEIGHT,
+            AwbStatusEnum::CHANGE_ROUTE,
+            AwbStatusEnum::HOLD_FOR_PICKUP,
+            AwbStatusEnum::HOLD,
+            AwbStatusEnum::HOLD_CUSTOMS,
+            AwbStatusEnum::RELEASE_CUSTOMS,
+
+
+
             AwbStatusEnum::OUT_FOR_DELIVERY,
 
 
+        ];
+
+        foreach (range(1, $attempts) as $attempt) {
+            $status_codes[] = AwbStatusEnum::tryFrom('SHAT-' . $attempt);
+        }
 
 
+        $status_codes[] = AwbStatusEnum::DELIVERED;
+        $status_codes[] = AwbStatusEnum::CANCELLED;
+        $status_codes[] = AwbStatusEnum::CIR;
 
-            AwbStatusEnum::DELIVERED,
-            AwbStatusEnum::CANCELLED,
-        ])
+        // case  RTS_INITIATED = 'SHRT';
+        // case FINAL_RTS = 'SHFR';
+        // case RTS_INBOUND = 'SHRTIN';
+        // case RTS_SHELF_IN = 'SHRTSI';
+        // case RTS_SHELF_OUT = 'SHRTSO';
+        // case RTS_DELIVERED = 'SHRTSD';
+        // case CIR = 'SHCIR';
+        // case REVOKED = 'SHRE';
+
+        $statuses = collect($status_codes)
 
             ->map(function ($case, $index) {
 
