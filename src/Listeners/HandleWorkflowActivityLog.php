@@ -13,7 +13,7 @@ use twa\smsautils\Http\Controllers\EventController;
 use twa\smsautils\Services\WorkflowEventConditionEvaluator;
 use Illuminate\Support\Facades\Log;
 
-class HandleWorkflowActivityLog
+class HandleWorkflowActivityLog implements ShouldQueue
 {
     public function handle(OnAWBActivityLog $event)
     {
