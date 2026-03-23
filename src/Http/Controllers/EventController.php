@@ -205,7 +205,7 @@ class EventController
 
         $form_data = clean_request([]);
         $validator = Validator::make($form_data, [
-            'payload' => 'required|array',
+            'payload' => 'array',
             'conditions' => 'nullable|array',
 
         ]);
