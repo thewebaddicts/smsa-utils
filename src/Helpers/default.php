@@ -914,8 +914,6 @@ if (!function_exists('convert_status_to_number')) {
 if (!function_exists('get_workflow_statuses')) {
     function get_workflow_statuses()
     {
-        $except = [AwbStatusEnum::CANCELLED->value, AwbStatusEnum::PICKED_UP->value, AwbStatusEnum::DELIVERED->value];
-
         $statuses = collect([
             AwbStatusEnum::CREATED,
             AwbStatusEnum::PICKED_UP,
@@ -926,12 +924,11 @@ if (!function_exists('get_workflow_statuses')) {
 
 
 
+
             AwbStatusEnum::DELIVERED,
             AwbStatusEnum::CANCELLED,
         ])
-            ->filter(function ($case) use ($except) {
-                return !in_array($case->value, $except);
-            })
+
             ->map(function ($case, $index) {
 
                 return array_merge(['value' => $case->value, "value_code" => 100 + $index], $case->info());
