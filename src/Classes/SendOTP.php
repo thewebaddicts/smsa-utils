@@ -6,7 +6,7 @@ use twa\smsautils\Mail\EmailTemplate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
-class SendOTP
+class SendOTP extends HandlerParent
 {
     public function label(): string
     {
