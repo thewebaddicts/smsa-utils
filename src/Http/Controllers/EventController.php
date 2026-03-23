@@ -911,6 +911,7 @@ class EventController
         }
 
         $variables = [
+            'shipment_id' => $shipment->id,
             'awb' => $awb->awb,
             'parent_awb' => $awb->master_awb,
             'shipment_value' => $awb->shipment_value,
