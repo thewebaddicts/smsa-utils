@@ -13,7 +13,7 @@ use twa\smsautils\Http\Controllers\EventController;
 use twa\smsautils\Services\WorkflowEventConditionEvaluator;
 use Illuminate\Support\Facades\Log;
 
-class HandleWorkflowActivityLog implements ShouldQueue
+class HandleWorkflowActivityLog
 {
     public function handle(OnAWBActivityLog $event)
     {
@@ -71,7 +71,7 @@ class HandleWorkflowActivityLog implements ShouldQueue
                     $event_status->payload = $event->payload;
                     $event_status->variables = $variables;
                     $event_status->save();
-                    continue 2;
+                    continue 1;
                 }
 
                 if (!$this->matchConditions($event->conditions, $variables)) {
@@ -82,7 +82,7 @@ class HandleWorkflowActivityLog implements ShouldQueue
                     $event_status->payload = $event->payload;
                     $event_status->variables = $variables;
                     $event_status->save();
-                    continue 2;
+                    continue 1;
                 }
 
 
