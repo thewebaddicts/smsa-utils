@@ -1198,3 +1198,16 @@ function create_access_token($id, $type, $duration_minutes = 525600)
 
     return $access_token;
 }
+
+
+function process_event_status($status, $number_of_attempts = 1)
+{
+
+    $list_of_exception_trips = AwbStatusEnum::exception_trips();
+    // $list_of_exception_trips = [];
+    if (in_array($status, $list_of_exception_trips)) {
+        return "SHAT-" . $number_of_attempts;
+    }
+
+    return $status;
+}

@@ -2196,4 +2196,40 @@ enum AwbStatusEnum: string
             fn($value) => !in_array($value, $exclude)
         ));
     }
+
+    public static function exception_trips(): array
+    {
+        $needles = ['TRIP EXCEPTION', 'EXCEPTION']; // match user-intent tags (trim spaces)
+        $needles = array_map(fn(string $t) => trim($t), $needles);
+
+        $matchingCases = array_filter(
+            self::cases(),
+            function (self $case) use ($needles): bool {
+                $info = $case->info();
+                $tags = $info['tags'] ?? [];
+
+                if (!is_array($tags)) {
+                    return false;
+                }
+
+                $normalizedTags = array_map(
+                    fn($tag) => trim((string) $tag),
+                    $tags
+                );
+
+                foreach ($needles as $needle) {
+                    if (in_array($needle, $normalizedTags, true)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        );
+
+        return array_values(array_map(
+            fn(self $case) => $case->value,
+            $matchingCases
+        ));
+    }
 }
