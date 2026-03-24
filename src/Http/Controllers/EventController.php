@@ -126,6 +126,40 @@ class EventController
 
         return $this->responseData($handlers);
     }
+    private function shouldSetConfiguredAt(string $eventId, array $payload): bool
+    {
+        if (!empty($payload)) {
+            return true;
+        }
+
+        return $this->eventHandlerHasNoPayloadFields($eventId);
+    }
+
+    private function eventHandlerHasNoPayloadFields(string $eventId): bool
+    {
+        $config = config('event-config', []);
+        $handlerClass = $config[$eventId] ?? null;
+
+        if (is_array($handlerClass)) {
+            $handlerClass = $handlerClass['class'] ?? null;
+        }
+
+        if (!$handlerClass || !class_exists($handlerClass)) {
+            return false;
+        }
+
+        try {
+            $handler = app($handlerClass);
+            if (!method_exists($handler, 'payload')) {
+                return false;
+            }
+
+            $handlerPayload = $handler->payload();
+            return is_array($handlerPayload) && empty($handlerPayload);
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
 
 
     public function create(Request $request, $workflow_id)
@@ -160,7 +194,7 @@ class EventController
         $event->orders = $order;
 
         // Set configured_at when payload is filled
-        if (!empty($form_data['payload'])) {
+        if ($this->shouldSetConfiguredAt($event->workflow_event, $form_data['payload'] ?? [])) {
             $event->configured_at = now();
         }
 

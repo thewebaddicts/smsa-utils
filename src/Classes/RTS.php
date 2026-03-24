@@ -16,9 +16,9 @@ class RTS extends HandlerParent
 
     public function payload(): array
     {
-
         return [];
     }
+    
     public function handle(array $variables, string|null $payload): bool
     {
         $access_token = AccessToken::where('tokenable_type', 'workflow')
@@ -26,8 +26,8 @@ class RTS extends HandlerParent
             ->where('expires_at', '>', now())
             ->whereNull('deleted_at')
             ->first();
-        if (!$access_token) {
 
+        if (!$access_token) {
             create_access_token(2, 'workflow');
         }
 
