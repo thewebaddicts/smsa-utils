@@ -302,6 +302,12 @@ class EventController
             ],
 
             [
+                'label' => 'AWB Sequence',
+                'type' => 'number',
+                'name' => 'awb_sequence',
+                'operations' => OperationsEnum::forTypeNumber(),
+            ],
+            [
                 'label' => 'Shipment Value',
                 'type' => 'select',
                 'name' => 'shipment_value',
@@ -914,6 +920,7 @@ class EventController
             'shipment_id' => $shipment->id,
             'awb' => $awb->awb,
             'parent_awb' => $awb->master_awb,
+            'awb_sequence' => $awb->awb_sequence,
             'shipment_value' => $awb->shipment_value,
             'nb_delivery_attempts' => $awb->nb_attempts,
             'dutiable' => $shipment->dutiable,
