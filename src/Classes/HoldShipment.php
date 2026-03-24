@@ -51,7 +51,7 @@ class HoldShipment extends HandlerParent
             'shipment_id' => (string) $variables['shipment_id'],
             'awb_sequence' => $variables['awb_sequence'],
             'nb_packages' => $variables['nb_packages'],
-            'master_awb' => $variables['master_awb'],
+            'master_awb' => $variables['parent_awb'],
             'reason' => (string) $payload['reason'],
             'hold_starts_at' => now(),
             'hold_expires_at' => now()->addDays($payload['nb_hold_days']),
