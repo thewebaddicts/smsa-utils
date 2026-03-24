@@ -257,7 +257,7 @@ class EventController
         $event->conditions = $form_data['conditions'];
 
         // Set configured_at when payload is filled
-        if (!empty($form_data['payload'])) {
+        if ($this->shouldSetConfiguredAt($event->workflow_event, $form_data['payload'] ?? [])) {
             $event->configured_at = now();
         }
 
