@@ -33,6 +33,10 @@ class Courier extends Model
         'driving_license_scan',
         'national_id_scan',
         'notes',
+        'service_type',
+    ];
+    protected $casts = [
+        'service_type' => 'array',
     ];
 
     public function status()
