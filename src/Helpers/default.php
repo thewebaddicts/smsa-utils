@@ -160,6 +160,13 @@ if (!function_exists('create_pickup_from_shipment')) {
             'country' => $address->country ?? null,
         ]) : null;
 
+        $hub_id = $hub->id;
+        if ($route_id) {
+            $route_hub_id = DB::table('routes')->where('id', $route_id)->value('hub_id');
+            if (!empty($route_hub_id)) {
+               $hub_id = $route_hub_id;
+            }
+        }
         $courier_id = null;
         if ($route_id) {
             $assignment = DB::table('route_assignments')
@@ -176,7 +183,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest = new \twa\smsautils\Models\PickupRequest();
 
         $pickupRequest->operator_id = $operator->id;
-        $pickupRequest->hub_id = $hub->id;
+        $pickupRequest->hub_id = $hub_id;
         $pickupRequest->address_id = $firstAwb->sender_address_id;
         $pickupRequest->nb_packages = $awbs->count();
         $pickupRequest->total_weight = $total_weight;
