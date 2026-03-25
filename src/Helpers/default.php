@@ -204,6 +204,8 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest->status = 'pending';
 
         $pickupRequest->save();
+        $pickupRequest->reference_code = 'PU-' . str_pad($pickupRequest->id, 4, '0', STR_PAD_LEFT);
+        $pickupRequest->save();
 
         $pickupRequest->logActivity('Pickup request created', $operator);
 
