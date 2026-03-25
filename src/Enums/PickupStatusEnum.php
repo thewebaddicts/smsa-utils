@@ -4,11 +4,12 @@ namespace twa\smsautils\Enums;
 
 enum PickupStatusEnum: string
 {
-    case PENDING = 'PKPE';
-    case PICKED_UP = 'PKPU';
-    case CANCELLED = 'PKCN';
-    case FAILED = 'PKFA';
-    case DELAYED = 'PKDE';
+   
+    case PENDING = 'pending';
+    case PICKED_UP = 'picked_up';
+    case CANCELLED = 'cancelled';
+    case FAILED = 'failed';
+    case DELAYED = 'delayed';
     case MOBILE_CLOSED = 'PKMC';
     case NO_ANSWER = 'PKNA';
     case RESCHEDULE = 'PKRE';
