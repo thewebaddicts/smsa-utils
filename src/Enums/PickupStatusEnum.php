@@ -4,24 +4,24 @@ namespace twa\smsautils\Enums;
 
 enum PickupStatusEnum: string
 {
-    case PENDING = 'pending';
-    case PICKED_UP = 'picked_up';
-    case CANCELLED = 'cancelled';
-    case FAILED = 'failed';
-    case DELAYED = 'delayed';
-    case MOBILE_CLOSED = 'mobile_closed';
-    case NO_ANSWER = 'no_answer';
-    case RESCHEDULE = 'reschedule';
-    case ANOTHER_VEHICLE_TYPE = 'another_vehicle_type';
-    case VEHCILE_OVERLOADED = 'vechile_overloaded';
-    case CITY_CHANGED = 'city_changed';
-    case AREA_CHANGED = 'area_changed';
-    case ROUTE_CHANGED = 'route_changed';
-    case WRONG_ASSIGNMENT = 'wrong_assignment';
-    case DUPLICATE_PICKUP = 'duplicate_pickup';
-    case NO_SHIPMENTS = 'no_shipments';
-    case DROPPED_AT_RETAILR = 'dropped_at_retail';
-    case OUT_OF_PICKUP_AREA = 'out_of_pickup_area';
+    case PENDING = 'PKPE';
+    case PICKED_UP = 'PKPU';
+    case CANCELLED = 'PKCN';
+    case FAILED = 'PKFA';
+    case DELAYED = 'PKDE';
+    case MOBILE_CLOSED = 'PKMC';
+    case NO_ANSWER = 'PKNA';
+    case RESCHEDULE = 'PKRE';
+    case ANOTHER_VEHICLE_TYPE = 'PKAV';
+    case VEHCILE_OVERLOADED = 'PKOV';
+    case CITY_CHANGED = 'PKCC';
+    case AREA_CHANGED = 'PKAC';
+    case ROUTE_CHANGED = 'PKRC';
+    case WRONG_ASSIGNMENT = 'PKWA';
+    case DUPLICATE_PICKUP = 'PKDP';
+    case NO_SHIPMENTS = 'PKNS';
+    case DROPPED_AT_RETAILR = 'PKDR';
+    case OUT_OF_PICKUP_AREA = 'PKOA';
 
     public function info(): array
     {
