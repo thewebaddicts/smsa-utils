@@ -22,6 +22,8 @@ enum PickupStatusEnum: string
     case NO_SHIPMENTS = 'PKNS';
     case DROPPED_AT_RETAILR = 'PKDR';
     case OUT_OF_PICKUP_AREA = 'PKOA';
+    case NOT_READY_TO_PICKUP = 'PKNR';
+    case SHIPPER_HAS_ONLY_THESE = 'PKSH';
 
     public function info(): array
     {
@@ -121,7 +123,7 @@ enum PickupStatusEnum: string
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Vehicle Overloaded',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["EXCEPTION","MISSING_SCAN_REASON"],
                 'category' => [
                     'label' => 'Capacity Issue',
                     'key' => 'capacity_issue',
@@ -222,6 +224,24 @@ enum PickupStatusEnum: string
                     'label' => 'Other',
                     'key' => 'other',
                 ],
+            ],
+            self::NOT_READY_TO_PICKUP => [
+                'label' => 'Not Ready to Pickup',
+                "icon" => "map",
+                "color_bg" => "#FEF9C3",
+                "color_text" => "#92400E", // amber-800
+                'description' => 'Not Ready to Pickup',
+                'tags' => ["MISSING_SCAN_REASON"],
+              
+            ],
+            self::SHIPPER_HAS_ONLY_THESE => [
+                'label' => 'Shipper has only these shipments',
+                "icon" => "map",
+                "color_bg" => "#FEF9C3",
+                "color_text" => "#92400E", // amber-800
+                'description' => 'Shipper has only these shipments',
+                'tags' => ["MISSING_SCAN_REASON"],
+              
             ],
         };
     }
