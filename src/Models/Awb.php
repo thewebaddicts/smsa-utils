@@ -85,7 +85,7 @@ class Awb extends Model
         'cancelled_at',
         'origin_received_at',
         'destination_received_at',
-        
+        'returned_at',
         'rts_initiated_at',
         'rts_delivered_at'
     ];
