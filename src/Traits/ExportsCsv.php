@@ -52,44 +52,40 @@ trait ExportsCsv
     }
 
 
-    protected function downloadCsvWithPackage(array $headers, array $rows, string $filename, ?array $textColumns = null)
+    protected function downloadCsvWithPackage(array $headers, array $rows, string $filename)
     {
-        $export = new class($rows, $headers, $textColumns) implements FromArray, WithHeadings, WithCustomCsvSettings {
+        $export = new class($rows, $headers) implements \Maatwebsite\Excel\Concerns\FromArray,
+                                                        \Maatwebsite\Excel\Concerns\WithHeadings,
+                                                        \Maatwebsite\Excel\Concerns\WithCustomCsvSettings {
             protected $data;
             protected $headings;
-            protected $textColumns;
-
-            public function __construct($data, $headings, $textColumns) {
+    
+            public function __construct($data, $headings) {
                 $this->data = $data;
                 $this->headings = $headings;
-                $this->textColumns = $textColumns;
             }
-
+    
             public function array(): array {
-                // Process rows to ensure text columns are properly formatted
                 return array_map(function ($row) {
-                    if ($this->textColumns === null) {
-                        return $row;
-                    }
-                    $processedRow = [];
-                    foreach ($row as $index => $value) {
-                     
-                        if (in_array($index, $this->textColumns)) {
-                            $stringValue = (string) $value;
-                       
-                            $processedRow[] = '="' . str_replace('"', '""', $stringValue) . '"';
-                        } else {
-                            $processedRow[] = $value;
+                    return array_map(function ($value) {
+    
+                        $stringValue = (string) $value;
+    
+                        // Force large numbers or numbers with leading zeros to text
+                        if (is_numeric($value) && (strlen($stringValue) > 10 || str_starts_with($stringValue, '0'))) {
+                            return '="' . str_replace('"', '""', $stringValue) . '"';
                         }
-                    }
-                    return $processedRow;
+    
+                        return $value;
+    
+                    }, array_values($row)); // make sure row is indexed
                 }, $this->data);
             }
-
+    
             public function headings(): array {
                 return $this->headings;
             }
-
+    
             public function getCsvSettings(): array {
                 return [
                     'use_bom' => true,
@@ -99,7 +95,7 @@ trait ExportsCsv
                 ];
             }
         };
-
-        return Excel::download($export, $filename, \Maatwebsite\Excel\Excel::CSV);
+    
+        return \Maatwebsite\Excel\Facades\Excel::download($export, $filename, \Maatwebsite\Excel\Excel::CSV);
     }
 }
