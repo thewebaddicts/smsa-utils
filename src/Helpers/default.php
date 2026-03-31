@@ -726,20 +726,46 @@ if (!function_exists('courier_assignment_on_route')) {
             return null;
         }
 
-        $assignment = DB::table('route_assignments')
+        $couriers = DB::table('route_assignments')
             ->where('route_id', $route->id)
             ->whereNull('deleted_at')
-            ->orderByDesc('assigned_at')
-            ->first();
+            ->whereNull('unassigned_at')
+            ->pluck('courier_id')
+            ->unique()
+            ->values();
 
-        if ($assignment) {
-            $courier_id = $assignment->courier_id;
+        if ($couriers->isEmpty()) {
+            return null;
         }
 
-        return $courier_id ?? null;
+        $runsheetLoads = DB::table('runsheets_awbs')
+            ->whereIn('courier_id', $couriers)
+            ->whereNull('deleted_at')
+            ->whereNull('debriefed_at')
+            ->where('status', '!=', AwbStatusEnum::OUT_FOR_DELIVERY->value)
+            ->select('courier_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('courier_id')
+            ->pluck('count', 'courier_id');
+
+        $pickupLoads = DB::table('session_pickup_awbs')
+            ->whereIn('courier_id', $couriers)
+            ->whereNull('deleted_at')
+            ->whereNull('debriefed_at')
+            ->select('courier_id', DB::raw('COUNT(*) as count'))
+            ->groupBy('courier_id')
+            ->pluck('count', 'courier_id');
+
+        return $couriers
+            ->mapWithKeys(function ($id) use ($runsheetLoads, $pickupLoads) {
+                return [
+                    $id => ($runsheetLoads[$id] ?? 0) + ($pickupLoads[$id] ?? 0)
+                ];
+            })
+            ->sort()   // smallest load first
+            ->keys()
+            ->first();
     }
 }
-
 
 
 if (!function_exists('generate_awb_token')) {
