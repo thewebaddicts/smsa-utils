@@ -95,9 +95,14 @@ class DocumentSchemaController extends Controller
         return $this->response(notification()->success('Document schema updated successfully', 'Document schema updated successfully'));
     }
 
-    public function destroy(DocumentSchema $documentSchema)
+    public function destroy($documentSchemaId)
     {
-        $documentSchema->delete();
+        $documentSchema = DocumentSchema::find($documentSchemaId);
+        if (!$documentSchema) {
+            return $this->response(notification()->error('Document schema not found', 'Document schema not found'));
+        }
+        $documentSchema->deleted_at = now();
+        $documentSchema->save();
 
         return $this->response(notification()->success('Document schema deleted successfully', 'Document schema deleted successfully'));
     }
