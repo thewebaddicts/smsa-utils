@@ -11,7 +11,7 @@ use twa\smsautils\Models\Hub;
 
 if (!function_exists('update_awb_received_status')) {
 
-    function update_awb_received_status(Awb &$awb, $hub_id = null, $location = null, $save = true)
+    function update_awb_received_status(Awb &$awb, $hub_id = null, $location = null, $save = true, ?string $commentOverride = null)
     {
         $user = request()->user();
         $user_type = request()->input('user_type');
@@ -33,7 +33,7 @@ if (!function_exists('update_awb_received_status')) {
                 $awb->id,
                 $user->id ?? null,
                 $user_type ?? null,
-                'Origin received from ' . $location,
+                $commentOverride ?? ('Origin received from ' . $location),
                 [],
                 $activity_by,
                 $activity_location,
@@ -59,7 +59,7 @@ if (!function_exists('update_awb_received_status')) {
                 $awb->id,
                 $user->id ?? null,
                 $user_type ?? null,
-                'Destination received from ' . $location,
+                $commentOverride ?? ('Destination received from ' . $location),
                 [],
                 $activity_by,
                 $activity_location,
@@ -78,7 +78,7 @@ if (!function_exists('update_awb_received_status')) {
                 $awb->id,
                 $user->id ?? null,
                 $user_type ?? null,
-                'Received operation from ' . $location,
+                $commentOverride ?? ('Received operation from ' . $location),
                 [],
                 $activity_by,
                 $activity_location,
