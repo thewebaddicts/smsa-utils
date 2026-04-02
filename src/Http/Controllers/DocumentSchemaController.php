@@ -166,6 +166,7 @@ class DocumentSchemaController extends Controller
     {
 
         return DocumentSchema::select('document_key', 'document_name', 'required_condition', 'product_group')
+        ->whereNull('deleted_at')
             ->where('document_for', strtoupper($document_for))
             ->where(function ($query) use ($destination_port) {
                 $query->where(function ($q) use ($destination_port) {
