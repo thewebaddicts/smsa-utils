@@ -88,15 +88,15 @@ function on_awb_outstanded(Awb|string|int &$record, $courier_id, $save = true)
 
 function on_awb_operation_received(Awb|string|int &$record, $hub_id, $save = true)
 {
-
+ 
     $awb = extract_awb_model_from_record($record);
-
+ 
     $location = 'hub_' . $hub_id . '_operations';
-
-    if ($awb->reexport_at && $awb->rts_branch_id == $hub_id) {
+ 
+    if ($awb->reexport_at && in_array($hub_id , [ $awb->rts_branch_id, $awb->rts_processed_branch_id])) {
         $awb->rts_inbounded_at = now();
     }
-
+ 
     awb_location_change($awb, $location, $save);
 }
 
