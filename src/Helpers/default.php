@@ -127,7 +127,7 @@ if (!function_exists('get_pickup_available_date_time')) {
 if (!function_exists('create_pickup_from_shipment')) {
     function create_pickup_from_shipment(
         \twa\smsautils\Models\Shipment $shipment,
-        $operator,
+         $operator = null, // it can be null if the shipment is created by a system user
         array | null $form_data = null,
         bool $has_client = true,
         array $expected_awbs = []
@@ -210,7 +210,7 @@ if (!function_exists('create_pickup_from_shipment')) {
 
         $pickupRequest = new \twa\smsautils\Models\PickupRequest();
 
-        $pickupRequest->operator_id = $operator->id;
+        $pickupRequest->operator_id = $operator ? $operator->id : null;
         $pickupRequest->hub_id = $hub_id;
         $pickupRequest->address_id = $firstAwb->sender_address_id;
         $pickupRequest->nb_packages = $awbs->count();
