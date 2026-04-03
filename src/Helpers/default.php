@@ -110,14 +110,24 @@ if (!function_exists('format_date_time_with_timezone')) {
     }
 }
 
+if (!function_exists('get_pickup_available_date_time')) {
+    function get_pickup_available_date_time($pickup_hub, $pickup_route_id)
+    {
+        $pickupForm = [
+            'pickup_date' => now()->format('Y-m-d'),
+            'pickup_time' => '16:00-16:30',
+        ];
+
+        return $pickupForm;
+    }
+}
 
 
 if (!function_exists('create_pickup_from_shipment')) {
     function create_pickup_from_shipment(
         \twa\smsautils\Models\Shipment $shipment,
-        $hub,
         $operator,
-        array $form_data,
+        array | null $form_data = null,
         bool $has_client = true,
         array $expected_awbs = []
     ) {
@@ -132,6 +142,13 @@ if (!function_exists('create_pickup_from_shipment')) {
         if (count($awbs) === 0) {
             return false;
         }
+        $firstAwb = $awbs->first();
+
+        if (!$firstAwb->origin_hub_id) {
+            return false;
+        }
+        $hub = Hub::find($firstAwb->origin_hub_id);
+
 
         $total_height = 0;
         $total_width = 0;
@@ -142,15 +159,8 @@ if (!function_exists('create_pickup_from_shipment')) {
             $total_width += $awb->declared_width_cm;
             $total_length += $awb->declared_length_cm;
             $total_weight += $awb->declared_weight_g / 1000;
+
         }
-
-        $pickupTimes = explode('-', $form_data['pickup_time']);
-        $pickupTimeFrom = isset($pickupTimes[0]) ? now()->parse(trim($pickupTimes[0]))->format('H:i') : null;
-        $pickupTimeTo   = isset($pickupTimes[1]) ? now()->parse(trim($pickupTimes[1]))->format('H:i') : null;
-        $pickupDate = now()->parse($form_data['pickup_date'])->format('Y-m-d');
-
-        $firstAwb = $awbs->first();
-
         $address = DB::table('addresses')->where('id', $firstAwb->sender_address_id)->first();
 
         $route_id = $address ? find_route_by_address([
@@ -164,7 +174,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         if ($route_id) {
             $route_hub_id = DB::table('routes')->where('id', $route_id)->value('hub_id');
             if (!empty($route_hub_id)) {
-               $hub_id = $route_hub_id;
+                $hub_id = $route_hub_id;
             }
         }
         $courier_id = null;
@@ -179,6 +189,23 @@ if (!function_exists('create_pickup_from_shipment')) {
                 $courier_id = $assignment->courier_id;
             }
         }
+
+        if(!$form_data) {
+           $form_data = get_pickup_available_date_time($hub,$route_id);
+        }
+
+        $pickupTimes = explode('-', $form_data['pickup_time']);
+        $pickupTimeFrom = isset($pickupTimes[0]) ? now()->parse(trim($pickupTimes[0]))->format('H:i') : null;
+        $pickupTimeTo   = isset($pickupTimes[1]) ? now()->parse(trim($pickupTimes[1]))->format('H:i') : null;
+        $pickupDate = now()->parse($form_data['pickup_date'])->format('Y-m-d');
+
+        $firstAwb = $awbs->first();
+
+   
+        // $courier_id = courier_assignment_on_route($route_id);
+        // if (!$courier_id) {
+        //     $courier_id = null;
+        // }
 
         $pickupRequest = new \twa\smsautils\Models\PickupRequest();
 
