@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use twa\smsautils\Enums\AwbStatusEnum;
 use twa\smsautils\Jobs\TreatWorkflowActivity;
 use twa\smsautils\Models\AccessToken;
+use twa\smsautils\Models\Hub;
 
 if (!function_exists('format_code_branch')) {
 
