@@ -775,10 +775,18 @@ if (!function_exists('courier_assignment_on_route')) {
             ->groupBy('courier_id')
             ->pluck('count', 'courier_id');
 
-        $pickupLoads = DB::table('session_pickup_awbs')
+        // $pickupLoads = DB::table('session_pickup_awbs')
+        //     ->whereIn('courier_id', $couriers)
+        //     ->whereNull('deleted_at')
+        //     ->whereNull('debriefed_at')
+        //     ->select('courier_id', DB::raw('COUNT(*) as count'))
+        //     ->groupBy('courier_id')
+        //     ->pluck('count', 'courier_id');
+        $pickupLoads = DB::table('pickup_requests')
             ->whereIn('courier_id', $couriers)
+            ->where('pickup_date', now()->format('Y-m-d'))
             ->whereNull('deleted_at')
-            ->whereNull('debriefed_at')
+            ->where('status', \twa\smsautils\Enums\PickupStatusEnum::PENDING->value)
             ->select('courier_id', DB::raw('COUNT(*) as count'))
             ->groupBy('courier_id')
             ->pluck('count', 'courier_id');
