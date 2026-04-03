@@ -727,10 +727,11 @@ if (!function_exists('courier_assignment_on_route')) {
         }
 
         $couriers = DB::table('route_assignments')
-            ->where('route_id', $route->id)
-            ->whereNull('deleted_at')
-            ->whereNull('unassigned_at')
-            ->pluck('courier_id')
+            ->join('couriers', 'couriers.id', '=', 'route_assignments.courier_id')
+            ->where('route_assignments.route_id', $route->id)
+            ->whereNull('route_assignments.deleted_at')
+            ->whereNull('couriers.deleted_at')
+            ->whereNotNull('couriers.assigned_vehicle')
             ->unique()
             ->values();
 
