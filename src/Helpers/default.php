@@ -760,7 +760,8 @@ if (!function_exists('courier_assignment_on_route')) {
             ->whereNull('route_assignments.deleted_at')
             ->whereNull('couriers.deleted_at')
             ->whereNotNull('couriers.assigned_vehicle')
-            ->unique()
+            ->distinct()
+            ->pluck('route_assignments.courier_id')
             ->values();
 
         if ($couriers->isEmpty()) {
