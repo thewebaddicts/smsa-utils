@@ -20,10 +20,10 @@ class DocumentSchemaController extends Controller
 
         $validator = Validator::make($data, [
             'document_name' => ['required', 'string', 'max:255', unique_rule('document_schemas', 'document_name')],
-            'document_for' => 'required|string|in:CRN,MAWB,HST,HAWB',
+            'document_for' => 'required|string|in:CRN,MAWB,HST,HAWB,PAWB',
             'ports' => 'array',
             'ports.*' => 'required|string|min:3|max:3',
-            'required_condition' => 'required|in:REQUIRED_ON_CREATION,REQUIRED_ON_COMPLETE,OPTIONAL_ANYTIME,ON_INITIAL_RTS,ON_CIR_REQUEST',
+            'required_condition' => 'required|in:REQUIRED_ON_CREATION,REQUIRED_ON_COMPLETE,OPTIONAL_ANYTIME,ON_INITIAL_RTS,ON_CIR_REQUEST,ON_FINAL_RTS',
             'visible_on_creation' => 'boolean',
             'product_group' => 'array',
             'product_group.*' => 'required|string|in:DOM,EXP',
@@ -57,10 +57,10 @@ class DocumentSchemaController extends Controller
 
         $validator = Validator::make($data, [
             'document_name' => ["string", "max:255", unique_rule('document_schemas', 'document_name', $documentSchema->id)],
-            'document_for' => 'string|in:CRN,MAWB,HST,HAWB',
+            'document_for' => 'string|in:CRN,MAWB,HST,HAWB,PAWB',
             'ports' => 'array',
             'ports.*' => 'required|string|size:3',
-            'required_condition' => 'in:REQUIRED_ON_CREATION,REQUIRED_ON_COMPLETE,OPTIONAL_ANYTIME,ON_INITIAL_RTS,ON_CIR_REQUEST',
+            'required_condition' => 'in:REQUIRED_ON_CREATION,REQUIRED_ON_COMPLETE,OPTIONAL_ANYTIME,ON_INITIAL_RTS,ON_CIR_REQUEST,ON_FINAL_RTS',
             'visible_on_creation' => 'boolean',
             'product_group' => 'array',
             'product_group.*' => 'required|string|in:DOM,EXP',
