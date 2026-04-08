@@ -48,6 +48,13 @@ class Shipment extends Model
     'etd',
     // end ROZANA
   ];
+
+
+  //cast documents
+  protected $casts = [
+    'documents' => 'array',
+  ];
+
   public function awbs()
   {
     return $this->hasMany(\twa\smsautils\Models\Awb::class);

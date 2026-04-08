@@ -90,6 +90,12 @@ class Awb extends Model
         'rts_delivered_at'
     ];
 
+
+    //cast documents
+    protected $casts = [
+        'documents' => 'array',
+    ];
+
     public function shipment()
     {
         return $this->belongsTo(\twa\smsautils\Models\Shipment::class, 'shipment_id');

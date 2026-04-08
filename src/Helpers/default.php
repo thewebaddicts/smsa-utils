@@ -1332,3 +1332,17 @@ function process_event_status($status, $number_of_attempts = 1)
 
     return $status;
 }
+if (!function_exists('filter_date_timezone_to_utc')) {
+    function filter_date_timezone_to_utc(array $keys, $timezone = 'UTC')
+    {
+        $formData = request()->all();
+        foreach ($keys as $key) {
+            if (!isset($formData[$key])) {
+                continue;
+            }
+            $formData[$key] = now()->parse($formData[$key], $timezone)->utc();
+        }
+
+        return $formData;
+    }
+}
