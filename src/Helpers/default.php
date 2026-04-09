@@ -132,7 +132,7 @@ if (!function_exists('find_overlapping_pending_pickup')) {
         string $pickupTimeFrom,
         string $pickupTimeTo,
         ?int $excludePickupId = null
-    ): ?\twa\smsautils\Models\PickupRequest {
+    ): ?PickupRequest {
         return PickupRequest::query()
             ->whereNull('deleted_at')
             ->when(!is_null($clientId), function ($query) use ($clientId) {
