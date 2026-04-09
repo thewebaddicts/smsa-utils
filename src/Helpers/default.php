@@ -218,10 +218,10 @@ if (!function_exists('create_pickup_from_shipment')) {
             })
             ->where('status', 'pending')
             ->first();
-
-        if ($existingPendingPickup) {
-            return $existingPendingPickup;
-        }
+            if ($existingPendingPickup) {
+                // $existingPendingPickup->already_exists = true;
+                throw new \Exception('A pending pickup already exists for the same shipper address.');
+            }
 
    
         // $courier_id = courier_assignment_on_route($route_id);
