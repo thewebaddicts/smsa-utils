@@ -124,6 +124,7 @@ if (!function_exists('get_pickup_available_date_time')) {
 }
 
 
+
 if (!function_exists('create_pickup_from_shipment')) {
     function create_pickup_from_shipment(
         \twa\smsautils\Models\Shipment $shipment,
@@ -201,6 +202,26 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupDate = now()->parse($form_data['pickup_date'])->format('Y-m-d');
 
         $firstAwb = $awbs->first();
+
+        $existingPendingPickup = \twa\smsautils\Models\PickupRequest::query()
+            ->whereNull('deleted_at')
+            ->where('address_id', $firstAwb->sender_address_id)
+            ->when($has_client, function ($query) use ($shipment) {
+                $query->where('client_id', $shipment->client_id);
+            })
+            ->whereDate('pickup_date', $pickupDate)
+            ->where(function ($query) use ($pickupTimeFrom, $pickupTimeTo) {
+                // overlap condition:
+                // existing_from <= new_to AND existing_to >= new_from
+                $query->where('pickup_time_from', '<=', $pickupTimeTo)
+                    ->where('pickup_time_to', '>=', $pickupTimeFrom);
+            })
+            ->where('status', 'pending')
+            ->first();
+
+        if ($existingPendingPickup) {
+            return $existingPendingPickup;
+        }
 
    
         // $courier_id = courier_assignment_on_route($route_id);
