@@ -13,9 +13,11 @@ use twa\smsautils\Models\ActivityLog;
 
 use Illuminate\Support\Facades\Storage;
 use twa\smsautils\Enums\AwbStatusEnum;
+use twa\smsautils\Enums\PickupStatusEnum;
 use twa\smsautils\Jobs\TreatWorkflowActivity;
 use twa\smsautils\Models\AccessToken;
 use twa\smsautils\Models\Hub;
+use twa\smsautils\Models\PickupRequest;
 
 if (!function_exists('format_code_branch')) {
 
@@ -122,13 +124,42 @@ if (!function_exists('get_pickup_available_date_time')) {
         return $pickupForm;
     }
 }
+if (!function_exists('find_overlapping_pending_pickup')) {
+    function find_overlapping_pending_pickup(
+        $clientId,
+        $addressId,
+        string $pickupDate,
+        string $pickupTimeFrom,
+        string $pickupTimeTo,
+        ?int $excludePickupId = null
+    ): ?\twa\smsautils\Models\PickupRequest {
+        return PickupRequest::query()
+            ->whereNull('deleted_at')
+            ->when(!is_null($clientId), function ($query) use ($clientId) {
+                $query->where('client_id', $clientId);
+            })
+            ->where('address_id', $addressId)
+            ->whereDate('pickup_date', $pickupDate)
+            ->where('status', PickupStatusEnum::PENDING->value)
+            ->when($excludePickupId, function ($query) use ($excludePickupId) {
+                $query->where('id', '!=', $excludePickupId);
+            })
+            ->where(function ($query) use ($pickupTimeFrom, $pickupTimeTo) {
+                // overlap condition:
+                // existing_from <= new_to AND existing_to >= new_from
+                $query->where('pickup_time_from', '<=', $pickupTimeTo)
+                    ->where('pickup_time_to', '>=', $pickupTimeFrom);
+            })
+            ->first();
+    }
+}
 
 
 
 if (!function_exists('create_pickup_from_shipment')) {
     function create_pickup_from_shipment(
         \twa\smsautils\Models\Shipment $shipment,
-         $operator = null, // it can be null if the shipment is created by a system user
+        $operator = null, // it can be null if the shipment is created by a system user
         array | null $form_data = null,
         bool $has_client = true,
         array $expected_awbs = []
@@ -161,7 +192,6 @@ if (!function_exists('create_pickup_from_shipment')) {
             $total_width += $awb->declared_width_cm;
             $total_length += $awb->declared_length_cm;
             $total_weight += $awb->declared_weight_g / 1000;
-
         }
         $address = DB::table('addresses')->where('id', $firstAwb->sender_address_id)->first();
 
@@ -192,8 +222,8 @@ if (!function_exists('create_pickup_from_shipment')) {
             }
         }
 
-        if(!$form_data) {
-           $form_data = get_pickup_available_date_time($hub,$route_id);
+        if (!$form_data) {
+            $form_data = get_pickup_available_date_time($hub, $route_id);
         }
 
         $pickupTimes = explode('-', $form_data['pickup_time']);
@@ -203,27 +233,19 @@ if (!function_exists('create_pickup_from_shipment')) {
 
         $firstAwb = $awbs->first();
 
-        $existingPendingPickup = \twa\smsautils\Models\PickupRequest::query()
-            ->whereNull('deleted_at')
-            ->where('address_id', $firstAwb->sender_address_id)
-            ->when($has_client, function ($query) use ($shipment) {
-                $query->where('client_id', $shipment->client_id);
-            })
-            ->whereDate('pickup_date', $pickupDate)
-            ->where(function ($query) use ($pickupTimeFrom, $pickupTimeTo) {
-                // overlap condition:
-                // existing_from <= new_to AND existing_to >= new_from
-                $query->where('pickup_time_from', '<=', $pickupTimeTo)
-                    ->where('pickup_time_to', '>=', $pickupTimeFrom);
-            })
-            ->where('status', 'pending')
-            ->first();
-            if ($existingPendingPickup) {
-                // $existingPendingPickup->already_exists = true;
-                throw new \Exception('A pending pickup already exists for the same shipper address.');
-            }
+        $existingPendingPickup = find_overlapping_pending_pickup(
+            clientId: $has_client ? $shipment->client_id : null,
+            addressId: $firstAwb->sender_address_id,
+            pickupDate: $pickupDate,
+            pickupTimeFrom: $pickupTimeFrom,
+            pickupTimeTo: $pickupTimeTo
+        );
+        if ($existingPendingPickup) {
+            // $existingPendingPickup->already_exists = true;
+            throw new \Exception('A pending pickup already exists for the same shipper address.');
+        }
 
-   
+
         // $courier_id = courier_assignment_on_route($route_id);
         // if (!$courier_id) {
         //     $courier_id = null;
