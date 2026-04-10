@@ -35,7 +35,7 @@ class PickupRequest extends Model
     ];
 
     protected $casts = [
-        'pickup_date' => 'date',
+        'pickup_date' => 'datetime',
         'pickup_time' => 'time',
         'expected_awbs' => 'array'
     ];
