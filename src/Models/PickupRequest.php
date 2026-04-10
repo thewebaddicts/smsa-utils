@@ -29,6 +29,8 @@ class PickupRequest extends Model
         'status',
         'assignment_type',
         'routine_id',
+        'pickup_date_from',
+        'pickup_date_to',
 
         // 'product_type',
         // 'cash_amount',
