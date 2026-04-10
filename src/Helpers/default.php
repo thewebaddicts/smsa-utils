@@ -109,14 +109,14 @@ if (!function_exists('get_supervisor_credentials')) {
 if (!function_exists('format_date_time_with_timezone')) {
     function format_date_time_with_timezone($datetime, $timezone)
     {
-        return now()->parse($datetime)->setTimezone($timezone)->format('d M Y H:i');
+        return now()->parse($datetime)->setTimezone($timezone)->format('d M Y h:i A');
     }
 }
 
 if (!function_exists('format_time_with_timezone')) {
     function format_time_with_timezone($time, $timezone)
     {
-        return now()->parse($time)->setTimezone($timezone)->format('H:i');
+        return now()->parse($time)->setTimezone($timezone)->format('h:i A');
     }
 }
 
