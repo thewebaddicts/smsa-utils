@@ -113,6 +113,15 @@ if (!function_exists('format_date_time_with_timezone')) {
     }
 }
 
+if (!function_exists('format_time_with_timezone')) {
+    function format_time_with_timezone($time, $timezone)
+    {
+        return now()->parse($time)->setTimezone($timezone)->format('H:i');
+    }
+}
+
+
+
 if (!function_exists('get_pickup_available_date_time')) {
     function get_pickup_available_date_time($pickup_hub, $pickup_route_id)
     {
