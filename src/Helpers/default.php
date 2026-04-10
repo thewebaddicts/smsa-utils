@@ -1389,3 +1389,15 @@ if (!function_exists('filter_date_timezone_to_utc')) {
         return $formData;
     }
 }
+if (!function_exists('current_timezone_to_utc')) {
+    function current_timezone_to_utc(array $keys, $timezone = 'UTC')
+    {
+        $result = [];
+        foreach ($keys as $key => $value) {
+          
+            $result[$key] = now()->parse($value, $timezone)->utc();
+        }
+
+        return $result;
+    }
+}
