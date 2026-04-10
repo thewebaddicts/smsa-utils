@@ -29,7 +29,7 @@ class ConvertPickupDateTimeToUTC
             return;
         }
 
-        $pickupDates = filter_date_timezone_to_utc([ 
+        $pickupDates = current_timezone_to_utc([ 
             'pickup_from' => $pickupRequest->pickup_date.' '.$pickupRequest->pickup_time_from, 
             'pickup_to' => $pickupRequest->pickup_date.' '.$pickupRequest->pickup_time_to 
         ] ,$hub->timezone);
