@@ -5,6 +5,7 @@ namespace twa\smsautils\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use twa\smsautils\Events\PickupRequestCreated;
 
 class PickupRequest extends Model
 {
@@ -31,10 +32,6 @@ class PickupRequest extends Model
         'routine_id',
         'pickup_date_from',
         'pickup_date_to',
-
-        // 'product_type',
-        // 'cash_amount',
-        // 'description',
     ];
 
     protected $casts = [
@@ -52,6 +49,7 @@ class PickupRequest extends Model
 
             \twa\smsautils\Jobs\CheckPickupRequestStatus::dispatch($pickupRequest->id, 'delayed')->delay($delayedTime);
             \twa\smsautils\Jobs\CheckPickupRequestStatus::dispatch($pickupRequest->id, 'failed')->delay($failedTime);
+            \twa\smsautils\Events\PickupRequestCreated::dispatch($pickupRequest);
         });
     }
 
@@ -59,6 +57,10 @@ class PickupRequest extends Model
     public function route()
     {
         return $this->belongsTo(\twa\smsautils\Models\Route::class, 'route_id');
+    }
+    public function hub()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'hub_id');
     }
 
     public function courier()

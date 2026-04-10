@@ -27,6 +27,7 @@ class DefaultServiceProvider extends EventServiceProvider
         ], 'laravel-assets');
 
         Event::listen(\twa\smsautils\Events\OnAWBActivityLog::class, \twa\smsautils\Listeners\HandleWorkflowActivityLog::class);
+        Event::listen(\twa\smsautils\Events\PickupRequestCreated::class, \twa\smsautils\Listeners\ConvertPickupDateTimeToUTC::class);
     }
 
     public function register()
