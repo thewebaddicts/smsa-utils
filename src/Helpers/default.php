@@ -123,7 +123,7 @@ if (!function_exists('format_time_with_timezone')) {
 if (!function_exists('format_date_with_timezone')) {
     function format_date_with_timezone($date, $timezone)
     {
-        return now()->parse($date)->setTimezone($timezone)->format('Y-m-d');
+        return now()->parse($date)->setTimezone($timezone)->format('d M Y');
     }
 }
 
