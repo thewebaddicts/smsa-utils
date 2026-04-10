@@ -149,4 +149,42 @@ trait ExportsCsv
             ['Content-Type' => 'text/csv; charset=UTF-8']
         );
     }
+
+    protected function downloadStoredXlsxIfExists(string $path, string $filename, string $disk = 'public')
+    {
+        $path = preg_replace('/\.[^.]+$/', '', $path) . '.xlsx';
+        $filename = preg_replace('/\.[^.]+$/', '', $filename) . '.xlsx';
+
+        if (!Storage::disk($disk)->exists($path)) {
+            return null;
+        }
+
+        return response()->download(
+            Storage::disk($disk)->path($path),
+            $filename,
+            ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+        );
+    }
+
+    protected function storeAndDownloadXlsxWithPackage(
+        array $headers,
+        array $rows,
+        string $filename,
+        string $path,
+        string $disk = 'public'
+    ) {
+        $path = preg_replace('/\.[^.]+$/', '', $path) . '.xlsx';
+        $filename = preg_replace('/\.[^.]+$/', '', $filename) . '.xlsx';
+
+        if (!Storage::disk($disk)->exists($path)) {
+            $export = $this->makeCsvExportObject($rows, $headers);
+            Excel::store($export, $path, $disk, \Maatwebsite\Excel\Excel::XLSX);
+        }
+
+        return response()->download(
+            Storage::disk($disk)->path($path),
+            $filename,
+            ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+        );
+    }
 }
