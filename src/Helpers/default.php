@@ -178,7 +178,9 @@ if (!function_exists('create_pickup_from_shipment')) {
         $operator = null, // it can be null if the shipment is created by a system user
         array | null $form_data = null,
         bool $has_client = true,
-        array $expected_awbs = []
+        array $expected_awbs = [],
+        bool $is_cir = false,
+
     ) {
 
         $awbs = \twa\smsautils\Models\Awb::where('shipment_id', $shipment->id)
@@ -289,6 +291,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest->expected_awbs = $expected_awbs;
 
         $pickupRequest->status = 'pending';
+        $pickupRequest->is_return = $is_cir ? true : false;
 
         $pickupRequest->save();
         $pickupRequest->reference_code = 'PU-' . str_pad($pickupRequest->id, 4, '0', STR_PAD_LEFT);
