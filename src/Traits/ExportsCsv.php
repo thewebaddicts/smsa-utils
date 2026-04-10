@@ -7,9 +7,56 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Illuminate\Support\Facades\Storage;
 
 trait ExportsCsv
 {
+    protected function makeCsvExportObject(array $rows, array $headers): object
+    {
+        return new class($rows, $headers) implements \Maatwebsite\Excel\Concerns\FromArray,
+                                                    \Maatwebsite\Excel\Concerns\WithHeadings,
+                                                    \Maatwebsite\Excel\Concerns\WithCustomCsvSettings {
+            protected $data;
+            protected $headings;
+
+            public function __construct($data, $headings)
+            {
+                $this->data = $data;
+                $this->headings = $headings;
+            }
+
+            public function array(): array
+            {
+                return array_map(function ($row) {
+                    return array_map(function ($value) {
+                        $stringValue = (string) $value;
+
+                        // Force large numbers or numbers with leading zeros to text
+                        if (is_numeric($value) && (strlen($stringValue) > 10 || str_starts_with($stringValue, '0'))) {
+                            return '="' . str_replace('"', '""', $stringValue) . '"';
+                        }
+
+                        return $value;
+                    }, array_values($row)); // make sure row is indexed
+                }, $this->data);
+            }
+
+            public function headings(): array
+            {
+                return $this->headings;
+            }
+
+            public function getCsvSettings(): array
+            {
+                return [
+                    'use_bom' => true,
+                    'delimiter' => ',',
+                    'enclosure' => '"',
+                    'escape_character' => '"',
+                ];
+            }
+        };
+    }
     
     protected function downloadCsv(array $headers, array $rows, string $filename, ?array $textColumns = null)
     {
@@ -54,48 +101,40 @@ trait ExportsCsv
 
     protected function downloadCsvWithPackage(array $headers, array $rows, string $filename)
     {
-        $export = new class($rows, $headers) implements \Maatwebsite\Excel\Concerns\FromArray,
-                                                        \Maatwebsite\Excel\Concerns\WithHeadings,
-                                                        \Maatwebsite\Excel\Concerns\WithCustomCsvSettings {
-            protected $data;
-            protected $headings;
-    
-            public function __construct($data, $headings) {
-                $this->data = $data;
-                $this->headings = $headings;
-            }
-    
-            public function array(): array {
-                return array_map(function ($row) {
-                    return array_map(function ($value) {
-    
-                        $stringValue = (string) $value;
-    
-                        // Force large numbers or numbers with leading zeros to text
-                        if (is_numeric($value) && (strlen($stringValue) > 10 || str_starts_with($stringValue, '0'))) {
-                            return '="' . str_replace('"', '""', $stringValue) . '"';
-                        }
-    
-                        return $value;
-    
-                    }, array_values($row)); // make sure row is indexed
-                }, $this->data);
-            }
-    
-            public function headings(): array {
-                return $this->headings;
-            }
-    
-            public function getCsvSettings(): array {
-                return [
-                    'use_bom' => true,
-                    'delimiter' => ',',
-                    'enclosure' => '"',
-                    'escape_character' => '"',
-                ];
-            }
-        };
+        $export = $this->makeCsvExportObject($rows, $headers);
     
         return \Maatwebsite\Excel\Facades\Excel::download($export, $filename, \Maatwebsite\Excel\Excel::CSV);
+    }
+
+    protected function downloadStoredCsvIfExists(string $path, string $filename, string $disk = 'public')
+    {
+        if (!Storage::disk($disk)->exists($path)) {
+            return null;
+        }
+
+        return response()->download(
+            Storage::disk($disk)->path($path),
+            $filename,
+            ['Content-Type' => 'text/csv; charset=UTF-8']
+        );
+    }
+
+    protected function storeAndDownloadCsvWithPackage(
+        array $headers,
+        array $rows,
+        string $filename,
+        string $path,
+        string $disk = 'public'
+    ) {
+        if (!Storage::disk($disk)->exists($path)) {
+            $export = $this->makeCsvExportObject($rows, $headers);
+            Excel::store($export, $path, $disk, \Maatwebsite\Excel\Excel::CSV);
+        }
+
+        return response()->download(
+            Storage::disk($disk)->path($path),
+            $filename,
+            ['Content-Type' => 'text/csv; charset=UTF-8']
+        );
     }
 }
