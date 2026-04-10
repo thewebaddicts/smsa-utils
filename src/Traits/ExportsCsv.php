@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Storage;
 
 trait ExportsCsv
 {
+    protected function ensureCsvExtension(string $name): string
+    {
+        return preg_match('/\.csv$/i', $name) ? $name : preg_replace('/\.[^.]+$/', '', $name) . '.csv';
+    }
+
     protected function makeCsvExportObject(array $rows, array $headers): object
     {
         return new class($rows, $headers) implements \Maatwebsite\Excel\Concerns\FromArray,
@@ -101,6 +106,7 @@ trait ExportsCsv
 
     protected function downloadCsvWithPackage(array $headers, array $rows, string $filename)
     {
+        $filename = $this->ensureCsvExtension($filename);
         $export = $this->makeCsvExportObject($rows, $headers);
     
         return \Maatwebsite\Excel\Facades\Excel::download($export, $filename, \Maatwebsite\Excel\Excel::CSV);
@@ -108,6 +114,9 @@ trait ExportsCsv
 
     protected function downloadStoredCsvIfExists(string $path, string $filename, string $disk = 'public')
     {
+        $path = $this->ensureCsvExtension($path);
+        $filename = $this->ensureCsvExtension($filename);
+
         if (!Storage::disk($disk)->exists($path)) {
             return null;
         }
@@ -126,6 +135,9 @@ trait ExportsCsv
         string $path,
         string $disk = 'public'
     ) {
+        $path = $this->ensureCsvExtension($path);
+        $filename = $this->ensureCsvExtension($filename);
+
         if (!Storage::disk($disk)->exists($path)) {
             $export = $this->makeCsvExportObject($rows, $headers);
             Excel::store($export, $path, $disk, \Maatwebsite\Excel\Excel::CSV);
