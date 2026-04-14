@@ -18,9 +18,10 @@ trait ExportsCsv
 
     protected function makeCsvExportObject(array $rows, array $headers): object
     {
-        return new class($rows, $headers) implements \Maatwebsite\Excel\Concerns\FromArray,
-                                                    \Maatwebsite\Excel\Concerns\WithHeadings,
-                                                    \Maatwebsite\Excel\Concerns\WithCustomCsvSettings {
+        return new class($rows, $headers) implements
+            \Maatwebsite\Excel\Concerns\FromArray,
+            \Maatwebsite\Excel\Concerns\WithHeadings,
+            \Maatwebsite\Excel\Concerns\WithCustomCsvSettings {
             protected $data;
             protected $headings;
 
@@ -62,40 +63,40 @@ trait ExportsCsv
             }
         };
     }
-    
+
     protected function downloadCsv(array $headers, array $rows, string $filename, ?array $textColumns = null)
     {
         return response()->streamDownload(function () use ($headers, $rows, $textColumns) {
-         
+
             echo "\xEF\xBB\xBF";
-            
+
             $output = fopen('php://output', 'w');
-            
+
             // Write headers with proper encoding
             $encodedHeaders = array_map(function ($header) {
                 return mb_convert_encoding($header, 'UTF-8', 'UTF-8');
             }, $headers);
             fputcsv($output, $encodedHeaders, ',', '"');
-            
-        
+
+
             foreach ($rows as $row) {
                 $encodedRow = [];
                 foreach ($row as $index => $value) {
-               
+
                     $stringValue = (string) $value;
                     $stringValue = mb_convert_encoding($stringValue, 'UTF-8', 'UTF-8');
-                    
-                
+
+
                     if ($textColumns !== null && in_array($index, $textColumns)) {
-                    
+
                         $stringValue = "\t" . $stringValue;
                     }
-                    
+
                     $encodedRow[] = $stringValue;
                 }
                 fputcsv($output, $encodedRow, ',', '"');
             }
-            
+
             fclose($output);
         }, $filename, [
             'Content-Type' => 'text/csv; charset=UTF-8',
@@ -108,19 +109,22 @@ trait ExportsCsv
     {
         $filename = $this->ensureCsvExtension($filename);
         $export = $this->makeCsvExportObject($rows, $headers);
-    
+
         return \Maatwebsite\Excel\Facades\Excel::download($export, $filename, \Maatwebsite\Excel\Excel::CSV);
     }
 
     protected function downloadStoredCsvIfExists(string $path, string $filename, string $disk = 'public')
     {
         $path = $this->ensureCsvExtension($path);
+
         $filename = $this->ensureCsvExtension($filename);
 
         if (!Storage::disk($disk)->exists($path)) {
             return null;
         }
-
+        if (ob_get_level()) {
+            ob_end_clean();
+        }
         return response()->download(
             Storage::disk($disk)->path($path),
             $filename,
@@ -196,7 +200,7 @@ trait ExportsCsv
             $filename,
             $path,
             function ($handle) use ($headers, $rowWriter) {
-                fputcsv($handle, $headers);
+                fputcsv($handle, array_values($headers), ',', '"', '\\');
                 $rowWriter($handle);
             },
             $disk
