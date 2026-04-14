@@ -32,7 +32,48 @@ if (!function_exists('format_code_branch')) {
         return "{$code} ({$branch})";
     }
 }
+if (!function_exists('generate_awb_number')) {
+    function generate_awb_number($sequence, $prefix = "2", $identifier = '40')
+    {
+        // Ensure sequence is 8 digits (zero-padded if needed)
+        $sequenceStr = str_pad($sequence, 8, "0", STR_PAD_LEFT);
 
+        // Build first 11 digits
+        $awbWithoutChecksum = $prefix . $identifier . $sequenceStr; // total 11 digits
+
+        // Multipliers cycle
+        $multipliers = [1, 5, 7];
+        $sum = 0;
+
+        // Apply multipliers starting from 11th digit backward
+        $awbDigits = str_split($awbWithoutChecksum);
+        $multiplierIndex = 0;
+
+        for ($i = count($awbDigits) - 1; $i >= 0; $i--) {
+            $digit = (int) $awbDigits[$i];
+            $multiplier = $multipliers[$multiplierIndex];
+            $sum += $digit * $multiplier;
+
+            // Move to next multiplier (cycle through 1,5,7)
+            $multiplierIndex = ($multiplierIndex + 1) % 3;
+        }
+
+        // Calculate remainder
+        $remainder = $sum % 11;
+
+        // Rules for check digit
+        if ($remainder === 10 || $remainder === 0) {
+            $checkDigit = 0;
+        } else {
+            $checkDigit = $remainder;
+        }
+
+        // Final 12-digit AWB
+        return $awbWithoutChecksum . $checkDigit;
+
+        // return str_pad(mt_rand(0, 9999999999), 10, '0', STR_PAD_LEFT);
+    }
+}
 if (!function_exists('awb_format')) {
     function awb_format($awb, $include_files = null, $product_group = null)
     {
