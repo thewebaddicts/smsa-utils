@@ -16,4 +16,19 @@ class AttributeSchema extends Model
         'is_required' => 'boolean',
         'countries' => 'array',
     ];
+
+    public function setCountriesAttribute($value): void
+    {
+        if (is_null($value) || $value === '') {
+            $this->attributes['countries'] = null;
+            return;
+        }
+
+        if (is_array($value)) {
+            $this->attributes['countries'] = json_encode(array_values($value));
+            return;
+        }
+
+        $this->attributes['countries'] = $value;
+    }
 }

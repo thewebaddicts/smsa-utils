@@ -113,7 +113,9 @@ class AttributesController extends Controller
             ->where('attribute_for', strtoupper($attributeFor))
             ->when($country, function ($query) use ($country) {
                 $query->where(function ($subQuery) use ($country) {
-                    $subQuery->whereJsonContains('countries', $country)
+                    $subQuery->where('countries', 'like', '%"' . $country . '"%')
+                        ->orWhere('countries', $country)
+                        ->orWhere('countries', '[]')
                         ->orWhereNull('countries');
                 });
             })
