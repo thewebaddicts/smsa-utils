@@ -31,6 +31,19 @@ class AttributeSchema extends Model
 
         $this->attributes['countries'] = $value;
     }
+    public function format()
+    {
+        return [
+            'id' => $this->id,
+            'label' => $this->label,
+            'attribute_key' => $this->attribute_key,
+            'type' => $this->type,
+            'is_required' => $this->is_required,
+            'countries' => $this->countries,
+            'attribute_for' => $this->attribute_for,
+            'created_at' => format_date_time_with_timezone($this->created_at, config('app.timezone')),
+        ];
+    }
     public function formatAttribute()
     {
         return [

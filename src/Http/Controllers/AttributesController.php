@@ -90,7 +90,7 @@ class AttributesController extends Controller
     {
         $attributes = AttributeSchema::whereNull('deleted_at')
             ->get()
-            ->map(fn ($attribute) => $attribute->formatAttribute());
+            ->map(fn ($attribute) => $attribute->format());
 
         return $this->responseData($attributes);
     }
