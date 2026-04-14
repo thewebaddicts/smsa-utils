@@ -119,7 +119,7 @@ class AttributesController extends Controller
         $required = $isStore ? 'required|' : '';
 
         return [
-            'attribute_for' => $required . 'string|in:ADDRESS,MAWB_MANIFEST',
+            'attribute_for' => $required . 'string|in:' . implode(',', array_column(AttributeForEnum::cases(), 'value')),
             'label' => $required . 'string|max:255',
             'attribute_key' => [
                 $isStore ? 'nullable' : 'sometimes',
@@ -127,7 +127,7 @@ class AttributesController extends Controller
                 'max:255',
                 unique_rule('attributes', 'attribute_key', $attributeId),
             ],
-            'type' => $required . 'string|in:TOGGLE,TEXTFIELD,DROPDOWN,toggle,textfield,dropdown',
+            'type' => $required . 'string|in:' . implode(',', array_column(AttributeTypeEnum::cases(), 'value')),
             'is_required' => 'boolean',
             'countries' => 'nullable|array',
             'countries.*' => 'string|max:10',
