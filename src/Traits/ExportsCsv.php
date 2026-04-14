@@ -196,7 +196,6 @@ trait ExportsCsv
             $filename,
             $path,
             function ($handle) use ($headers, $rowWriter) {
-                fwrite($handle, "\xEF\xBB\xBF");
                 fputcsv($handle, $headers);
                 $rowWriter($handle);
             },
