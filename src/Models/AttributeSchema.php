@@ -39,6 +39,7 @@ class AttributeSchema extends Model
             'attribute_key' => $this->attribute_key,
             'field_type' => $this->type,
             'is_required' => $this->is_required,
+            'attribute_for' => $this->attribute_for,
         ];
     }
 }
