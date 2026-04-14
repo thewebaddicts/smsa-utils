@@ -150,6 +150,60 @@ trait ExportsCsv
         );
     }
 
+    protected function storeAndDownloadCsvByWriter(
+        string $filename,
+        string $path,
+        callable $writer,
+        string $disk = 'public'
+    ) {
+        $path = $this->ensureCsvExtension($path);
+        $filename = $this->ensureCsvExtension($filename);
+        $storageDisk = Storage::disk($disk);
+
+        if (!$storageDisk->exists($path)) {
+            $storageDisk->makeDirectory(dirname($path));
+            $handle = fopen($storageDisk->path($path), 'w');
+
+            if ($handle === false) {
+                throw new \RuntimeException('Failed to create CSV export file.');
+            }
+
+            try {
+                $writer($handle);
+            } finally {
+                fclose($handle);
+            }
+        }
+
+        return response()->download(
+            $storageDisk->path($path),
+            $filename,
+            [
+                'Content-Type' => 'text/csv; charset=UTF-8',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            ]
+        );
+    }
+
+    protected function storeAndDownloadChunkedCsv(
+        array $headers,
+        string $filename,
+        string $path,
+        callable $rowWriter,
+        string $disk = 'public'
+    ) {
+        return $this->storeAndDownloadCsvByWriter(
+            $filename,
+            $path,
+            function ($handle) use ($headers, $rowWriter) {
+                fwrite($handle, "\xEF\xBB\xBF");
+                fputcsv($handle, $headers);
+                $rowWriter($handle);
+            },
+            $disk
+        );
+    }
+
     protected function downloadStoredXlsxIfExists(string $path, string $filename, string $disk = 'public')
     {
         $path = preg_replace('/\.[^.]+$/', '', $path) . '.xlsx';
