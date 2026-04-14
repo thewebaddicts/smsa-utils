@@ -27,6 +27,13 @@ class Address extends Model
         'user_id',
         'address_for',
         'target_id',
-        'area_code'
+        'area_code',
+        'attributes'
     ];
+
+    protected $casts = [
+        'attributes' => 'array',
+    ];
+
+   
 }
