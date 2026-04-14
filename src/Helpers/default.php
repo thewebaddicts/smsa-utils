@@ -1461,3 +1461,28 @@ if (!function_exists('current_timezone_to_utc')) {
         return $result;
     }
 }
+
+if (!function_exists('identify_barcode')) {
+    function identify_barcode(string $code): ?string
+    {
+        if (strlen($code) < 2) {
+            return null;
+        }
+
+        $prefix = substr($code, 0, 2);
+
+        switch ($prefix) {
+            case '50':
+                return 'mawb';
+            case '30':
+                return 'crn';
+            case '40':
+                return 'hst';
+
+            case '80':
+                return 'preprinted';
+            default:
+                return 'awb';
+        }
+    }
+}
