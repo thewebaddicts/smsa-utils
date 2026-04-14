@@ -1486,23 +1486,59 @@ if (!function_exists('identify_barcode')) {
                 return 'awb';
         }
     }
+    // if (!function_exists('get_attributes_for_country')) {
+    //     function get_attributes_for_country(string $attributeFor, string | null $country = null) : array
+    //     {
+    //         $attributes = AttributeSchema::whereNull('deleted_at')
+    //             ->where('attribute_for', strtoupper($attributeFor))
+    //             ->when($country, function ($query) use ($country) {
+    //                 $query->where(function ($subQuery) use ($country) {
+    //                     $subQuery->where('countries', 'like', '%"' . $country . '"%')
+    //                         ->orWhere('countries', 'like', "%'" . $country . "'%")
+    //                         ->orWhere('countries', '[]')
+    //                         ->orWhereNull('countries');
+    //                 });
+    //             })
+    //             ->get()
+    //             ->map(fn($attribute) => $attribute->formatAttribute())
+    //             ->toArray();
+    //         return $attributes;
+    //     }
+    // }
     if (!function_exists('get_attributes_for_country')) {
         function get_attributes_for_country(string $attributeFor, string | null $country = null) : array
         {
-            $attributes = AttributeSchema::whereNull('deleted_at')
-                ->where('attribute_for', strtoupper($attributeFor))
-                ->when($country, function ($query) use ($country) {
-                    $query->where(function ($subQuery) use ($country) {
-                        $subQuery->where('countries', 'like', '%"' . $country . '"%')
-                            ->orWhere('countries', 'like', "%'" . $country . "'%")
-                            ->orWhere('countries', '[]')
-                            ->orWhereNull('countries');
-                    });
-                })
-                ->get()
-                ->map(fn($attribute) => $attribute->formatAttribute())
-                ->toArray();
-            return $attributes;
+            $for = strtoupper($attributeFor);
+            $countryKey = ($country !== null && $country !== '')
+                ? strtoupper($country)
+                : '_any';
+
+            $ttl = max(60, (int) config('cache.attribute_schema_ttl', 3600));
+
+            return Cache::remember(
+                'smsautils:attribute_schema:' . $for . ':' . $countryKey,
+                now()->addSeconds($ttl),
+                static function () use ($attributeFor, $country): array {
+                    return AttributeSchema::query()
+                        ->select(['id', 'label', 'attribute_key', 'field_type', 'is_required'])
+                        ->whereNull('deleted_at')
+                        ->where('attribute_for', strtoupper($attributeFor))
+                        ->when($country, function ($query) use ($country) {
+                            $encoded = json_encode((string) $country, JSON_UNESCAPED_UNICODE);
+                            $query->where(function ($subQuery) use ($encoded) {
+                                $subQuery->whereRaw(
+                                    '(countries IS NOT NULL AND JSON_VALID(countries) AND JSON_CONTAINS(CAST(countries AS JSON), CAST(? AS JSON)))',
+                                    [$encoded]
+                                )
+                                    ->orWhereNull('countries')
+                                    ->orWhere('countries', '[]');
+                            });
+                        })
+                        ->get()
+                        ->map(fn ($attribute) => $attribute->formatAttribute())
+                        ->toArray();
+                }
+            );
         }
     }
 }
