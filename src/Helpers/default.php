@@ -1500,7 +1500,7 @@ if (!function_exists('identify_barcode')) {
                     });
                 })
                 ->get()
-                ->map(fn($attribute) => $attribute->format())
+                ->map(fn($attribute) => $attribute->formatAttribute())
                 ->toArray();
             return $attributes;
         }
