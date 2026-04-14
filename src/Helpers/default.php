@@ -19,7 +19,6 @@ use twa\smsautils\Models\AccessToken;
 use twa\smsautils\Models\Hub;
 use twa\smsautils\Models\PickupRequest;
 use twa\smsautils\Models\AttributeSchema;
-use 
 if (!function_exists('format_code_branch')) {
 
     function format_code_branch(?string $code, ?string $branch): ?string
