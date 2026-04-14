@@ -18,6 +18,7 @@ use twa\smsautils\Jobs\TreatWorkflowActivity;
 use twa\smsautils\Models\AccessToken;
 use twa\smsautils\Models\Hub;
 use twa\smsautils\Models\PickupRequest;
+use twa\smsautils\Models\AttributeSchema;
 
 if (!function_exists('format_code_branch')) {
 
@@ -1454,7 +1455,7 @@ if (!function_exists('current_timezone_to_utc')) {
     {
         $result = [];
         foreach ($keys as $key => $value) {
-          
+
             $result[$key] = now()->parse($value, $timezone)->utc();
         }
 
@@ -1483,6 +1484,24 @@ if (!function_exists('identify_barcode')) {
                 return 'preprinted';
             default:
                 return 'awb';
+        }
+    }
+    if (!function_exists('get_attributes_for_country')) {
+        function get_attributes_for_country(string $attributeFor, string $country): ?string
+        {
+            $attributes = AttributeSchema::whereNull('deleted_at')
+                ->where('attribute_for', strtoupper($attributeFor))
+                ->when($country, function ($query) use ($country) {
+                    $query->where(function ($subQuery) use ($country) {
+                        $subQuery->where('countries', 'like', '%"' . $country . '"%')
+                            ->orWhere('countries', 'like', "%'" . $country . "'%")
+                            ->orWhere('countries', '[]')
+                            ->orWhereNull('countries');
+                    });
+                })
+                ->get()
+                ->map(fn($attribute) => $attribute->formatAttribute());
+            return $attributes;
         }
     }
 }

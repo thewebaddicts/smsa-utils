@@ -105,23 +105,12 @@ class AttributesController extends Controller
         return $this->responseData($this->formatAttribute($attribute));
     }
 
-    public function options($attributeFor)
+    public function fields($attributeFor)
     {
         $country = request()->input('country');
-
-        $attributes = AttributeSchema::whereNull('deleted_at')
-            ->where('attribute_for', strtoupper($attributeFor))
-            ->when($country, function ($query) use ($country) {
-                $query->where(function ($subQuery) use ($country) {
-                    $subQuery->where('countries', 'like', '%"' . $country . '"%')
-                        ->orWhere('countries', $country)
-                        ->orWhere('countries', '[]')
-                        ->orWhereNull('countries');
-                });
-            })
-            ->get()
-            ->map(fn ($attribute) => $this->formatAttribute($attribute));
-
+//helper function
+      $attributes = get_attributes_for_country($attributeFor, $country);
+             
         return $this->responseData($attributes);
     }
 
@@ -155,8 +144,7 @@ class AttributesController extends Controller
             'type' => $attribute->type,
             'is_required' => (bool) $attribute->is_required,
             'countries' => $attribute->countries,
-            'created_at' => format_date_time($attribute->created_at),
-            'updated_at' => format_date_time($attribute->updated_at),
+      
         ];
     }
     public function attributesForOptions()
