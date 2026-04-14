@@ -14,5 +14,6 @@ class AttributeSchema extends Model
 
     protected $casts = [
         'is_required' => 'boolean',
+        'countries' => 'array',
     ];
 }

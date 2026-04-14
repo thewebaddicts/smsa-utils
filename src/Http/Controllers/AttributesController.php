@@ -113,7 +113,7 @@ class AttributesController extends Controller
             ->where('attribute_for', strtoupper($attributeFor))
             ->when($country, function ($query) use ($country) {
                 $query->where(function ($subQuery) use ($country) {
-                    $subQuery->where('countries', $country)
+                    $subQuery->whereJsonContains('countries', $country)
                         ->orWhereNull('countries');
                 });
             })
@@ -138,7 +138,8 @@ class AttributesController extends Controller
             ],
             'type' => $required . 'string|in:TOGGLE,TEXTFIELD,DROPDOWN,toggle,textfield,dropdown',
             'is_required' => 'boolean',
-            'countries' => 'nullable',
+            'countries' => 'nullable|array',
+            'countries.*' => 'string|max:10',
         ];
     }
 
