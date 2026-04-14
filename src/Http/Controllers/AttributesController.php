@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use twa\apiutils\Traits\APITrait;
 use twa\smsautils\Models\AttributeSchema;
-
+use twa\smsautils\Enums\AttributeForEnum;
+use twa\smsautils\Enums\AttributeTypeEnum;
 class AttributesController extends Controller
 {
     use APITrait;
@@ -154,5 +155,26 @@ class AttributesController extends Controller
             'created_at' => format_date_time($attribute->created_at),
             'updated_at' => format_date_time($attribute->updated_at),
         ];
+    }
+    public function attributesForOptions()
+    { //label and value
+        $attributesFor = collect(AttributeForEnum::cases())->map(function ($attribute) {
+            return [
+                'label' => $attribute->name,
+                'value' => $attribute->value,
+            ];
+        });
+        return $this->responseData($attributesFor);
+
+    }
+    public function attributeTypesOptions()
+    {
+        $attributeTypes = collect(AttributeTypeEnum::cases())->map(function ($attribute) {
+            return [
+                'label' => $attribute->name,
+                'value' => $attribute->value,
+            ];
+        });
+        return $this->responseData($attributeTypes);
     }
 }
