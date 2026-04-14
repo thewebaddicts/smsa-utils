@@ -90,7 +90,7 @@ class AttributesController extends Controller
     {
         $attributes = AttributeSchema::whereNull('deleted_at')
             ->get()
-            ->map(fn ($attribute) => $this->formatAttribute($attribute));
+            ->map(fn ($attribute) => $attribute->formatAttribute());
 
         return $this->responseData($attributes);
     }
@@ -102,7 +102,7 @@ class AttributesController extends Controller
             return $this->response(notification()->error('Attribute not found', 'Attribute not found'));
         }
 
-        return $this->responseData($this->formatAttribute($attribute));
+        return $this->responseData($attribute->formatAttribute());
     }
 
     public function fields($attributeFor)
@@ -134,19 +134,7 @@ class AttributesController extends Controller
         ];
     }
 
-    protected function formatAttribute(AttributeSchema $attribute)
-    {
-        return [
-            'id' => $attribute->id,
-            'attribute_for' => $attribute->attribute_for,
-            'label' => $attribute->label,
-            'attribute_key' => $attribute->attribute_key,
-            'type' => $attribute->type,
-            'is_required' => (bool) $attribute->is_required,
-            'countries' => $attribute->countries,
-      
-        ];
-    }
+
     public function attributesForOptions()
     { //label and value
         $attributesFor = collect(AttributeForEnum::cases())->map(function ($attribute) {

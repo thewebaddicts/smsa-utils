@@ -31,4 +31,14 @@ class AttributeSchema extends Model
 
         $this->attributes['countries'] = $value;
     }
+    public function formatAttribute()
+    {
+        return [
+            'id' => $this->id,
+            'label' => $this->label,
+            'attribute_key' => $this->attribute_key,
+            'field_type' => $this->type,
+            'is_required' => $this->is_required,
+        ];
+    }
 }
