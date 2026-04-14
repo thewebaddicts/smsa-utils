@@ -137,23 +137,13 @@ class AttributesController extends Controller
 
     public function attributesForOptions()
     { //label and value
-        $attributesFor = collect(AttributeForEnum::cases())->map(function ($attribute) {
-            return [
-                'label' => $attribute->name,
-                'value' => $attribute->value,
-            ];
-        });
+        $attributesFor = collect(AttributeForEnum::cases())->map(fn($attribute) => AttributeForEnum::info($attribute));
         return $this->responseData($attributesFor);
 
     }
     public function attributeTypesOptions()
     {
-        $attributeTypes = collect(AttributeTypeEnum::cases())->map(function ($attribute) {
-            return [
-                'label' => $attribute->name,
-                'value' => $attribute->value,
-            ];
-        });
+        $attributeTypes = collect(AttributeTypeEnum::cases())->map(fn($attribute) => AttributeTypeEnum::info($attribute));
         return $this->responseData($attributeTypes);
     }
 }

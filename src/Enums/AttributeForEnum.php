@@ -3,7 +3,21 @@
 namespace twa\smsautils\Enums;
 
 enum AttributeForEnum: string
-{
-    case ADDRESS = 'ADDRESS';
-    case MAWB_MANIFEST = 'MAWB_MANIFEST';
+{ //label and value
+    case ADDRESS = 'address';
+    case MAWB_MANIFEST = 'mawb_manifest';
+
+public static function info($value)
+{ //label and value
+    return match ($value) {
+        self::ADDRESS => [
+            'label' => 'Address',
+            'value' => self::ADDRESS,
+        ],
+        self::MAWB_MANIFEST => [
+            'label' => 'MAWB Manifest',
+            'value' => self::MAWB_MANIFEST,
+        ],
+    };
+}
 } 
