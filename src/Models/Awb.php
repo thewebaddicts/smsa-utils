@@ -87,7 +87,11 @@ class Awb extends Model
         'destination_received_at',
         'returned_at',
         'rts_initiated_at',
-        'rts_delivered_at'
+        'rts_delivered_at',
+        'rts_destination_code',
+        'rts_branch_id',
+        'rts_processed_branch_id',
+        'reexport_at',
     ];
 
 
