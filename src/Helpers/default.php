@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\Query\Builder;
@@ -19,6 +20,7 @@ use twa\smsautils\Models\AccessToken;
 use twa\smsautils\Models\Hub;
 use twa\smsautils\Models\PickupRequest;
 use twa\smsautils\Models\AttributeSchema;
+
 if (!function_exists('format_code_branch')) {
 
     function format_code_branch(?string $code, ?string $branch): ?string
@@ -1488,56 +1490,42 @@ if (!function_exists('identify_barcode')) {
     if (!function_exists('get_attributes_for_country')) {
         function get_attributes_for_country(string $attributeFor, string | null $country = null) : array
         {
-            $attributes = AttributeSchema::whereNull('deleted_at')
-                ->where('attribute_for', strtoupper($attributeFor))
-                ->when($country, function ($query) use ($country) {
-                    $query->where(function ($subQuery) use ($country) {
-                        $subQuery->where('countries', 'like', '%"' . $country . '"%')
-                            ->orWhere('countries', 'like', "%'" . $country . "'%")
-                            ->orWhere('countries', '[]')
-                            ->orWhereNull('countries');
-                    });
-                })
-                ->get()
-                ->map(fn($attribute) => $attribute->formatAttribute())
-                ->toArray();
-            return $attributes;
+            $for = strtoupper($attributeFor);
+            $countryKey = ($country !== null && $country !== '')
+                ? strtoupper((string) $country)
+                : '_any';
+
+            $ttl = max(60, (int) Config::get('cache.attribute_schema_ttl', 3600));
+
+            return Cache::remember(
+                'smsautils:attribute_schema:' . $for . ':' . $countryKey,
+                now()->addSeconds($ttl),
+                static function () use ($for, $country): array {
+                    return AttributeSchema::query()
+                        ->select(['id', 'label', 'attribute_key', 'field_type', 'is_required'])
+                        ->whereNull('deleted_at')
+                        ->where('attribute_for', $for)
+                        ->when($country, function ($query) use ($country) {
+                            $code = (string) $country;
+                            $query->where(function ($subQuery) use ($code) {
+                                // Model cast `countries` => `array` is PHP-only; in SQL the column is still
+                                // LONGTEXT holding JSON, so CAST(... AS JSON) is required for JSON_*().
+                                // Use JSON_QUOTE(?) (bound as 'OM') — never CAST(? AS JSON) with a JSON
+                                // string binding, or MariaDB emits CAST("OM" AS JSON) and errors (1064).
+                                $subQuery->whereRaw(
+                                    '(countries IS NOT NULL AND JSON_VALID(countries) AND JSON_CONTAINS(CAST(countries AS JSON), JSON_QUOTE(?)))',
+                                    [$code]
+                                )
+                                    ->orWhereNull('countries')
+                                    ->orWhere('countries', '[]');
+                            });
+                        })
+                        ->get()
+                        ->map(fn ($attribute) => $attribute->formatAttribute())
+                        ->toArray();
+                }
+            );
         }
     }
-    // if (!function_exists('get_attributes_for_country')) {
-    //     function get_attributes_for_country(string $attributeFor, string | null $country = null) : array
-    //     {
-    //         $for = strtoupper($attributeFor);
-    //         $countryKey = ($country !== null && $country !== '')
-    //             ? strtoupper($country)
-    //             : '_any';
-
-    //         $ttl = max(60, (int) Config::get('cache.attribute_schema_ttl', 3600));
-
-    //         return Cache::remember(
-    //             'smsautils:attribute_schema:' . $for . ':' . $countryKey,
-    //             now()->addSeconds($ttl),
-    //             static function () use ($attributeFor, $country): array {
-    //                 return AttributeSchema::query()
-    //                     ->select(['id', 'label', 'attribute_key', 'field_type', 'is_required'])
-    //                     ->whereNull('deleted_at')
-    //                     ->where('attribute_for', strtoupper($attributeFor))
-    //                     ->when($country, function ($query) use ($country) {
-    //                         $encoded = json_encode((string) $country, JSON_UNESCAPED_UNICODE);
-    //                         $query->where(function ($subQuery) use ($encoded) {
-    //                             $subQuery->whereRaw(
-    //                                 '(countries IS NOT NULL AND JSON_VALID(countries) AND JSON_CONTAINS(CAST(countries AS JSON), CAST(? AS JSON)))',
-    //                                 [$encoded]
-    //                             )
-    //                                 ->orWhereNull('countries')
-    //                                 ->orWhere('countries', '[]');
-    //                         });
-    //                     })
-    //                     ->get()
-    //                     ->map(fn ($attribute) => $attribute->formatAttribute())
-    //                     ->toArray();
-    //             }
-    //         );
-    //     }
-    // }
+   
 }
