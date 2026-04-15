@@ -43,7 +43,7 @@ class AttributeSchema extends Model
             'countries' => $this->countries,
             'attribute_for' => $this->attribute_for,
             'created_at' => format_date_time($this->created_at),
-            'values' => $this->values,
+            'values' => $this->values ?: [],
         ];
     }
     public function formatAttribute(?array $storedValues = null): array
