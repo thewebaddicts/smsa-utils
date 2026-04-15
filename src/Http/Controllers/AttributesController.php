@@ -23,10 +23,10 @@ class AttributesController extends Controller
         }
 
         $attribute = new AttributeSchema();
-        $attribute->attribute_for = strtoupper($data['attribute_for']);
+        $attribute->attribute_for = $data['attribute_for'];
         $attribute->label = $data['label'];
         $attribute->attribute_key = str()->slug($data['attribute_key'] ?? $data['label'], '_');
-        $attribute->type = strtoupper($data['type']);
+        $attribute->type = $data['type'];
         $attribute->is_required = $data['is_required'] ?? false;
         $attribute->countries = $data['countries'] ?? null;
         $attribute->values = $data['values'] ?? null;

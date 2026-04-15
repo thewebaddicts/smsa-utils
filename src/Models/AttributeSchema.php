@@ -52,7 +52,7 @@ class AttributeSchema extends Model
             'id' => $this->id,
             'label' => $this->label,
             'attribute_key' => $this->attribute_key,
-            'field_type' => $this->field_type,
+            'type' => $this->type,
             'is_required' => $this->is_required,
             'options' => $this->values,
         ];
