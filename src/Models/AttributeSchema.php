@@ -34,18 +34,40 @@ class AttributeSchema extends Model
     }
     public function format()
     {
+        $codes = is_array($this->countries)
+            ? array_values(array_filter($this->countries, fn ($c) => $c !== null && $c !== ''))
+            : [];
+
+        if ($codes === [] || $codes === null) {
+            $countries = 'All countries';
+        } else {
+            $namesByCode = Country::query()
+                ->whereNull('deleted_at')
+                ->whereIn('code', $codes)
+                ->pluck('name', 'code')
+                ->all();
+            $countries = array_map(
+                fn ($code) => [
+                    'label' => (string) ($namesByCode[$code] ?? $code),
+                    'value' => (string) $code,
+                ],
+                $codes
+            );
+        }
+
         return [
             'id' => $this->id,
             'label' => $this->label,
             'attribute_key' => $this->attribute_key,
             'type' => $this->type,
             'is_required' => $this->is_required,
-            'countries' => $this->countries,
+            'countries' => $countries,
             'attribute_for' => $this->attribute_for,
             'created_at' => format_date_time($this->created_at),
             'values' => $this->values ?: [],
         ];
     }
+
     public function formatAttribute(?array $storedValues = null): array
     {
         $row = [
