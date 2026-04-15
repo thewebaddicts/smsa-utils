@@ -69,6 +69,7 @@ enum AwbStatusEnum: string
     case SCAN_RUNSHEET_VERIFIED = 'SHRV';
     case SCAN_RUNSHEET_UNASSIGNED = 'SHRU';
     case SCAN_BAG = 'SHSB';
+    case UNSCAN_BAG = 'SHUB';
     case DOCUMENT_UPLOAD = 'SHUD';
 
 
@@ -966,6 +967,15 @@ enum AwbStatusEnum: string
                     'color_bg' => '#f3e5f5',
                     'color_text' => '#6a1b9a',
                     'description' => 'Shipment scanned and assigned to bag',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::UNSCAN_BAG => [
+                    'label' => $lang === 'ar' ? 'إلغاء مسح الحقيبة' : 'Unscan Bag',
+                    'icon' => 'clipboard-list',
+                    'color_bg' => '#f3e5f5',
+                    'color_text' => '#6a1b9a',
+                    'description' => 'Shipment unscanned from the bag',
                     'category' => null,
                     'tags' => ["all"],
                 ],
