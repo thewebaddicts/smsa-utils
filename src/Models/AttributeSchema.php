@@ -46,9 +46,9 @@ class AttributeSchema extends Model
             'values' => $this->values,
         ];
     }
-    public function formatAttribute()
+    public function formatAttribute(?array $storedValues = null): array
     {
-        return [
+        $row = [
             'id' => $this->id,
             'label' => $this->label,
             'attribute_key' => $this->attribute_key,
@@ -56,5 +56,17 @@ class AttributeSchema extends Model
             'is_required' => $this->is_required,
             'options' => $this->values,
         ];
+
+        if ($storedValues === null) {
+            return $row;
+        }
+
+        $key = $this->attribute_key;
+        $value = ($key !== null && array_key_exists($key, $storedValues)) ? $storedValues[$key] : null;
+
+        return array_merge($row, [
+            'value' => $value,
+            'filled' => ! blank($value),
+        ]);
     }
 }

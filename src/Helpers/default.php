@@ -1486,7 +1486,7 @@ if (!function_exists('identify_barcode')) {
         }
     }
     if (!function_exists('get_attributes_for_country')) {
-        function get_attributes_for_country(string $attributeFor, string | null $country = null) : array
+        function get_attributes_for_country(string $attributeFor, string | null $country = null, ?array $data = null): array
         {
             $attributes = AttributeSchema::whereNull('deleted_at')
                 ->where('attribute_for', strtoupper($attributeFor))
@@ -1499,8 +1499,9 @@ if (!function_exists('identify_barcode')) {
                     });
                 })
                 ->get()
-                ->map(fn($attribute) => $attribute->formatAttribute())
+                ->map(fn ($attribute) => $attribute->formatAttribute($data))
                 ->toArray();
+    
             return $attributes;
         }
     }
