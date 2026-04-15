@@ -19,6 +19,7 @@ use twa\smsautils\Models\AccessToken;
 use twa\smsautils\Models\Hub;
 use twa\smsautils\Models\PickupRequest;
 use twa\smsautils\Models\AttributeSchema;
+
 if (!function_exists('format_code_branch')) {
 
     function format_code_branch(?string $code, ?string $branch): ?string
@@ -1485,26 +1486,33 @@ if (!function_exists('identify_barcode')) {
                 return 'awb';
         }
     }
-    if (!function_exists('get_attributes_for_country')) {
-        function get_attributes_for_country(string $attributeFor, string | null $country = null, ?array $data = null): array
-        {
-            $attributes = AttributeSchema::whereNull('deleted_at')
-                ->where('attribute_for', strtoupper($attributeFor))
-                ->when($country, function ($query) use ($country) {
-                    $query->where(function ($subQuery) use ($country) {
-                        $subQuery->where('countries', 'like', '%"' . $country . '"%')
-                            ->orWhere('countries', 'like', "%'" . $country . "'%")
-                            ->orWhere('countries', '=', '[]')
-                            ->orWhereNull('countries');
-                    });
-                })
-                ->get()
-                ->map(fn ($attribute) => $attribute->formatAttribute($data))
-                ->toArray();
-    
-            return $attributes;
-        }
+}
+if (!function_exists('generate_reference_number')) {
+    function generate_reference_number($id, $suffix)
+    {
+        return $suffix . str_pad($id, 4, '0', STR_PAD_LEFT);
     }
+}
+if (!function_exists('get_attributes_for_country')) {
+    function get_attributes_for_country(string $attributeFor, string | null $country = null, ?array $data = null): array
+    {
+        $attributes = AttributeSchema::whereNull('deleted_at')
+            ->where('attribute_for', strtoupper($attributeFor))
+            ->when($country, function ($query) use ($country) {
+                $query->where(function ($subQuery) use ($country) {
+                    $subQuery->where('countries', 'like', '%"' . $country . '"%')
+                        ->orWhere('countries', 'like', "%'" . $country . "'%")
+                        ->orWhere('countries', '=', '[]')
+                        ->orWhereNull('countries');
+                });
+            })
+            ->get()
+            ->map(fn($attribute) => $attribute->formatAttribute($data))
+            ->toArray();
+
+        return $attributes;
+    }
+}
     // if (!function_exists('get_attributes_for_country')) {
     //     function get_attributes_for_country(string $attributeFor, string | null $country = null) : array
     //     {
@@ -1541,4 +1549,4 @@ if (!function_exists('identify_barcode')) {
     //         );
     //     }
     // }
-}
+// }
