@@ -15,6 +15,7 @@ class AttributeSchema extends Model
     protected $casts = [
         'is_required' => 'boolean',
         'countries' => 'array',
+        'values' => 'array',
     ];
 
     public function setCountriesAttribute($value): void
@@ -42,6 +43,7 @@ class AttributeSchema extends Model
             'countries' => $this->countries,
             'attribute_for' => $this->attribute_for,
             'created_at' => format_date_time_with_timezone($this->created_at, config('app.timezone')),
+            'values' => $this->values,
         ];
     }
     public function formatAttribute()
@@ -52,6 +54,7 @@ class AttributeSchema extends Model
             'attribute_key' => $this->attribute_key,
             'field_type' => $this->field_type,
             'is_required' => $this->is_required,
+            'options' => $this->values,
         ];
     }
 }

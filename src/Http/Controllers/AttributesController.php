@@ -29,6 +29,7 @@ class AttributesController extends Controller
         $attribute->type = strtoupper($data['type']);
         $attribute->is_required = $data['is_required'] ?? false;
         $attribute->countries = $data['countries'] ?? null;
+        $attribute->values = $data['values'] ?? null;
         $attribute->save();
 
         return $this->response(notification()->success('Attribute created successfully', 'Attribute created successfully'));
@@ -67,7 +68,9 @@ class AttributesController extends Controller
         if (array_key_exists('countries', $data)) {
             $attribute->countries = $data['countries'];
         }
-
+        if (array_key_exists('values', $data)) {
+            $attribute->values = $data['values'];
+        }
         $attribute->save();
 
         return $this->response(notification()->success('Attribute updated successfully', 'Attribute updated successfully'));
@@ -90,7 +93,7 @@ class AttributesController extends Controller
     {
         $attributes = AttributeSchema::whereNull('deleted_at')
             ->get()
-            ->map(fn ($attribute) => $attribute->format());
+            ->map(fn($attribute) => $attribute->format());
 
         return $this->responseData($attributes);
     }
@@ -108,9 +111,9 @@ class AttributesController extends Controller
     public function fields($attributeFor)
     {
         $country = request()->input('country');
-//helper function
-      $attributes = get_attributes_for_country($attributeFor, $country);
-             
+        //helper function
+        $attributes = get_attributes_for_country($attributeFor, $country);
+
         return $this->responseData($attributes);
     }
 
@@ -130,16 +133,17 @@ class AttributesController extends Controller
             'type' => $required . 'string|in:' . implode(',', array_column(AttributeTypeEnum::cases(), 'value')),
             'is_required' => 'boolean',
             'countries' => 'nullable|array',
-            'countries.*' => 'string|max:10',
+            'countries.*' => 'nullable|string',
+            'values' => 'required_if:type,dropdown|array',
+            'values.*' => 'nullable|string',
         ];
     }
 
 
     public function attributesForOptions()
-    { //label and value
+    {
         $attributesFor = collect(AttributeForEnum::cases())->map(fn($attribute) => AttributeForEnum::info($attribute));
         return $this->responseData($attributesFor);
-
     }
     public function attributeTypesOptions()
     {
