@@ -31,7 +31,7 @@ class AttributesController extends Controller
         $attribute->is_required = $data['is_required'] ?? false;
         $attribute->countries = $data['countries'] ?? null;
         $attribute->values = $data['values'] ?? null;
-        $attribute->created_by = $user->id;
+        $attribute->created_by_operator_id = $user->id;
         $attribute->save();
 
         return $this->response(notification()->success('Attribute created successfully', 'Attribute created successfully'));
