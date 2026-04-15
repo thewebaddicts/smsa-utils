@@ -105,9 +105,19 @@ class AttributesController extends Controller
             return $this->response(notification()->error('Attribute not found', 'Attribute not found'));
         }
 
-        return $this->responseData($attribute->formatAttribute());
+        return $this->responseData($attribute);
     }
 
+    public function details($attributeId)
+    {
+        $
+        $attribute = AttributeSchema::find($attributeId);
+        if (!$attribute || $attribute->deleted_at) {
+            return $this->response(notification()->error('Attribute not found', 'Attribute not found'));
+        }
+    
+        return $this->responseData($attribute->format());
+    }
     public function fields($attributeFor)
     {
         $country = request()->input('country');

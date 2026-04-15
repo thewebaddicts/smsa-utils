@@ -18,4 +18,5 @@ Route::prefix('api/v1')->middleware([twa\smsautils\Http\Middleware\AuthMandatory
     Route::get('attribute-types/options', [AttributesController::class, 'attributeTypesOptions'])->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
     Route::get('attributes/{attribute_for}/fields', [AttributesController::class, 'fields'])->where('attribute_for', 'ADDRESS|MAWB_MANIFEST')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
     Route::resource('attributes', AttributesController::class)->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
+    Route::get('attributes/{id}/details', [AttributesController::class, 'details'])->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
 });

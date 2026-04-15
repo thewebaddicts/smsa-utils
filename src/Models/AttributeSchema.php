@@ -42,7 +42,7 @@ class AttributeSchema extends Model
             'is_required' => $this->is_required,
             'countries' => $this->countries,
             'attribute_for' => $this->attribute_for,
-            'created_at' => format_date_time_with_timezone($this->created_at, config('app.timezone')),
+            'created_at' => format_date_time($this->created_at),
             'values' => $this->values,
         ];
     }
