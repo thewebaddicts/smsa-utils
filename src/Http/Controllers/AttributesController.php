@@ -8,6 +8,7 @@ use twa\apiutils\Traits\APITrait;
 use twa\smsautils\Models\AttributeSchema;
 use twa\smsautils\Enums\AttributeForEnum;
 use twa\smsautils\Enums\AttributeTypeEnum;
+
 class AttributesController extends Controller
 {
     use APITrait;
@@ -91,7 +92,12 @@ class AttributesController extends Controller
 
     public function index(Request $request)
     {
+        $search = $request->input('search');
         $attributes = AttributeSchema::whereNull('deleted_at')
+            ->when($search, function ($query) use ($search) {
+                $query->where('label', 'like', '%' . $search . '%')
+                    ->orWhere('attribute_key', 'like', '%' . $search . '%');
+            })
             ->get()
             ->map(fn($attribute) => $attribute->format());
 
@@ -110,12 +116,12 @@ class AttributesController extends Controller
 
     public function details($attributeId)
     {
-        $
+
         $attribute = AttributeSchema::find($attributeId);
         if (!$attribute || $attribute->deleted_at) {
             return $this->response(notification()->error('Attribute not found', 'Attribute not found'));
         }
-    
+
         return $this->responseData($attribute->format());
     }
     public function fields($attributeFor)
