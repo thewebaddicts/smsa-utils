@@ -145,7 +145,9 @@ class AttributesController extends Controller
             'countries' => 'nullable|array',
             'countries.*' => 'nullable|string',
             'values' => 'required_if:type,dropdown|array',
-            'values.*' => 'nullable|string',
+            'values.*' => 'nullable|array',
+            'values.*.label' => 'nullable|string',
+            'values.*.value' => 'nullable|string',
         ];
     }
 
