@@ -16,7 +16,7 @@ class AttributesController extends Controller
     public function store(Request $request)
     {
         $data = clean_request([]);
-
+        $user = request()->user();
         $validator = Validator::make($data, $this->rules());
 
         if ($validator->fails()) {
@@ -31,6 +31,7 @@ class AttributesController extends Controller
         $attribute->is_required = $data['is_required'] ?? false;
         $attribute->countries = $data['countries'] ?? null;
         $attribute->values = $data['values'] ?? null;
+        $attribute->created_by = $user->id;
         $attribute->save();
 
         return $this->response(notification()->success('Attribute created successfully', 'Attribute created successfully'));
