@@ -52,7 +52,7 @@ class AttributesController extends Controller
         }
 
         if (isset($data['attribute_for'])) {
-            $attribute->attribute_for = strtoupper($data['attribute_for']);
+            $attribute->attribute_for = $data['attribute_for'];
         }
         if (isset($data['label'])) {
             $attribute->label = $data['label'];
@@ -61,7 +61,7 @@ class AttributesController extends Controller
             $attribute->attribute_key = str()->slug($data['attribute_key'] ?? $attribute->label, '_');
         }
         if (isset($data['type'])) {
-            $attribute->type = strtoupper($data['type']);
+            $attribute->type = $data['type'];
         }
         if (isset($data['is_required'])) {
             $attribute->is_required = $data['is_required'];
