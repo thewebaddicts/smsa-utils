@@ -1547,7 +1547,6 @@ if (!function_exists('get_documents')) {
             ->whereNull('deleted_at')
             ->get()->map(function ($document) {
                 return [
-                    'id' => $document->id,
                     'document_name' => $document->document_name,
                     'document_key' => $document->document_key,
                     'sample_file_url' => config('sample-files.'.$document->document_key) ?? null,
