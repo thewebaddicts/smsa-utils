@@ -29,8 +29,21 @@ class EventController
 
     public function countries()
     {
+        $shipper_id = request()->input('shipper_id');
+        $accountCountry = null;
+
+        if (!empty($shipper_id)) {
+            $accountCountry = DB::table('clients')
+                ->where('id', $shipper_id)
+                ->whereNull('deleted_at')
+                ->value('account_country');
+        }
+
         $countries = Country::query()
             ->whereNull('deleted_at')
+            ->when($accountCountry, function ($query) use ($accountCountry) {
+                $query->where('code', $accountCountry);
+            })
             ->select(['code', 'name'])
             ->orderBy('name')
             ->get()
@@ -44,6 +57,7 @@ class EventController
 
         return $this->responseData($countries);
     }
+
 
 
 

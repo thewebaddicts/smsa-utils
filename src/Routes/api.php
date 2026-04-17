@@ -14,6 +14,7 @@ Route::prefix('api/v1')->middleware([twa\smsautils\Http\Middleware\AuthMandatory
 
     Route::get('document-schemas/{document_for}/documents/options', [twa\smsautils\Http\Controllers\DocumentSchemaController::class, 'uploadOptions'])->where('document_for', 'crn|mawb|hst|hawb|pawb')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
     Route::get('document-schemas/{document_for}/documents', [twa\smsautils\Http\Controllers\DocumentSchemaController::class, 'getDocuments'])->where('document_for', 'crn|mawb|hst|hawb|pawb')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
+    
     Route::resource('document-schemas', \twa\smsautils\Http\Controllers\DocumentSchemaController::class)->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
    
     
