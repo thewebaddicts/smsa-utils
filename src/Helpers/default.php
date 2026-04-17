@@ -301,13 +301,12 @@ if (!function_exists('create_pickup_from_shipment')) {
             pickupTimeFrom: $pickupTimeFrom,
             pickupTimeTo: $pickupTimeTo
         );
-        if ($existingPendingPickup ) {
+        if ($existingPendingPickup) {
             // $existingPendingPickup->already_exists = true;
-            if($throw_exception){
+            if ($throw_exception) {
                 throw new \Exception('A pending pickup already exists for the same shipper address.');
             }
             return $existingPendingPickup;
-           
         }
 
 
@@ -1517,4 +1516,38 @@ if (!function_exists('get_attributes_for_country')) {
         return $attributes;
     }
 }
-   
+
+if (!function_exists('get_documents')) {
+    function get_documents($condition_slug, $document_for, $product_group, $visible = null)
+    {
+
+        if (!is_array($condition_slug)) {
+            $condition_slug = [$condition_slug];
+        }
+
+        $documents = DB::table('document_schemas')
+            ->select('document_key',  'document_name')
+
+            ->when(!is_null($visible), function ($query) use ($visible) {
+                $query->where('visible_on_creation', $visible ? 1 : 0);
+            })
+            ->where('document_for', $document_for)
+            ->whereIn('required_condition', $condition_slug)
+
+            ->when($product_group, function ($query) use ($product_group) {
+                $query->where(function ($q1) use ($product_group) {
+                    $q1->where(function ($q) use ($product_group) {
+                        $q->where('product_group', 'LIKE', '%"' . $product_group . '"%');
+                        $q->orWhere('product_group', 'LIKE', "%'" . $product_group . "'%");
+                    });
+                    $q1->orWhereNull('product_group');
+                    $q1->orWhere('product_group', '[]');
+                });
+            })
+            ->whereNull('deleted_at')
+            ->get();
+
+
+        return $documents;
+    }
+}

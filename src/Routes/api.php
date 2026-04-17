@@ -12,8 +12,11 @@ Route::prefix('api/v1')->middleware([twa\smsautils\Http\Middleware\AuthMandatory
     Route::post('/super-import/{identifier}', action: [twa\smsautils\Http\Controllers\ImportController::class, 'import']);
 
 
-    Route::get('document-schemas/{document_for}/documents/options', [twa\smsautils\Http\Controllers\DocumentSchemaController::class, 'uploadOptions'])->where('document_for', 'crn|mawb|hst|hawb')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
+    Route::get('document-schemas/{document_for}/documents/options', [twa\smsautils\Http\Controllers\DocumentSchemaController::class, 'uploadOptions'])->where('document_for', 'crn|mawb|hst|hawb|pawb')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
+    Route::get('document-schemas/{document_for}/documents', [twa\smsautils\Http\Controllers\DocumentSchemaController::class, 'getDocuments'])->where('document_for', 'crn|mawb|hst|hawb|pawb')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
     Route::resource('document-schemas', \twa\smsautils\Http\Controllers\DocumentSchemaController::class)->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
+   
+    
     Route::get('attribute-for/options', [AttributesController::class, 'attributesForOptions'])->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
     Route::get('attribute-types/options', [AttributesController::class, 'attributeTypesOptions'])->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);
     Route::get('attributes/{attribute_for}/fields', [AttributesController::class, 'fields'])->where('attribute_for', 'ADDRESS|MAWB_MANIFEST')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class]);

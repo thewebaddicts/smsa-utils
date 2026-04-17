@@ -171,7 +171,7 @@ class DocumentSchemaController extends Controller
     {
 
         return DocumentSchema::select('document_key', 'document_name', 'required_condition', 'product_group')
-        ->whereNull('deleted_at')
+            ->whereNull('deleted_at')
             ->where('document_for', strtoupper($document_for))
             ->where(function ($query) use ($destination_port) {
                 $query->where(function ($q) use ($destination_port) {
@@ -192,5 +192,14 @@ class DocumentSchemaController extends Controller
                 $query->where('required_condition', $required_condition);
             })
             ->get();
+    }
+    public function getDocuments($document_for)
+    {
+        $product_group = request()->input('product_group');
+        $visible = request()->input('visible') ? true : false;
+
+        $documents = get_documents(["REQUIRED_ON_CREATION", "OPTIONAL_ANYTIME"], $document_for, $product_group, $visible);
+
+        return $this->responseData($documents);
     }
 }
