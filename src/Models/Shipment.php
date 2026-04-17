@@ -43,6 +43,7 @@ class Shipment extends Model
     'dutiable',
     'source',
     'created_at',
+    'documents',
     // ROZANA
     'eta',
     'etd',
