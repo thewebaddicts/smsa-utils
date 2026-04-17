@@ -222,6 +222,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         bool $has_client = true,
         array $expected_awbs = [],
         bool $is_cir = false,
+        bool $throw_exception = true
 
     ) {
 
@@ -300,9 +301,13 @@ if (!function_exists('create_pickup_from_shipment')) {
             pickupTimeFrom: $pickupTimeFrom,
             pickupTimeTo: $pickupTimeTo
         );
-        if ($existingPendingPickup) {
+        if ($existingPendingPickup ) {
             // $existingPendingPickup->already_exists = true;
-            throw new \Exception('A pending pickup already exists for the same shipper address.');
+            if($throw_exception){
+                throw new \Exception('A pending pickup already exists for the same shipper address.');
+            }
+            return $existingPendingPickup;
+           
         }
 
 
@@ -344,7 +349,6 @@ if (!function_exists('create_pickup_from_shipment')) {
         return $pickupRequest;
     }
 }
-
 
 
 if (!function_exists('operation_activity_log')) {
@@ -1513,40 +1517,4 @@ if (!function_exists('get_attributes_for_country')) {
         return $attributes;
     }
 }
-    // if (!function_exists('get_attributes_for_country')) {
-    //     function get_attributes_for_country(string $attributeFor, string | null $country = null) : array
-    //     {
-    //         $for = strtoupper($attributeFor);
-    //         $countryKey = ($country !== null && $country !== '')
-    //             ? strtoupper($country)
-    //             : '_any';
-
-    //         $ttl = max(60, (int) Config::get('cache.attribute_schema_ttl', 3600));
-
-    //         return Cache::remember(
-    //             'smsautils:attribute_schema:' . $for . ':' . $countryKey,
-    //             now()->addSeconds($ttl),
-    //             static function () use ($attributeFor, $country): array {
-    //                 return AttributeSchema::query()
-    //                     ->select(['id', 'label', 'attribute_key', 'field_type', 'is_required'])
-    //                     ->whereNull('deleted_at')
-    //                     ->where('attribute_for', strtoupper($attributeFor))
-    //                     ->when($country, function ($query) use ($country) {
-    //                         $encoded = json_encode((string) $country, JSON_UNESCAPED_UNICODE);
-    //                         $query->where(function ($subQuery) use ($encoded) {
-    //                             $subQuery->whereRaw(
-    //                                 '(countries IS NOT NULL AND JSON_VALID(countries) AND JSON_CONTAINS(CAST(countries AS JSON), CAST(? AS JSON)))',
-    //                                 [$encoded]
-    //                             )
-    //                                 ->orWhereNull('countries')
-    //                                 ->orWhere('countries', '[]');
-    //                         });
-    //                     })
-    //                     ->get()
-    //                     ->map(fn ($attribute) => $attribute->formatAttribute())
-    //                     ->toArray();
-    //             }
-    //         );
-    //     }
-    // }
-// }
+   
