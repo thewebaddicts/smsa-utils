@@ -1518,7 +1518,7 @@ if (!function_exists('get_attributes_for_country')) {
 }
 
 if (!function_exists('get_documents')) {
-    function get_documents($condition_slug, $document_for, $product_group, $visible = null)
+    function get_documents($condition_slug, $document_for, $product_group, $visible = null, $data = null)
     {
 
         if (!is_array($condition_slug)) {
@@ -1545,12 +1545,21 @@ if (!function_exists('get_documents')) {
                 });
             })
             ->whereNull('deleted_at')
-            ->get()->map(function ($document) {
+            ->get()->map(function ($document) use ($data) {
+                $documentValue = is_array($data) ? ($data[$document->document_key] ?? null) : null;
+                $documentFileIds = $documentValue ? [(int) $documentValue] : [];
+
                 return [
                     'document_name' => $document->document_name,
                     'document_key' => $document->document_key,
+
                     'sample_file_url' => config('sample-files.'.$document->document_key) ?? null,
+                    'value' => !empty($documentFileIds) ? get_files_info($documentFileIds) : []
                 ];
+
+
+               
+             
             });
 
 
