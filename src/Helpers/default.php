@@ -1554,7 +1554,7 @@ if (!function_exists('get_documents')) {
                     'document_key' => $document->document_key,
 
                     'sample_file_url' => config('sample-files.'.$document->document_key) ?? null,
-                    'value' => !empty($documentFileIds) ? get_files_info($documentFileIds) : []
+                    'value' => !empty($documentFileIds) ? get_files_info($documentFileIds) : null
                 ];
 
 
