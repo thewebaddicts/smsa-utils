@@ -5,11 +5,25 @@ use Illuminate\Support\Facades\Validator;
 function get_validation_rules($identifier)
 {
 
-    $fields = collect(config('import-config.' . $identifier . '.columns'))->where('required', true)->pluck('column')->toArray();
+    // $fields = collect(config('import-config.' . $identifier . '.columns'))->where('required', true)->pluck('column')->toArray();
 
+
+    $fields = collect(config('import-config.' . $identifier . '.columns'))->toArray();
     $validations = [];
-    foreach ($fields as $field) {
-        $validations[$field] = 'required';
+
+    foreach ($fields as $value) {
+
+        $array = $value['validations'] ?? [];
+
+        if (!is_array($array)) {
+            $array = [];
+        }
+
+        if ($value['required'] ?? false) {
+            $array[] = 'required';
+        }
+
+        $validations[$value['column']] = $array;
     };
 
     return $validations;
