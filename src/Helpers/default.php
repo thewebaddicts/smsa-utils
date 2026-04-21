@@ -146,8 +146,15 @@ if (!function_exists('get_supervisor_credentials')) {
     }
 }
 
+//format 20-04-2026 16:48:00
+if (!function_exists('format_date_time_with_timezone_local')) {
+    function format_date_time_with_timezone_local($datetime, $timezone)
+    {
+        return now()->parse($datetime)->setTimezone($timezone)->format('d-m-Y H:i:s');
+    }
+}
 
-
+// format 20 Apr 2026 4:48 PM
 if (!function_exists('format_date_time_with_timezone')) {
     function format_date_time_with_timezone($datetime, $timezone)
     {
