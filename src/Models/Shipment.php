@@ -54,6 +54,7 @@ class Shipment extends Model
   //cast documents
   protected $casts = [
     'documents' => 'array',
+    'attributes' => 'array'
   ];
 
   public function awbs()
