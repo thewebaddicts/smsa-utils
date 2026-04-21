@@ -145,7 +145,6 @@ class AttributesController extends Controller
                 $isStore ? 'nullable' : 'sometimes',
                 'string',
                 'max:255',
-                unique_rule('attributes', 'attribute_key', $attributeId),
             ],
             'type' => $required . 'string|in:' . implode(',', array_column(AttributeTypeEnum::cases(), 'value')),
             'is_required' => 'boolean',
