@@ -150,6 +150,11 @@ if (!function_exists('get_supervisor_credentials')) {
 if (!function_exists('format_date_time_with_timezone_local')) {
     function format_date_time_with_timezone_local($datetime, $timezone)
     {
+
+       if (!$datetime) {
+            return null;
+        }
+
         return now()->parse($datetime)->setTimezone($timezone)->format('d-m-Y H:i:s');
     }
 }
@@ -158,6 +163,10 @@ if (!function_exists('format_date_time_with_timezone_local')) {
 if (!function_exists('format_date_time_with_timezone')) {
     function format_date_time_with_timezone($datetime, $timezone)
     {
+           if (!$datetime) {
+            return null;
+        }
+
         return now()->parse($datetime)->setTimezone($timezone)->format('d M Y h:i A');
     }
 }
@@ -165,6 +174,11 @@ if (!function_exists('format_date_time_with_timezone')) {
 if (!function_exists('format_time_with_timezone')) {
     function format_time_with_timezone($time, $timezone)
     {
+
+       if (!$time) {
+            return null;
+        }
+
         return now()->parse($time)->setTimezone($timezone)->format('h:i A');
     }
 }
@@ -172,6 +186,10 @@ if (!function_exists('format_time_with_timezone')) {
 if (!function_exists('format_date_with_timezone')) {
     function format_date_with_timezone($date, $timezone)
     {
+        if (!$date) {
+            return null;
+        }
+
         return now()->parse($date)->setTimezone($timezone)->format('d M Y');
     }
 }
