@@ -88,7 +88,7 @@ class Operator extends Model
     }
     public function roles()
     {
-        return $this->hasMany(Role::class, 'roles_ids', 'id')
+        return $this->hasMany(DB::table('roles'), 'roles_ids', 'id')
         ->whereNull('roles.deleted_at');
     }
 }
