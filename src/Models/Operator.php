@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
-
+use twa\smsautils\Models\Role;
 class Operator extends Model
 {
     use HasFactory, SoftDeletes;
@@ -85,5 +85,10 @@ class Operator extends Model
             'superadmin' => (bool) $this->superadmin,
             'created_at' => format_date_time($this->created_at),
         ];
+    }
+    public function roles()
+    {
+        return $this->hasMany(Role::class, 'roles_ids', 'id')
+        ->whereNull('roles.deleted_at');
     }
 }
