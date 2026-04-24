@@ -95,7 +95,7 @@
         .barcode-value {
             text-align: center;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 1px;
             margin: 4px 0 14px;
         }
