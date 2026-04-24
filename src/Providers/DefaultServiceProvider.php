@@ -25,6 +25,11 @@ class DefaultServiceProvider extends EventServiceProvider
         $this->publishes([
             __DIR__ . '/../Configs/event-config.php' => config_path('event-config.php'),
         ], 'laravel-assets');
+        $this->loadViewsFrom(__DIR__ . '/../Views', 'smsautils');
+        $this->publishes([
+            __DIR__ . '/../Views' => resource_path('views/vendor/smsautils'),
+        ], 'smsa-utils-views');
+
 
         Event::listen(\twa\smsautils\Events\OnAWBActivityLog::class, \twa\smsautils\Listeners\HandleWorkflowActivityLog::class);
         Event::listen(\twa\smsautils\Events\PickupRequestCreated::class, \twa\smsautils\Listeners\ConvertPickupDateTimeToUTC::class);
