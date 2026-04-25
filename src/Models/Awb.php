@@ -92,6 +92,8 @@ class Awb extends Model
         'rts_branch_id',
         'rts_processed_branch_id',
         'reexport_at',
+        'origin_country',
+        'destination_country',
     ];
 
 
