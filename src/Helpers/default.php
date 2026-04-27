@@ -151,7 +151,7 @@ if (!function_exists('format_date_time_with_timezone_local')) {
     function format_date_time_with_timezone_local($datetime, $timezone)
     {
 
-       if (!$datetime) {
+        if (!$datetime) {
             return null;
         }
 
@@ -163,7 +163,7 @@ if (!function_exists('format_date_time_with_timezone_local')) {
 if (!function_exists('format_date_time_with_timezone')) {
     function format_date_time_with_timezone($datetime, $timezone)
     {
-           if (!$datetime) {
+        if (!$datetime) {
             return null;
         }
 
@@ -175,7 +175,7 @@ if (!function_exists('format_time_with_timezone')) {
     function format_time_with_timezone($time, $timezone)
     {
 
-       if (!$time) {
+        if (!$time) {
             return null;
         }
 
@@ -481,11 +481,14 @@ if (!function_exists('money_object')) {
     function money_object($value, $currency, $round = true): array
     {
         $numeric = (float) $value;
-
-        $number = $round ? round($numeric, 2) : $numeric;
+        if ($round) {
+            $number = round($numeric, 2);
+        } else {
+            $number = $numeric;
+        }
 
         return [
-            'formatted' =>   trim(number_format((float) $numeric, 2, '.', '') . ' ' . $currency),
+            'value' => $number,
             'formatted' =>   trim(number_format($number, 2, '.', '') . ' ' . $currency),
             'currency' => $currency,
         ];
@@ -1580,13 +1583,9 @@ if (!function_exists('get_documents')) {
                     'document_name' => $document->document_name,
                     'document_key' => $document->document_key,
 
-                    'sample_file_url' => config('sample-files.'.$document->document_key) ?? null,
+                    'sample_file_url' => config('sample-files.' . $document->document_key) ?? null,
                     'value' => !empty($documentFileIds) ? get_files_info($documentFileIds) : null
                 ];
-
-
-               
-             
             });
 
 
