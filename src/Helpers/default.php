@@ -478,13 +478,15 @@ if (!function_exists('format_id_name')) {
 
 
 if (!function_exists('money_object')) {
-    function money_object($value, $currency): array
+    function money_object($value, $currency, $round = true): array
     {
         $numeric = (float) $value;
 
+        $number = $round ? round($numeric, 2) : $numeric;
+
         return [
-            'value' => $numeric,
             'formatted' =>   trim(number_format((float) $numeric, 2, '.', '') . ' ' . $currency),
+            'formatted' =>   trim(number_format($number, 2, '.', '') . ' ' . $currency),
             'currency' => $currency,
         ];
     }
