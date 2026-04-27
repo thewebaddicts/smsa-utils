@@ -489,7 +489,7 @@ if (!function_exists('money_object')) {
 
         return [
             'value' => $number,
-            'formatted' =>   trim(number_format($number, 2, '.', '') . ' ' . $currency),
+            'formatted' =>  $round ? trim(number_format($number, 2, '.', '') . ' ' . $currency) : trim(number_format(round($number, 2), 2, '.', '') . ' ' . $currency),
             'currency' => $currency,
         ];
     }
