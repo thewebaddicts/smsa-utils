@@ -481,6 +481,7 @@ if (!function_exists('money_object')) {
     function money_object($value, $currency, $round = true): array
     {
         $numeric = (float) $value;
+        //hovig's update
         if ($round) {
             $number = round($numeric, 2);
         } else {
