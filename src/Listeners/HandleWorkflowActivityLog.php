@@ -50,7 +50,11 @@ class HandleWorkflowActivityLog implements ShouldQueue
             //     $query->where('delivery_attempts', $workflow_delivery_attempts);
             //     $query->orWhereNull('delivery_attempts');
             // })
-            ->where('service_code', $workflow_service_code) //cause this will not be null it's mandatory
+            ->where(function ($query) use ($workflow_service_code) {
+                $query->where('service_code', $workflow_service_code);
+                $query->orWhereNull('service_code');
+            })
+            // ->where('service_code', $workflow_service_code) //cause this will not be null it's mandatory
             ->where('product_group', $workflow_product_group) //it's from the service code always filled
             ->get();
 
