@@ -13,26 +13,27 @@ class ExceptionCase extends HandlerParent
     public function payload(): array
     {
         return [
-            [
-                'column' => 'exception_category_id',
-                'label' => 'Exception Category',
-                'type' => 'select',
-                'required' => true,
-                'options' => \twa\smsautils\Models\ExceptionCategory::query()->whereNull('deleted_at')->get()->map(function ($exception_category) {
-                    return [
-                        'label' => $exception_category->label,
-                        'value' => $exception_category->id,
-                    ];
-                }),
-            ],
+            // [
+            //     'column' => 'exception_category_id',
+            //     'label' => 'Exception Category',
+            //     'type' => 'select',
+            //     'required' => true,
+            //     'options' => \twa\smsautils\Models\ExceptionCategory::query()->whereNull('deleted_at')->get()->map(function ($exception_category) {
+            //         return [
+            //             'label' => $exception_category->label,
+            //             'value' => $exception_category->id,
+            //         ];
+            //     }),
+            // ],
             [
                 'column' => 'exception_trigger_reason_id',
                 'label' => 'Exception Trigger Reason',
                 'type' => 'select',
                 'required' => true,
-                'options' => \twa\smsautils\Models\ExceptionTriggerReason::query()->whereNull('deleted_at')->get()->map(function ($exception_trigger_reason) {
+                'options' => \twa\smsautils\Models\ExceptionTriggerReason::query()->with('exceptionCategory')->whereNull('deleted_at')->get()->map(function ($exception_trigger_reason) {
+                    
                     return [
-                        'label' => $exception_trigger_reason->label,
+                        'label' =>$exception_trigger_reason->exceptionCategory->label. ' | ' . $exception_trigger_reason->label  ,
                         'value' => $exception_trigger_reason->id,
                     ];
                 }),
@@ -47,10 +48,15 @@ class ExceptionCase extends HandlerParent
         if (!$payload) {
             return false;
         }
+        $trigger_reason = \twa\smsautils\Models\ExceptionTriggerReason::query()->with('exceptionCategory')->where('id', $payload['exception_trigger_reason_id'])->first();
+        if (!$trigger_reason) {
+            return false;
+        }
+
 
         $array = [
             'awb' => $variables['parent_awb'],
-            'exception_category_id' => $payload['exception_category_id'],
+            'exception_category_id' => $trigger_reason->exceptionCategory->id,
             'exception_trigger_reason_id' => $payload['exception_trigger_reason_id'],
             'comments' =>  null,
             'files' => null,
