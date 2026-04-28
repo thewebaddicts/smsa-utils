@@ -1122,7 +1122,6 @@ if (!function_exists('convert_status_to_number')) {
     }
 }
 
-
 if (!function_exists('get_workflow_statuses')) {
     function get_workflow_statuses()
     {
@@ -1166,6 +1165,7 @@ if (!function_exists('get_workflow_statuses')) {
 
             AwbStatusEnum::OUT_FOR_DELIVERY,
             AwbStatusEnum::REFUSED,
+            AwbStatusEnum::RELEASE_HOLD,
 
 
             
