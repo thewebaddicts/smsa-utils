@@ -47,6 +47,10 @@ class Shipment extends Model
     // ROZANA
     'eta',
     'etd',
+    'shipper_snapshot',
+    'consignee_snapshot',
+    'shipper_address_snapshot',
+    'consignee_address_snapshot',
     // end ROZANA
   ];
 
