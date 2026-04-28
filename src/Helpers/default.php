@@ -1122,6 +1122,7 @@ if (!function_exists('convert_status_to_number')) {
     }
 }
 
+
 if (!function_exists('get_workflow_statuses')) {
     function get_workflow_statuses()
     {
@@ -1164,6 +1165,7 @@ if (!function_exists('get_workflow_statuses')) {
 
 
             AwbStatusEnum::OUT_FOR_DELIVERY,
+            AwbStatusEnum::REFUSED,
 
 
             
@@ -1173,13 +1175,6 @@ if (!function_exists('get_workflow_statuses')) {
 
         foreach (range(1, $attempts) as $attempt) {
             $status_codes[] = AwbStatusEnum::tryFrom('SHAT-' . $attempt);
-        }
-
-        // Include all REFUSED_* statuses and group them in one category.
-        foreach (AwbStatusEnum::cases() as $statusCase) {
-            if (str_starts_with($statusCase->name, 'REFUSED_')) {
-                $status_codes[] = $statusCase;
-            }
         }
 
 
@@ -1200,16 +1195,7 @@ if (!function_exists('get_workflow_statuses')) {
             ->filter()
 
             ->map(function ($case, $index) {
-                $info = $case->info();
-
-                if (str_starts_with($case->name, 'REFUSED_')) {
-                    $info['category'] = [
-                        'label' => app()->getLocale() === 'ar' ? 'رفض التسليم' : 'Refused Delivery',
-                        'key' => 'refused-delivery',
-                    ];
-                }
-
-                return array_merge(['value' => $case->value, "value_code" => 100 + $index], $info);
+                return array_merge(['value' => $case->value, "value_code" => 100 + $index], $case->info());
             });
 
         return $statuses;
@@ -1480,6 +1466,17 @@ function create_access_token($id, $type, $duration_minutes = 525600)
 
 function process_event_status($status, $number_of_attempts = 1)
 {
+    $refusedStatuses = [
+        AwbStatusEnum::REFUSED_OPEN_SHIPMENT->value,
+        AwbStatusEnum::REFUSED_MONEY->value,
+        AwbStatusEnum::REFUSED_ALREADY_RECEIVED->value,
+        AwbStatusEnum::REFUSED_NO_LONGER_NEEDED->value,
+        AwbStatusEnum::REFUSED_DELAYED->value,
+    ];
+
+    if (in_array($status, $refusedStatuses, true)) {
+        return AwbStatusEnum::REFUSED->value;
+    }
 
     $list_of_exception_trips = AwbStatusEnum::exception_trips();
     // $list_of_exception_trips = [];
