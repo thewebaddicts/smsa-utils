@@ -37,7 +37,7 @@ class ExceptionCase extends HandlerParent
             return false;
         }
         $trigger_reason = \twa\smsautils\Models\ExceptionTriggerReason::query()->with('exceptionCategory')->where('id', $payload['exception_trigger_reason_id'])->first();
-        if (!$trigger_reason) {
+        if (!$trigger_reason || !$trigger_reason->exceptionCategory) {
             return false;
         }
 
