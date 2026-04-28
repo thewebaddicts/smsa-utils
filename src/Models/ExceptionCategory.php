@@ -24,7 +24,7 @@ class ExceptionCategory extends Model
 
     public function exceptionCases(): HasMany
     {
-        return $this->hasMany(ExceptionCase::class, 'exception_category_id', 'id')
+        return $this->hasMany(\twa\smsautils\Models\ExceptionCase::class, 'exception_category_id', 'id')
             ->whereNull('deleted_at');
     }
 }

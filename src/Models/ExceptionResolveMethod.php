@@ -18,6 +18,6 @@ class ExceptionResolveMethod extends Model
 
     public function exceptionCategory()
     {
-        return $this->belongsTo(ExceptionCategory::class, 'exception_category_id')->whereNull('deleted_at');
+        return $this->belongsTo(\twa\smsautils\Models\ExceptionCategory::class, 'exception_category_id')->whereNull('deleted_at');
     }
 }

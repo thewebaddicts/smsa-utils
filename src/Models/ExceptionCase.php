@@ -63,6 +63,6 @@ class ExceptionCase extends Model
     // Relation name must not collide with `exception_cases.awb` column attribute (string).
     public function awbModel()
     {
-        return $this->belongsTo( \twa\smsautils\Models\Awb::class, 'awb', 'awb')->whereNull('deleted_at');
+        return $this->belongsTo(\twa\smsautils\Models\Awb::class, 'awb', 'awb')->whereNull('deleted_at');
     }
 }

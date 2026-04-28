@@ -3,7 +3,7 @@
 if (!function_exists('create_record_in_exception')) {
     function create_record_in_exception(array $payload)
     {
-        $exceptionCase = new App\Models\ExceptionCase();
+        $exceptionCase = new \twa\smsautils\Models\ExceptionCase();
         $exceptionCase->awb = $payload['awb'];
         $exceptionCase->exception_category_id = $payload['exception_category_id'];
         $exceptionCase->exception_trigger_reason_id = $payload['exception_trigger_reason_id'];
