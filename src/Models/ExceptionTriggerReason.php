@@ -15,4 +15,9 @@ class ExceptionTriggerReason extends Model
         'description',
         'sort_order',
     ];
+
+    public function exceptionCategory()
+    {
+        return $this->belongsTo(ExceptionCategory::class, 'exception_category_id', 'id')->whereNull('deleted_at');
+    }
 }
