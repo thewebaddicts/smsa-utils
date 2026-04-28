@@ -18,14 +18,24 @@ class ExceptionCase extends HandlerParent
                 'label' => 'Exception Category',
                 'type' => 'select',
                 'required' => true,
-                'options' => \twa\smsautils\Models\ExceptionCategory::all()->pluck('label', 'id'),
+                'options' => \twa\smsautils\Models\ExceptionCategory::query()->whereNull('deleted_at')->get()->map(function ($exception_category) {
+                    return [
+                        'label' => $exception_category->label,
+                        'value' => $exception_category->id,
+                    ];
+                }),
             ],
             [
                 'column' => 'exception_trigger_reason_id',
                 'label' => 'Exception Trigger Reason',
                 'type' => 'select',
                 'required' => true,
-                'options' => \twa\smsautils\Models\ExceptionTriggerReason::all()->pluck('label', 'id'),
+                'options' => \twa\smsautils\Models\ExceptionTriggerReason::query()->whereNull('deleted_at')->get()->map(function ($exception_trigger_reason) {
+                    return [
+                        'label' => $exception_trigger_reason->label,
+                        'value' => $exception_trigger_reason->id,
+                    ];
+                }),
             ]
         ];
     }
