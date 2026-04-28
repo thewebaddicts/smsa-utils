@@ -13,18 +13,6 @@ class ExceptionCase extends HandlerParent
     public function payload(): array
     {
         return [
-            // [
-            //     'column' => 'exception_category_id',
-            //     'label' => 'Exception Category',
-            //     'type' => 'select',
-            //     'required' => true,
-            //     'options' => \twa\smsautils\Models\ExceptionCategory::query()->whereNull('deleted_at')->get()->map(function ($exception_category) {
-            //         return [
-            //             'label' => $exception_category->label,
-            //             'value' => $exception_category->id,
-            //         ];
-            //     }),
-            // ],
             [
                 'column' => 'exception_trigger_reason_id',
                 'label' => 'Exception Trigger Reason',
