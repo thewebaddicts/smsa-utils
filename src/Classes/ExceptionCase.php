@@ -2,10 +2,6 @@
 
 namespace twa\smsautils\Classes;
 
-use App\Contracts\EventHandlerInterface;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use twa\smsautils\Models\AccessToken;
 
 class ExceptionCase extends HandlerParent
 {
