@@ -1,6 +1,7 @@
 <?php
 
 use twa\smsautils\Classes\CreateClientPortalNotification;
+use twa\smsautils\Classes\ExceptionCase;
 use twa\smsautils\Classes\HoldShipment;
 use twa\smsautils\Classes\RTS;
 use twa\smsautils\Classes\SendWP;
@@ -24,4 +25,5 @@ return [
     'f6g7h8i9-j0k1-4c23-d456-e7f8g9h0i123' => CreateClientPortalNotification::class,
     'g7h8i9j0-k1l2-4d34-e567-f8g9h0i1j234' => HoldShipment::class,
     'h8i9j0k1-l2m3-4e45-f678-g9h0i1j2k345' => RTS::class,
+    'i9j0k1l2-m3n4-4f56-g789-h0i1j2k3l456' => ExceptionCase::class,
 ];
