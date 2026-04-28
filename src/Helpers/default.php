@@ -1166,10 +1166,20 @@ if (!function_exists('get_workflow_statuses')) {
             AwbStatusEnum::OUT_FOR_DELIVERY,
 
 
+            
+
+
         ];
 
         foreach (range(1, $attempts) as $attempt) {
             $status_codes[] = AwbStatusEnum::tryFrom('SHAT-' . $attempt);
+        }
+
+        // Include all REFUSED_* statuses and group them in one category.
+        foreach (AwbStatusEnum::cases() as $statusCase) {
+            if (str_starts_with($statusCase->name, 'REFUSED_')) {
+                $status_codes[] = $statusCase;
+            }
         }
 
 
@@ -1187,10 +1197,19 @@ if (!function_exists('get_workflow_statuses')) {
         // case REVOKED = 'SHRE';
 
         $statuses = collect($status_codes)
+            ->filter()
 
             ->map(function ($case, $index) {
+                $info = $case->info();
 
-                return array_merge(['value' => $case->value, "value_code" => 100 + $index], $case->info());
+                if (str_starts_with($case->name, 'REFUSED_')) {
+                    $info['category'] = [
+                        'label' => app()->getLocale() === 'ar' ? 'رفض التسليم' : 'Refused Delivery',
+                        'key' => 'refused-delivery',
+                    ];
+                }
+
+                return array_merge(['value' => $case->value, "value_code" => 100 + $index], $info);
             });
 
         return $statuses;
