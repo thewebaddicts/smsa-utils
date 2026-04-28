@@ -28,13 +28,14 @@ class RTS extends HandlerParent
             ->first();
 
         if (!$access_token) {
-            create_access_token(2, 'workflow');
+            $access_token = create_access_token(2, 'workflow');
         }
 
         $url = env('AWB_APP_URL') . "/api/v1/return-module/submit/external/{$variables['awb']}/0";
 
+
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $access_token->token,
+            'Access-Token' => $access_token->token,
         ])->post($url);
 
         if ($response->failed()) {
