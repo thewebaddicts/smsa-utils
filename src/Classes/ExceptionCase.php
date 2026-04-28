@@ -43,6 +43,11 @@ class ExceptionCase extends HandlerParent
     public function handle(array $variables, string|null $payload): bool
     {
 
+        $payload = $this->validatePayload($variables, $payload);
+        if (!$payload) {
+            return false;
+        }
+
         $array = [
             'awb' => $variables['parent_awb'],
             'exception_category_id' => $payload['exception_category_id'],
