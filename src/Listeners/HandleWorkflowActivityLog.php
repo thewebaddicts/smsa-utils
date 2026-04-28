@@ -20,6 +20,7 @@ class HandleWorkflowActivityLog implements ShouldQueue
         $awb_activity_log_id = $event->awb_activity_id;
 
 
+
         $awb_activity =  AwbActivity::where('id', $awb_activity_log_id)->first();
         $awb_activity->workflow_started_at = now();
         $awb_activity->save();
@@ -27,7 +28,7 @@ class HandleWorkflowActivityLog implements ShouldQueue
 
 
         $awb_number = $awb_activity->target;
-        $variables = (new EventController())->getVariables($awb_number, false);
+        $variables = (new EventController())->getVariables($awb_number, false); // Query inside
         $workflow_country = $variables['shipper']['country'];
         $workflow_shipper_id = $variables['shipper']['id'];
         $workflow_service_code = $variables['service'];
@@ -38,6 +39,11 @@ class HandleWorkflowActivityLog implements ShouldQueue
 
         $workflows = Workflow::query()
             ->with(['events'])
+
+            ->whereHas('events', function ($event_query) {
+                $event_query->whereNull('deleted_at');
+            })
+
             ->where(function ($query) use ($workflow_country) {
                 $query->where('country', $workflow_country);
                 $query->orWhereNull('country');
@@ -46,10 +52,7 @@ class HandleWorkflowActivityLog implements ShouldQueue
                 $query->where('shipper_id', $workflow_shipper_id);
                 $query->orWhereNull('shipper_id');
             })
-            // ->where(function ($query) use ($workflow_delivery_attempts) {
-            //     $query->where('delivery_attempts', $workflow_delivery_attempts);
-            //     $query->orWhereNull('delivery_attempts');
-            // })
+
             ->where(function ($query) use ($workflow_service_code) {
                 $query->where('service_code', $workflow_service_code);
                 $query->orWhereNull('service_code');
@@ -58,60 +61,63 @@ class HandleWorkflowActivityLog implements ShouldQueue
                 $query->where('product_group', $workflow_product_group);
                 $query->orWhereNull('product_group');
             })
-            // ->where('service_code', $workflow_service_code) //cause this will not be null it's mandatory
-            // ->where('product_group', $workflow_product_group) //it's from the service code always filled
+
             ->get();
+
 
         foreach ($workflows as $workflow) {
 
             $events = $workflow->events;
-            foreach ($events as $event) {
 
+            foreach ($events as $event) {
 
                 $awb_status_code = process_event_status($awb_activity->status_code, $variables['nb_delivery_attempts'] ?? 1);
 
+                // dd($event->status, $awb_status_code);
 
                 if ($event->status != $awb_status_code) {
-                    $event_status = new WorkflowActivityEventStatus();
-                    $event_status->awb_activity_id = $awb_activity->id;
-                    $event_status->event_identifier = $event->workflow_event;
-                    $event_status->status = 'MISSMATCH STATUS';
-                    $event_status->payload = $event->payload;
-                    $event_status->variables = $variables;
-                    $event_status->save();
+                    // dd($event->status, $awb_status_code);
+                    // $event_status = new WorkflowActivityEventStatus();
+                    // $event_status->awb_activity_id = $awb_activity->id;
+                    // $event_status->event_identifier = $event->workflow_event;
+                    // $event_status->status = 'MISSMATCH STATUS';
+                    // $event_status->payload = $event->payload;
+                    // $event_status->variables = $variables;
+                    // $event_status->save();
                     continue 1;
                 }
 
                 if (!$this->matchConditions($event->conditions, $variables)) {
-                    $event_status = new WorkflowActivityEventStatus();
-                    $event_status->awb_activity_id = $awb_activity->id;
-                    $event_status->event_identifier = $event->workflow_event;
-                    $event_status->status = 'MISSMATCH CONDITIONS';
-                    $event_status->payload = $event->payload;
-                    $event_status->variables = $variables;
-                    $event_status->save();
+                    // $event_status = new WorkflowActivityEventStatus();
+                    // $event_status->awb_activity_id = $awb_activity->id;
+                    // $event_status->event_identifier = $event->workflow_event;
+                    // $event_status->status = 'MISSMATCH CONDITIONS';
+                    // $event_status->payload = $event->payload;
+                    // $event_status->variables = $variables;
+                    // $event_status->save();
                     continue 1;
                 }
 
 
                 $class = config('event-config.' . $event->workflow_event);
                 if (!$class) {
-                    $eventKey = (string) $event->workflow_event;
-                    $eventConfig = config('event-config', []);
-                    Log::error('Workflow event handler not resolved from config', [
-                        'event_identifier_raw' => $event->workflow_event,
-                        'event_identifier_trimmed' => trim($eventKey),
-                        'event_identifier_hex' => bin2hex($eventKey), // helps detect hidden chars/spaces/newlines
-                        'event_identifier_length' => strlen($eventKey),
-                        'config_loaded' => is_array($eventConfig),
-                        'config_keys_count' => is_array($eventConfig) ? count($eventConfig) : null,
-                        'has_exact_key' => is_array($eventConfig) ? array_key_exists($eventKey, $eventConfig) : false,
-                        'has_trimmed_key' => is_array($eventConfig) ? array_key_exists(trim($eventKey), $eventConfig) : false,
-                    ]);
+                    // $eventKey = (string) $event->workflow_event;
+                    // $eventConfig = config('event-config', []);
+                    // Log::error('Workflow event handler not resolved from config', [
+                    //     'event_identifier_raw' => $event->workflow_event,
+                    //     'event_identifier_trimmed' => trim($eventKey),
+                    //     'event_identifier_hex' => bin2hex($eventKey), // helps detect hidden chars/spaces/newlines
+                    //     'event_identifier_length' => strlen($eventKey),
+                    //     'config_loaded' => is_array($eventConfig),
+                    //     'config_keys_count' => is_array($eventConfig) ? count($eventConfig) : null,
+                    //     'has_exact_key' => is_array($eventConfig) ? array_key_exists($eventKey, $eventConfig) : false,
+                    //     'has_trimmed_key' => is_array($eventConfig) ? array_key_exists(trim($eventKey), $eventConfig) : false,
+                    // ]);
+                    continue 1;
                 }
+
                 $class = new $class();
                 $result = $class->handle($variables, json_encode($event->payload, true));
-
 
                 $event_status = new WorkflowActivityEventStatus();
                 $event_status->awb_activity_id = $awb_activity->id;
