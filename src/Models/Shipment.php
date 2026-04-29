@@ -49,8 +49,8 @@ class Shipment extends Model
     'etd',
     'shipper_snapshot',
     'consignee_snapshot',
-    'shipper_address_snapshot',
-    'consignee_address_snapshot',
+    'sender_address_snapshot',
+    'receiver_address_snapshot',
     // end ROZANA
   ];
 
@@ -61,8 +61,8 @@ class Shipment extends Model
     'attributes' => 'array',
     'shipper_snapshot' => 'array',
     'consignee_snapshot' => 'array',
-    'shipper_address_snapshot' => 'array',
-    'consignee_address_snapshot' => 'array',
+    'sender_address_snapshot' => 'array',
+    'receiver_address_snapshot' => 'array',
   ];
 
   public function awbs()
