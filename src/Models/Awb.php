@@ -94,6 +94,7 @@ class Awb extends Model
         'reexport_at',
         'origin_country',
         'destination_country',
+        'last_activity_at',
     ];
 
 
