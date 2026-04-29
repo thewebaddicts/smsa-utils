@@ -1557,7 +1557,17 @@ if (!function_exists('get_attributes_for_country')) {
                 });
             })
             ->get()
+            ->sortByDesc(function ($attribute) use ($country) {
+                if (!$country) {
+                    return 0;
+                }
+
+                $countries = is_array($attribute->countries) ? $attribute->countries : [];
+                return in_array($country, $countries, true) ? 1 : 0;
+            })
+            ->unique('attribute_key')
             ->map(fn($attribute) => $attribute->formatAttribute($data))
+            ->values()
             ->toArray();
 
         return $attributes;
