@@ -2,6 +2,7 @@
 
 namespace twa\smsautils\Jobs;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -11,7 +12,7 @@ use twa\smsautils\Models\ExceptionTriggerReason;
 
 class ExceptionOnPendingBeyondDefinedTime implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected  $awb;
     protected  $last_awb_activity_log_id;
@@ -53,8 +54,8 @@ class ExceptionOnPendingBeyondDefinedTime implements ShouldQueue
             'exception_trigger_reason_id' => $exceptionTriggerReason->id,
             'comments' => null,
             'files' => [],
-            'created_by_id' => null,
-            'created_by_type' => 'system',
+            'created_by_id' => 2,
+            'created_by_type' => 'workflow',
         ];
 
 
