@@ -1173,6 +1173,11 @@ if (!function_exists('get_workflow_statuses')) {
             AwbStatusEnum::REFUSED,
             AwbStatusEnum::RELEASE_HOLD,
 
+            // SHRA
+            AwbStatusEnum::SCAN_RUNSHEET,
+            // SHOD
+            AwbStatusEnum::OUT_FOR_DELIVERY,
+
 
             
 
