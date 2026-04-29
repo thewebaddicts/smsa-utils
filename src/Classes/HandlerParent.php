@@ -2,16 +2,15 @@
 
 namespace twa\smsautils\Classes;
 
-use App\Contracts\EventHandlerInterface;
 use Illuminate\Support\Facades\Log;
 
 class HandlerParent
 {
 
-    public $awb_activity_log_id;
+    public int|string|null $awb_activity_log_id;
 
     public function __construct(
-        $awb_activity_log_id
+        int|string|null $awb_activity_log_id = null
     ) {
         $this->awb_activity_log_id = $awb_activity_log_id;
     }
