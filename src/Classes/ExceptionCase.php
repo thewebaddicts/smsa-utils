@@ -18,13 +18,18 @@ class ExceptionCase extends HandlerParent
                 'label' => 'Exception Trigger Reason',
                 'type' => 'select',
                 'required' => true,
-                'options' => \twa\smsautils\Models\ExceptionTriggerReason::query()->with('exceptionCategory')->whereNull('deleted_at')->get()->map(function ($exception_trigger_reason) {
-                    
-                    return [
-                        'label' =>$exception_trigger_reason->exceptionCategory->label. ' | ' . $exception_trigger_reason->label  ,
-                        'value' => $exception_trigger_reason->id,
-                    ];
-                }),
+                'options' => \twa\smsautils\Models\ExceptionTriggerReason::query()
+                    ->with('exceptionCategory')
+                    ->whereNull('deleted_at')
+                    ->get()
+                    ->map(function ($exception_trigger_reason) {
+                        $categoryLabel = $exception_trigger_reason->exceptionCategory?->label;
+
+                        return [
+                            'label' => ($categoryLabel ?? 'Uncategorized') . ' | ' . $exception_trigger_reason->label,
+                            'value' => $exception_trigger_reason->id,
+                        ];
+                    }),
             ]
         ];
     }

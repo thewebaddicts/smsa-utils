@@ -497,7 +497,6 @@ if (!function_exists('money_object')) {
 }
 
 
-
 if (!function_exists('log_activity')) {
 
     function log_activity(
@@ -531,17 +530,6 @@ if (!function_exists('log_activity')) {
             'source' => $source ?? null
         ]);
         return $data;
-
-        // LogActivityJob::dispatch(
-        //     $table,
-        //     $target ?? '',
-        //     $target_id ?? 0,
-        //     $status_code,
-        //     $activity_by_id,
-        //     $activity_by_type,
-        //     $comment,
-        //     $files
-        // );
     }
 }
 
@@ -561,6 +549,8 @@ if (!function_exists('log_awb_activity')) {
         $created_at = null,
         $source = null
     ) {
+        // Keep AWB's "last activity" timestamp in sync with the activity log row.
+        $activityTime = $created_at ?? now();
 
         $awb_activity_log_id = log_activity(
             'awb_activities',
@@ -573,10 +563,16 @@ if (!function_exists('log_awb_activity')) {
             $files,
             $activity_by,
             $activity_location,
-            $created_at,
+            $activityTime,
             $source
 
         );
+
+        if ($target_id !== null) {
+            DB::table('awbs')->where('id', $target_id)->update([
+                'last_activity_at' => $activityTime,
+            ]);
+        }
 
         \twa\smsautils\Events\OnAWBActivityLog::dispatch($awb_activity_log_id);
         // (new TreatWorkflowActivity($awb_activity_log_id))->handle();
