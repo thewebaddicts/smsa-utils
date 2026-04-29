@@ -116,7 +116,7 @@ class HandleWorkflowActivityLog implements ShouldQueue
                     continue 1;
                 }
 
-                $class = new $class();
+                $class = new $class($awb_activity_log_id);
                 $result = $class->handle($variables, json_encode($event->payload, true));
 
                 $event_status = new WorkflowActivityEventStatus();

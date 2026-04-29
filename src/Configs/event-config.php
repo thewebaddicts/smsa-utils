@@ -9,6 +9,8 @@ use twa\smsautils\Classes\SendSMS;
 use twa\smsautils\Classes\SendOTP;
 use twa\smsautils\Classes\SendEmail;
 use twa\smsautils\Classes\SendWebhook;
+use twa\smsautils\Classes\ExceptionOnPendingBeyondDefinedTime;
+
 return [
 
 
@@ -26,4 +28,5 @@ return [
     'g7h8i9j0-k1l2-4d34-e567-f8g9h0i1j234' => HoldShipment::class,
     'h8i9j0k1-l2m3-4e45-f678-g9h0i1j2k345' => RTS::class,
     'i9j0k1l2-m3n4-4f56-g789-h0i1j2k3l456' => ExceptionCase::class,
+    'j0k1l2m3-n4o5-4g67-h890-i1j2k3l4m567' => ExceptionOnPendingBeyondDefinedTime::class,
 ];

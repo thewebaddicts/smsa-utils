@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Log;
 
 class HandlerParent
 {
+
+    public $awb_activity_log_id;
+
+    public function __construct(
+        $awb_activity_log_id
+    ) {
+        $this->awb_activity_log_id = $awb_activity_log_id;
+    }
+
+
     public function label(): string
     {
         return 'Example Handler';

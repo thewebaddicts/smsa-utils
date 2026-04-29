@@ -1,5 +1,7 @@
 <?php
 
+use twa\smsautils\Models\ExceptionTriggerReason;
+
 if (!function_exists('create_record_in_exception')) {
     function create_record_in_exception(array $payload)
     {
@@ -29,5 +31,25 @@ if (!function_exists('create_record_in_exception')) {
         $exceptionCase->save();
 
         return $exceptionCase;
+    }
+}
+
+if (!function_exists('get_sla_defined_hours')) {
+    function get_sla_defined_hours()
+    {
+
+        $exception_trigger_reason_id = 11;
+
+        return cache()->remember('sla_defined_hours_' . $exception_trigger_reason_id, 60, function () use ($exception_trigger_reason_id) {
+            $exception_trigger_reason = ExceptionTriggerReason::query()
+                ->whereNull('deleted_at')
+                ->where('id', $exception_trigger_reason_id)
+                ->first();
+
+            return $exception_trigger_reason?->sla_defined_hours;
+        });
+
+
+        // (new \App\Jobs\NoActivitybeyondDefinedTime(31728, ))->handle();
     }
 }

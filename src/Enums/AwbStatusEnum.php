@@ -2350,4 +2350,16 @@ enum AwbStatusEnum: string
             $matchingCases
         ));
     }
+
+
+    public static function disallowedStatusesForNoActivityBeyondDefinedTime(): array
+    {
+        return [
+            self::CREATED->value,
+            self::DELIVERED->value,
+            self::RTS->value,
+            self::CIR->value,
+            self::CANCELLED->value,
+        ];
+    }   
 }
