@@ -2,15 +2,11 @@
 
 namespace twa\smsautils\Jobs;
 
-use Carbon\Carbon;
-use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-use twa\smsautils\Models\Awb;
+use twa\smsautils\Models\AwbActivity;
 use twa\smsautils\Models\ExceptionTriggerReason;
 
 class ExceptionOnPendingBeyondDefinedTime implements ShouldQueue
@@ -30,9 +26,8 @@ class ExceptionOnPendingBeyondDefinedTime implements ShouldQueue
 
     public function handle(): void
     {
-        $last_actual_activity_id = Awb::query()
+        $last_actual_activity_id = AwbActivity::query()
             ->where('target', $this->awb)
-            ->whereNull('deleted_at')
             ->orderBy('id', 'DESC')
             ->value('id');
 

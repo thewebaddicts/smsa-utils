@@ -44,14 +44,15 @@ class ExceptionOnPendingBeyondDefinedTime extends HandlerParent
 
     public function handle(array $variables, string|null $payload): bool
     {
-
-
-        $status = "";
-
         $payload = $this->validatePayload($variables, $payload);
         if (!$payload) {
             return false;
         }
+        $slaDefinedHours = (float) ($payload['sla_defined_hours'] ?? 0);
+        if ($slaDefinedHours <= 0) {
+            return false;
+        }
+
         $trigger_reason = \twa\smsautils\Models\ExceptionTriggerReason::query()->with('exceptionCategory')->where('id', $payload['exception_trigger_reason_id'])->first();
         if (!$trigger_reason || !$trigger_reason->exceptionCategory) {
             return false;
@@ -61,7 +62,7 @@ class ExceptionOnPendingBeyondDefinedTime extends HandlerParent
             $variables['parent_awb'],
             $this->awb_activity_log_id,
             $payload['exception_trigger_reason_id']
-        )->delay(now()->parse(now()->addHours($payload['sla_defined_hours'])));
+        )->delay(now()->addHours($slaDefinedHours));
 
         return true;
     }
