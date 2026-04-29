@@ -1551,6 +1551,11 @@ if (!function_exists('get_attributes_for_country')) {
                         ->orWhere('countries', '=', '[]')
                         ->orWhereNull('countries');
                 });
+            }, function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('countries', '=', '[]')
+                        ->orWhereNull('countries');
+                });
             })
             ->get()
             ->sortByDesc(function ($attribute) use ($country) {
