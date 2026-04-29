@@ -574,6 +574,16 @@ if (!function_exists('log_awb_activity')) {
             ]);
         }
 
+         // $offsetDateTime = now()->parse($activityTime)->addHours(get_sla_defined_hours());
+
+
+            // $disallowed_statuses = AwbStatusEnum::disallowedStatusesForNoActivityBeyondDefinedTime();
+
+            // if (!in_array($status_code, $disallowed_statuses)) {
+            //     NoActivitybeyondDefinedTime::dispatch($target_id, $activityTime)
+            //         ->delay(Carbon::parse($offsetDateTime));
+            // }
+
         \twa\smsautils\Events\OnAWBActivityLog::dispatch($awb_activity_log_id);
         // (new TreatWorkflowActivity($awb_activity_log_id))->handle();
     }
