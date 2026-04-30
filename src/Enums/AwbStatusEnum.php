@@ -9,30 +9,22 @@ enum AwbStatusEnum: string
 {
     case CREATED = 'SHCR';
     case PICKED_UP = 'SHPU';
-
     case OFFLOADED = 'SHOF';
     case RECEIVED_OPERATION = 'SHIB';
-
     case ORIGIN_RECEIVED = 'SHOR';
     case DESTINATION_RECEIVED = 'SHDR';
-
-
     case EXPECTED_RECEIVE = 'SHER';
     case CRN_IN = 'SHCI';
     case CRN_OUT = 'SHCO';
     case CRN_MOVED = 'SHCM';
-
     case HST_IN = 'SHTI';
     case HST_OUT = 'SHTO';
     case HST_MOVED = 'SHTM';
-
     case MAWB_IN = 'SHMI';
     case MAWB_OUT = 'SHMO';
     case MAWB_MOVED = 'SHMM';
-
     case DISPATCHED_HST = 'SHDH';
     case DISPATCHED_MAWB = 'SHDM';
-
     case SHELF_IN = 'SHSI';
     case SHELF_OUT = 'SHSO';
     case HUB_IN = 'SHHI';
@@ -71,55 +63,7 @@ enum AwbStatusEnum: string
     case SCAN_BAG = 'SHSB';
     case UNSCAN_BAG = 'SHUB';
     case DOCUMENT_UPLOAD = 'SHUD';
-
-
-
-    case NOT_AVAILABLE_MOBILE_CLOSED  = 'ATMC';
-    case NOT_AVAILABLE_NO_ANSWER  = 'ATNA';
-    case NOT_AVAILABLE_RESCHEDULE  = 'ATRS';
-    case NOT_AVAILABLE_TRAVELING  = 'ATTR';
-
-    case NOT_AVAILABLE_WRONG_PHONE = 'ATWN';
-    case NOT_AVAILABLE_WRONG_CUSTOMER = 'ATWC';
-    case NOT_AVAILABLE_WRONG_CITY = 'ATLC';
-    case NOT_AVAILABLE_ROUTE = 'ATLR'; //to be checked by hovig
-    case NOT_AVAILABLE_OUT_OF_AREA = 'ATOA';
-
-    case WRONG_DETAILS_WRONG_PHONE = 'WDWP';
-    case WRONG_DETAILS_WRONG_CUSTOMER = 'WDWC';
-
-    case LOCATION_CHANGED_WRONG_CITY = 'LDWC';
-    case LOCATION_CHANGED_OUT_OF_AREA = 'LDOA';
-
-    case CUSTOMER_REQUESTED_HOLD_FOR_PICKUP = 'CRHP';
-    case OUT_OF_DELIVERY_AREA = 'OODA';
-
     case HOLD_PICKUP = 'SHPH';
-
-    case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
-    case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
-    case NOT_PICKED_UP_ADDRESS_CHANGED = 'NPLR';
-
-
-    case REFUSED_OPEN_SHIPMENT  = 'RFOS';
-    case REFUSED_MONEY  = 'RFMO';
-    case REFUSED_ALREADY_RECEIVED  = 'RFAR';
-    case REFUSED_NO_LONGER_NEEDED = 'RFNN';
-    case REFUSED_DELAYED = 'RFDL'; // was exp
-
-
-    case OUT_OF_PICKUP_AREA = 'OPOA';
-
-    case CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE = 'CIAV';
-    case CAPACITY_ISSUE_VEHICLE_OVERLOADED = 'CIOV';
-
-    case CANCELLED_DUPLICATE_PICKUP = 'LCWA';
-    case CANCELLED_NO_SHIPMENT = 'LCNS';
-    case CANCELLED_DROPED_RETAIL = 'LCDR';
-
-    case LOCATION_CHANGED_WRONG_ASSIGMENT = 'LCAW';
-
-
     case OVERAGE = 'SHOV'; // was exp
     case ATTEMPTED = 'SHAT';
     case REFUSED = 'SHRF';
@@ -133,27 +77,15 @@ enum AwbStatusEnum: string
     case ATTEMPTED_8 = 'SHAT-8';
     case ATTEMPTED_9 = 'SHAT-9';
     case ATTEMPTED_10 = 'SHAT-10';
-
-
-    case DAMAGED = 'EXDM'; // was exp
-    case LOST = 'EXLO';
-
     case NOT_RECEIVED = 'SHNR';
-
-
     case GATEWAY_RECEIVED = 'SHGR'; //USED
     case STATION_RECEIVED = 'SHSR'; // USED
     case HUB_RECEIVED = 'SHHR'; // USED
     case RETAIL_RECEIVED = 'SHRR'; // USED
-
     case GATEWAY_NOT_RECEIVED = 'SHGM'; //USED
     case STATION_NOT_RECEIVED = 'SHSM'; // USED
     case HUB_NOT_RECEIVED = 'SHHM'; // USED
     case RETAIL_NOT_RECEIVED = 'SHRM'; // USED
-
-
-
-
     case  RTS_INITIATED = 'SHRT';
     case FINAL_RTS = 'SHFR';
     case RTS_INBOUND = 'SHRTIN';
@@ -162,7 +94,46 @@ enum AwbStatusEnum: string
     case RTS_DELIVERED = 'SHRTSD';
     case CIR = 'SHCIR';
     case REVOKED = 'SHRE';
-        //old statuses:
+    
+    //EXCEPTIONS
+
+    case NOT_AVAILABLE_MOBILE_CLOSED  = 'ATMC';
+    case NOT_AVAILABLE_NO_ANSWER  = 'ATNA';
+    case NOT_AVAILABLE_RESCHEDULE  = 'ATRS';
+    case NOT_AVAILABLE_TRAVELING  = 'ATTR';
+    case NOT_AVAILABLE_WRONG_PHONE = 'ATWN';
+    case WRONG_DETAILS_WRONG_PHONE = 'WDWP';
+    case WRONG_DETAILS_WRONG_CUSTOMER = 'WDWC';
+    case LOCATION_CHANGED_WRONG_CITY = 'LDWC';
+    case LOCATION_CHANGED_OUT_OF_AREA = 'LDOA';
+    case CUSTOMER_REQUESTED_HOLD_FOR_PICKUP = 'CRHP';
+    case OUT_OF_DELIVERY_AREA = 'OODA';
+    case REFUSED_MONEY  = 'RFMO';
+    case REFUSED_ALREADY_RECEIVED  = 'RFAR';
+    case REFUSED_NO_LONGER_NEEDED = 'RFNN';
+    case REFUSED_DELAYED = 'RFDL'; // was exp
+
+    case NOT_AVAILABLE_WRONG_CUSTOMER = 'ATWC';
+    case NOT_AVAILABLE_WRONG_CITY = 'ATLC';
+    case NOT_AVAILABLE_ROUTE = 'ATLR'; //to be checked by hovig
+    case NOT_AVAILABLE_OUT_OF_AREA = 'ATOA';
+    case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
+    case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
+    case NOT_PICKED_UP_ADDRESS_CHANGED = 'NPLR';
+    case REFUSED_OPEN_SHIPMENT  = 'RFOS';
+    case OUT_OF_PICKUP_AREA = 'OPOA';
+    case CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE = 'CIAV';
+    case CAPACITY_ISSUE_VEHICLE_OVERLOADED = 'CIOV';
+    case CANCELLED_DUPLICATE_PICKUP = 'LCWA';
+    case CANCELLED_NO_SHIPMENT = 'LCNS';
+    case CANCELLED_DROPED_RETAIL = 'LCDR';
+    case LOCATION_CHANGED_WRONG_ASSIGMENT = 'LCAW';
+    case DAMAGED = 'EXDM'; // was exp
+    case LOST = 'EXLO';
+
+
+
+    //OLD SYSTEM STATUSES
 
     case AF = 'AF';
     case CC = 'CC';
@@ -1307,6 +1278,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'بيانات خاطئة' : 'Wrong Details',
                         'key' => 'wrong-details',
                     ],
+                   
                     'tags' => ["all", "TRIP EXCEPTION"],
                 ],
 
