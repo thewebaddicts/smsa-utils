@@ -344,7 +344,47 @@ if (!function_exists('create_pickup_from_shipment')) {
 
         $pickupRequest->operator_id = $operator ? $operator->id : null;
         $pickupRequest->hub_id = $hub_id;
-        $pickupRequest->address_id = $firstAwb->sender_address_id;
+        // $pickupRequest->address_id = $firstAwb->sender_address_id;
+        $pickupRequest->address_id = $shipment->sender_address_id;
+
+        // build and persist pickup address snapshot
+        $pickupAddress = \twa\smsautils\Models\Address::where('id', $shipment->sender_address_id)
+            ->whereNull('deleted_at')
+            ->first();
+        if (!$pickupAddress) {
+            return false;
+        }
+        if ($pickupAddress) {
+            $snapshot = function_exists('buildAddressSnapshot')
+                ? \buildAddressSnapshot($pickupAddress)
+                : [
+                    'id' => $pickupAddress->id,
+                    'label' => $pickupAddress->label,
+                    'company' => $pickupAddress->company,
+                    'attention' => $pickupAddress->attention,
+                    'address1' => $pickupAddress->address1,
+                    'address2' => $pickupAddress->address2,
+                    'email' => $pickupAddress->email,
+                    'phone' => $pickupAddress->phone,
+                    'secondary_phone' => $pickupAddress->secondary_phone,
+                    'area_code' => $pickupAddress->area_code,
+                    'city' => $pickupAddress->city,
+                    'province' => $pickupAddress->province,
+                    'country' => $pickupAddress->country,
+                    'address_type' => $pickupAddress->address_type,
+                    'latitude' => $pickupAddress->latitude,
+                    'longitude' => $pickupAddress->longitude,
+                    'address_for' => $pickupAddress->address_for,
+                    'target_id' => $pickupAddress->target_id,
+                    'client_id' => $pickupAddress->client_id,
+                    'created_at' => $pickupAddress->created_at,
+                    'updated_at' => $pickupAddress->updated_at,
+                ];
+        
+            $pickupRequest->address_snapshot = $snapshot;
+        }
+        
+        $pickupRequest->expected_awbs = $expected_awbs;
         $pickupRequest->nb_packages = $awbs->count();
         $pickupRequest->total_weight = $total_weight;
         $pickupRequest->dimension_height = $total_height;

@@ -32,12 +32,14 @@ class PickupRequest extends Model
         'routine_id',
         'pickup_date_from',
         'pickup_date_to',
+        'address_snapshot',
     ];
 
     protected $casts = [
         'pickup_date' => 'date',
 
-        'expected_awbs' => 'array'
+        'expected_awbs' => 'array',
+        'address_snapshot' => 'array',
     ];
 
     protected static function booted()
