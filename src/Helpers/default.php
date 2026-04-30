@@ -1634,4 +1634,36 @@ if (!function_exists('get_documents')) {
 
         return $documents;
     }
+    if (!function_exists('buildAddressSnapshot')) {
+        function buildAddressSnapshot(?twa\smsautils\Models\Address $address): ?array
+        {
+            if (!$address) {
+                return null;
+            }
+
+            return [
+                'id' => $address->id ?? null,
+                'label' => $address->label ?? null,
+                'company' => $address->company ?? null,
+                'attention' => $address->attention ?? null,
+                'address1' => $address->address1 ?? null,
+                'address2' => $address->address2 ?? null,
+                'email' => $address->email ?? null,
+                'phone' => $address->phone ?? null,
+                'secondary_phone' => $address->secondary_phone ?? null,
+                'area_code' => $address->area_code ?? null,
+                'city' => $address->city ?? null,
+                'province' => $address->province ?? null,
+                'country' => $address->country ?? null,
+                'address_type' => $address->address_type ?? null,
+                'latitude' => isset($address->latitude) ? (float) $address->latitude : null,
+                'longitude' => isset($address->longitude) ? (float) $address->longitude : null,
+                'address_for' => $address->address_for ?? null,
+                'target_id' => $address->target_id ?? null,
+                'client_id' => $address->client_id ?? null,
+                'created_at' => $address->created_at ?? null,
+                'updated_at' => $address->updated_at ?? null,
+            ];
+        }
+    }
 }
