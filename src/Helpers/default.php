@@ -1706,4 +1706,92 @@ if (!function_exists('get_documents')) {
             ];
         }
     }
+
+
+if (!function_exists('address_snapshot_json_sql')) {
+    /**
+     * MySQL expression to read a scalar from address snapshot JSON (keys match buildAddressSnapshot()).
+     *
+     * @param  string  $qualifiedColumn  e.g. shipments.receiver_address_snapshot
+     * @param  string  $key  JSON key (alphanumeric and underscore only)
+     */
+    function address_snapshot_json_sql(string $qualifiedColumn, string $key): string
+    {
+        if (!preg_match('/^[a-zA-Z0-9_]+$/', $key)) {
+            throw new InvalidArgumentException('Invalid address snapshot JSON key.');
+        }
+
+        $segments = explode('.', $qualifiedColumn);
+        if (count($segments) === 2) {
+            $qualified = '`' . $segments[0] . '`.`' . $segments[1] . '`';
+        } elseif (count($segments) === 1) {
+            $qualified = '`' . $segments[0] . '`';
+        } else {
+            throw new InvalidArgumentException('address_snapshot_json_sql expects table.column or column.');
+        }
+
+        $path = '$.' . $key;
+        $pathLiteral = DB::getPdo()->quote($path);
+
+        return "JSON_UNQUOTE(JSON_EXTRACT({$qualified}, {$pathLiteral}))";
+    }
+}
+
+if (!function_exists('address_snapshot_json_select')) {
+    /**
+     * For query builder ->select(): one JSON field from a snapshot column, optionally aliased.
+     *
+     * @param  string|null  $as  result alias (e.g. address)
+     * @return \Illuminate\Database\Query\Expression
+     */
+    function address_snapshot_json_select(string $qualifiedColumn, string $key, ?string $as = null)
+    {
+        $sql = address_snapshot_json_sql($qualifiedColumn, $key);
+        if ($as !== null && $as !== '') {
+            if (!preg_match('/^[a-zA-Z0-9_]+$/', $as)) {
+                throw new InvalidArgumentException('Invalid SQL alias for address snapshot select.');
+            }
+            $sql .= ' as `' . str_replace('`', '``', $as) . '`';
+        }
+
+        return DB::raw($sql);
+    }
+}
+
+if (!function_exists('address_snapshot_json_where')) {
+    /**
+     * Apply a where condition against a key inside an address snapshot JSON column.
+     *
+     * Example:
+     * address_snapshot_json_where($query, 'shipments.receiver_address_snapshot', 'country', '=', 'LB');
+     */
+    function address_snapshot_json_where(
+        $query,
+        string $qualifiedColumn,
+        string $key,
+        string $operator,
+        $value
+    ) {
+        $allowedOperators = ['=', '!=', '<>', '>', '>=', '<', '<=', 'like', 'not like'];
+        $normalizedOperator = strtolower(trim($operator));
+
+        if (!in_array($normalizedOperator, $allowedOperators, true)) {
+            throw new InvalidArgumentException('Invalid operator for address_snapshot_json_where.');
+        }
+
+        $sql = address_snapshot_json_sql($qualifiedColumn, $key);
+
+        if ($value === null) {
+            if (in_array($normalizedOperator, ['!=', '<>', 'not like'], true)) {
+                return $query->whereRaw("{$sql} IS NOT NULL");
+            }
+
+            return $query->whereRaw("{$sql} IS NULL");
+        }
+
+        return $query->whereRaw("{$sql} {$normalizedOperator} ?", [$value]);
+    }
+}
+
+    
 }
