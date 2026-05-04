@@ -11,6 +11,7 @@ class AwbStatus
 
     public function info(): array
     {
+        $lang = app()->getLocale();
         $cacheKey = "awb_status_{$this->status}";
 
         $status = Cache::remember($cacheKey, now()->addMinutes(30), function () {
@@ -19,6 +20,7 @@ class AwbStatus
                 ->whereNull('deleted_at')
                 ->first();
         });
+
 
         if (!$status) {
             return [
@@ -32,8 +34,9 @@ class AwbStatus
             ];
         }
 
+
         return [
-            'label' => $status->label ?? '',
+            'label' => $lang === 'ar' ? $status->label_ar ?? '' : $status->label_en ?? '',
             'icon' => $status->icon ?? 'file-plus',
             'color_bg' => $status->color_bg ?? '#e3f2fd',
             'color_text' => $status->color_text ?? '#1565c0',
