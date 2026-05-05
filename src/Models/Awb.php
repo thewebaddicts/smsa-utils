@@ -116,7 +116,7 @@ class Awb extends Model
 
     public function activity()
     {
-        return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'last_status');
+        return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'last_status', 'code')->whereNull('deleted_at');
     }
 
 
@@ -168,6 +168,4 @@ class Awb extends Model
     {
         return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'rts_branch_id');
     }
-
-   
 }

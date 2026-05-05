@@ -36,6 +36,6 @@ class AwbActivity extends Model
     }
     public function activity()
     {
-        return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'status_code');
+        return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'status_code', 'code')->whereNull('deleted_at');
     }
 }

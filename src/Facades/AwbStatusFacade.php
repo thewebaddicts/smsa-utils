@@ -6,7 +6,7 @@ use twa\smsautils\Classes\AWB\AwbStatus;
 
 use twa\smsautils\Models\ShipmentStatus;
 
-class AwbStatusEnum
+class AwbStatusFacade
 {
     public static function tryFrom($status)
     {
