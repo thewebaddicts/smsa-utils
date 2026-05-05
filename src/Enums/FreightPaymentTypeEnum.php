@@ -2,7 +2,7 @@
 
 namespace twa\smsautils\Enums;
 
-enum FreightPaymentType: string
+enum FreightPaymentTypeEnum: string
 {
     case SHIPPER = 'S';
     case RECEIVER = 'R';
