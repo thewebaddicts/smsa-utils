@@ -34,4 +34,8 @@ class AwbActivity extends Model
     {
         return $this->morphTo();
     }
+    public function activity()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'status_code');
+    }
 }

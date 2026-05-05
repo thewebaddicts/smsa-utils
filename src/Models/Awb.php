@@ -114,6 +114,10 @@ class Awb extends Model
         return $this->belongsTo(\twa\smsautils\Models\Shelf::class, 'shelf_id');
     }
 
+    public function activity()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'last_status');
+    }
 
 
     public function pickupRoute()

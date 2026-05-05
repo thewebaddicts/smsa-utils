@@ -4,6 +4,7 @@ namespace twa\smsautils\Classes\AWB;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use twa\smsautils\Models\ShipmentStatus;
 
 class AwbStatus
 {
@@ -13,27 +14,28 @@ class AwbStatus
     public $db;
 
 
-    public function __construct(?string $status = null, ?string $identifier = null)
+    public function __construct(?string $status = null, ?string $identifier = null, ?ShipmentStatus $db = null)
     {
         $this->status = $status;
         $this->identifier = $identifier;
-        if ($this->status) {
+
+        if ($db) {
+            $this->db = $db;
+        } elseif ($this->status) {
 
             $cacheKey = "awb_status_code_{$this->status}";
 
             $this->db = Cache::rememberForever($cacheKey, function () {
-                return DB::table('shipment_statuses')
+                return ShipmentStatus::query()
                     ->where('code', $this->status)
                     ->whereNull('deleted_at')
                     ->first();
             });
-        }
-
-        if ($this->identifier) {
+        } elseif ($this->identifier) {
             $cacheKey = "awb_status_identifier_{$this->identifier}";
 
             $this->db = Cache::rememberForever($cacheKey, function () {
-                return DB::table('shipment_statuses')
+                return ShipmentStatus::query()
                     ->where('identifier', $this->identifier)
                     ->whereNull('deleted_at')
                     ->first();
