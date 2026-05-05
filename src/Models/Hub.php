@@ -53,7 +53,7 @@ class Hub extends Model
     public function ServiceTypes(): Collection
     {
         $serviceTypeIds = array_values(array_filter($this->service_type_ids ?? []));
-        if (empty($shipmentTypeIds)) {
+        if (empty($serviceTypeIds)) {
             return collect();
         }
 
