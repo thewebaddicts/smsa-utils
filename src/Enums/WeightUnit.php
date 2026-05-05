@@ -7,8 +7,7 @@ enum WeightUnit: string
     case G = 'g';
     case KG = 'kg';
     case LB = 'lb';
-    case LBS = 'lbs';
-    
+
     public function getRatioToKG(): float
     {
         return match($this) {
