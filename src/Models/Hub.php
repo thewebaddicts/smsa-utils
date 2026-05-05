@@ -50,4 +50,16 @@ class Hub extends Model
             ->whereIn('id', $addedServiceIds)
             ->get();
     }
+    public function ShipmentTypes(): Collection
+    {
+        $shipmentTypeIds = array_values(array_filter($this->shipment_type_ids ?? []));
+        if (empty($shipmentTypeIds)) {
+            return collect();
+        }
+
+        return DB::table('shipment_types')
+            ->whereNull('deleted_at')
+            ->whereIn('id', $shipmentTypeIds)
+            ->get();
+    }
 } 
