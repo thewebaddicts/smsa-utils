@@ -7,22 +7,55 @@ use Illuminate\Support\Facades\Cache;
 
 class AwbStatus
 {
-    public function __construct(public string $status) {}
+
+    public $status;
+    public $identifier;
+    public $db;
+
+
+    public function __construct(?string $status = null, ?string $identifier = null)
+    {
+        $this->status = $status;
+        $this->identifier = $identifier;
+        if ($this->status) {
+
+            $cacheKey = "awb_status_code_{$this->status}";
+
+            $this->db = Cache::rememberForever($cacheKey, function () {
+                return DB::table('shipment_statuses')
+                    ->where('code', $this->status)
+                    ->whereNull('deleted_at')
+                    ->first();
+            });
+        }
+
+        if ($this->identifier) {
+            $cacheKey = "awb_status_identifier_{$this->identifier}";
+
+            $this->db = Cache::rememberForever($cacheKey, function () {
+                return DB::table('shipment_statuses')
+                    ->where('identifier', $this->identifier)
+                    ->whereNull('deleted_at')
+                    ->first();
+            });
+        }
+    }
+
+
+    public function value(): string
+    {
+        return $this->db->code;
+    }
+
 
     public function info(): array
     {
+
+
         $lang = app()->getLocale();
-        $cacheKey = "awb_status_{$this->status}";
-
-        $status = Cache::remember($cacheKey, now()->addMinutes(30), function () {
-            return DB::table('shipment_statuses')
-                ->where('code', $this->status)
-                ->whereNull('deleted_at')
-                ->first();
-        });
 
 
-        if (!$status) {
+        if (!$this->db) {
             return [
                 'label' => 'Unknown',
                 'icon' => 'file-question',
@@ -34,15 +67,16 @@ class AwbStatus
             ];
         }
 
+        $status = $this->db;
 
         return [
             'label' => $lang === 'ar' ? $status->label_ar ?? '' : $status->label_en ?? '',
             'icon' => $status->icon ?? 'file-plus',
             'color_bg' => $status->color_bg ?? '#e3f2fd',
             'color_text' => $status->color_text ?? '#1565c0',
-            'description' => $status->description ?? '',
-            'category' => $status->category ?? null,
-            'tags' => $status->tags ? json_decode($status->tags, true) : ['all'],
+            'description' => $lang === 'ar' ? ($status->description_ar ?? '') : ($status->description_en ?? ''),
+            'category' => $status->shipment_status_category_id ?? null,
+            'tags' => $status->shipment_status_tags ? json_decode($status->shipment_status_tags, true) : ['all'],
         ];
     }
 }
