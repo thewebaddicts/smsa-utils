@@ -2,7 +2,7 @@
 
 namespace twa\smsautils\Enums;
 
-enum PackageTypeEnum: string
+enum ShipmentTypeEnum: string
 {
     case PARCEL = 'PARCEL';
     case DOCUMENT = 'DOC';
