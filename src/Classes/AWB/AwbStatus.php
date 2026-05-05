@@ -78,7 +78,7 @@ class AwbStatus
             'color_text' => $status->color_text ?? '#1565c0',
             'description' => $lang === 'ar' ? ($status->description_ar ?? '') : ($status->description_en ?? ''),
             'category' => $status->shipment_status_category_id ?? null,
-            'tags' => $status->shipment_status_tags ? json_decode($status->shipment_status_tags, true) : ['all'],
+            'tags' => $status->shipment_status_tags ?? ['all'],
         ];
     }
 }

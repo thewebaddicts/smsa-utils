@@ -23,8 +23,8 @@ class AwbStatusEnum
         return (new AwbStatus(null, $identifier, null));
     }
 
-    public static function fromModel(ShipmentStatus $model)
+    public static function fromModel(ShipmentStatus|null $model)
     {
-        return (new AwbStatus(null, null, $model));
+        return (new AwbStatus(null, null, $model ?? null));
     }
 }
