@@ -23,6 +23,7 @@ class Hub extends Model
             'product_ids' => 'array',
             'added_service_ids' => 'array',
             'service_type_ids' => 'array',
+            'address_snapshot' => 'array',
         ];
     }
 
