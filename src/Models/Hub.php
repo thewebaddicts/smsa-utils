@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-
+use twa\smsautils\Models\Address;
 class Hub extends Model
 {
     use HasFactory, SoftDeletes;
@@ -63,4 +63,8 @@ class Hub extends Model
             ->whereIn('id', $serviceTypeIds)
             ->get();
     }
-} 
+    public function Address()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Address::class, 'address_id');  
+    }
+}  
