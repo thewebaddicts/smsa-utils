@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use twa\apiutils\Traits\APITrait;
-use twa\smsautils\Enums\AwbStatusEnum;
 use twa\smsautils\Models\Awb;
 
 class EventController

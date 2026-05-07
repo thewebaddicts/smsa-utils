@@ -19,6 +19,8 @@ use twa\smsautils\Models\AccessToken;
 use twa\smsautils\Models\Hub;
 use twa\smsautils\Models\PickupRequest;
 use twa\smsautils\Models\AttributeSchema;
+use twa\smsautils\Facades\AwbStatusFacade;
+
 
 if (!function_exists('format_code_branch')) {
 
@@ -78,6 +80,7 @@ if (!function_exists('generate_awb_number')) {
 if (!function_exists('awb_format')) {
     function awb_format($awb, $include_files = null, $product_group = null)
     {
+        // dd($awb->activity);
         $data = [
             'awb' => $awb->awb,
             'awb_sequence' => $awb->awb_sequence,
@@ -85,7 +88,7 @@ if (!function_exists('awb_format')) {
             'nb_packages' => $awb->nb_packages,
             'master_awb' => $awb->master_awb,
             'shipment_id' => $awb->shipment_id,
-            'status' => AwbStatusEnum::from($awb->last_status)->info(),
+            'status' => AwbStatusFacade::fromModel($awb->activity)->info(),
         ];
 
         if (!is_null($include_files)) {
@@ -380,10 +383,10 @@ if (!function_exists('create_pickup_from_shipment')) {
                     'created_at' => $pickupAddress->created_at,
                     'updated_at' => $pickupAddress->updated_at,
                 ];
-        
+
             $pickupRequest->address_snapshot = $snapshot;
         }
-        
+
         $pickupRequest->expected_awbs = $expected_awbs;
         $pickupRequest->nb_packages = $awbs->count();
         $pickupRequest->total_weight = $total_weight;
@@ -614,18 +617,7 @@ if (!function_exists('log_awb_activity')) {
             ]);
         }
 
-         // $offsetDateTime = now()->parse($activityTime)->addHours(get_sla_defined_hours());
-
-
-            // $disallowed_statuses = AwbStatusEnum::disallowedStatusesForNoActivityBeyondDefinedTime();
-
-            // if (!in_array($status_code, $disallowed_statuses)) {
-            //     NoActivitybeyondDefinedTime::dispatch($target_id, $activityTime)
-            //         ->delay(Carbon::parse($offsetDateTime));
-            // }
-
         \twa\smsautils\Events\OnAWBActivityLog::dispatch($awb_activity_log_id);
-        // (new TreatWorkflowActivity($awb_activity_log_id))->handle();
     }
 }
 if (!function_exists('log_awbs_activity')) {
@@ -1171,82 +1163,31 @@ if (!function_exists('convert_status_to_number')) {
 if (!function_exists('get_workflow_statuses')) {
     function get_workflow_statuses()
     {
+        $statuses = DB::table('shipment_statuses')
+            ->whereNull('deleted_at')
+            ->whereJsonContains('shipment_status_tags', 'WORKFLOW')
+            ->orderBy('id')
+            ->get()
+            ->values()
+            ->map(function ($status, $index) {
+                $tags = [];
+                if (is_string($status->shipment_status_tags) && $status->shipment_status_tags !== '') {
+                    $tags = json_decode($status->shipment_status_tags, true) ?: [];
+                } elseif (is_array($status->shipment_status_tags)) {
+                    $tags = $status->shipment_status_tags;
+                }
 
-        $attempts = request()->input('nb_attempts', 1);
-
-        $status_codes = [
-            AwbStatusEnum::CREATED,
-            AwbStatusEnum::PICKED_UP,
-            AwbStatusEnum::ORIGIN_RECEIVED,
-            AwbStatusEnum::RECEIVED_OPERATION,
-            AwbStatusEnum::GATEWAY_RECEIVED,
-            AwbStatusEnum::STATION_RECEIVED,
-            AwbStatusEnum::HUB_RECEIVED,
-            AwbStatusEnum::RETAIL_RECEIVED,
-            AwbStatusEnum::DESTINATION_RECEIVED,
-
-
-            AwbStatusEnum::GATEWAY_NOT_RECEIVED,
-            AwbStatusEnum::STATION_NOT_RECEIVED,
-            AwbStatusEnum::HUB_NOT_RECEIVED,
-            AwbStatusEnum::RETAIL_NOT_RECEIVED,
-
-            AwbStatusEnum::OFFLOADED,
-
-
-            AwbStatusEnum::RTS_INITIATED,
-            AwbStatusEnum::REVOKED,
-
-            AwbStatusEnum::ADDRESS_CHANGED,
-            AwbStatusEnum::ADDRESS_VALIDATED,
-            AwbStatusEnum::UPDATED_DIMENSIONS,
-            AwbStatusEnum::UPDATED_WEIGHT,
-            AwbStatusEnum::CHANGE_ROUTE,
-            AwbStatusEnum::HOLD_FOR_PICKUP,
-            AwbStatusEnum::HOLD,
-            AwbStatusEnum::HOLD_CUSTOMS,
-            AwbStatusEnum::RELEASE_CUSTOMS,
-
-
-
-            AwbStatusEnum::OUT_FOR_DELIVERY,
-            AwbStatusEnum::REFUSED,
-            AwbStatusEnum::RELEASE_HOLD,
-
-            // SHRA
-            AwbStatusEnum::SCAN_RUNSHEET,
-            // SHOD
-            AwbStatusEnum::OUT_FOR_DELIVERY,
-
-
-            
-
-
-        ];
-
-        foreach (range(1, $attempts) as $attempt) {
-            $status_codes[] = AwbStatusEnum::tryFrom('SHAT-' . $attempt);
-        }
-
-
-        $status_codes[] = AwbStatusEnum::DELIVERED;
-        $status_codes[] = AwbStatusEnum::CANCELLED;
-        $status_codes[] = AwbStatusEnum::CIR;
-
-        // case  RTS_INITIATED = 'SHRT';
-        // case FINAL_RTS = 'SHFR';
-        // case RTS_INBOUND = 'SHRTIN';
-        // case RTS_SHELF_IN = 'SHRTSI';
-        // case RTS_SHELF_OUT = 'SHRTSO';
-        // case RTS_DELIVERED = 'SHRTSD';
-        // case CIR = 'SHCIR';
-        // case REVOKED = 'SHRE';
-
-        $statuses = collect($status_codes)
-            ->filter()
-
-            ->map(function ($case, $index) {
-                return array_merge(['value' => $case->value, "value_code" => 100 + $index], $case->info());
+                return [
+                    'value' => $status->code,
+                    'value_code' => 100 + $index,
+                    'label' => $status->label_en,
+                    'icon' => $status->icon,
+                    'color_bg' => $status->color_bg,
+                    'color_text' => $status->color_text,
+                    'description' => $status->description_en,
+                    'category' => $status->shipment_status_category_id ?? null,
+                    'tags' => $tags,
+                ];
             });
 
         return $statuses;
@@ -1517,20 +1458,40 @@ function create_access_token($id, $type, $duration_minutes = 525600)
 
 function process_event_status($status, $number_of_attempts = 1)
 {
-    $refusedStatuses = [
-        AwbStatusEnum::REFUSED_OPEN_SHIPMENT->value,
-        AwbStatusEnum::REFUSED_MONEY->value,
-        AwbStatusEnum::REFUSED_ALREADY_RECEIVED->value,
-        AwbStatusEnum::REFUSED_NO_LONGER_NEEDED->value,
-        AwbStatusEnum::REFUSED_DELAYED->value,
-    ];
+    $refusedStatuses = DB::table('shipment_statuses')
+        ->whereNull('deleted_at')
+        ->whereJsonContains('shipment_status_tags', 'REFUSED')
+        ->pluck('code')
+        ->filter()
+        ->values()
+        ->all();
+
+    // if (empty($refusedStatuses)) {
+    //     $refusedStatuses = [
+    //         AwbStatusEnum::REFUSED_OPEN_SHIPMENT->value,
+    //         AwbStatusEnum::REFUSED_MONEY->value,
+    //         AwbStatusEnum::REFUSED_ALREADY_RECEIVED->value,
+    //         AwbStatusEnum::REFUSED_NO_LONGER_NEEDED->value,
+    //         AwbStatusEnum::REFUSED_DELAYED->value,
+    //     ];
+    // }
 
     if (in_array($status, $refusedStatuses, true)) {
         return AwbStatusEnum::REFUSED->value;
     }
 
-    $list_of_exception_trips = AwbStatusEnum::exception_trips();
-    // $list_of_exception_trips = [];
+    $list_of_exception_trips = DB::table('shipment_statuses')
+        ->whereNull('deleted_at')
+        ->whereJsonContains('shipment_status_tags', 'WORKFLOW_TRIP_EXCEPTION')
+        ->pluck('code')
+        ->filter()
+        ->values()
+        ->all();
+
+    // if (empty($list_of_exception_trips)) {
+    //     $list_of_exception_trips = AwbStatusEnum::exception_trips();
+    // }
+
     if (in_array($status, $list_of_exception_trips)) {
         return "SHAT-" . $number_of_attempts;
     }
@@ -1708,90 +1669,88 @@ if (!function_exists('get_documents')) {
     }
 
 
-if (!function_exists('address_snapshot_json_sql')) {
-    /**
-     * MySQL expression to read a scalar from address snapshot JSON (keys match buildAddressSnapshot()).
-     *
-     * @param  string  $qualifiedColumn  e.g. shipments.receiver_address_snapshot
-     * @param  string  $key  JSON key (alphanumeric and underscore only)
-     */
-    function address_snapshot_json_sql(string $qualifiedColumn, string $key): string
-    {
-        if (!preg_match('/^[a-zA-Z0-9_]+$/', $key)) {
-            throw new InvalidArgumentException('Invalid address snapshot JSON key.');
-        }
-
-        $segments = explode('.', $qualifiedColumn);
-        if (count($segments) === 2) {
-            $qualified = '`' . $segments[0] . '`.`' . $segments[1] . '`';
-        } elseif (count($segments) === 1) {
-            $qualified = '`' . $segments[0] . '`';
-        } else {
-            throw new InvalidArgumentException('address_snapshot_json_sql expects table.column or column.');
-        }
-
-        $path = '$.' . $key;
-        $pathLiteral = DB::getPdo()->quote($path);
-
-        return "JSON_UNQUOTE(JSON_EXTRACT({$qualified}, {$pathLiteral}))";
-    }
-}
-
-if (!function_exists('address_snapshot_json_select')) {
-    /**
-     * For query builder ->select(): one JSON field from a snapshot column, optionally aliased.
-     *
-     * @param  string|null  $as  result alias (e.g. address)
-     * @return \Illuminate\Database\Query\Expression
-     */
-    function address_snapshot_json_select(string $qualifiedColumn, string $key, ?string $as = null)
-    {
-        $sql = address_snapshot_json_sql($qualifiedColumn, $key);
-        if ($as !== null && $as !== '') {
-            if (!preg_match('/^[a-zA-Z0-9_]+$/', $as)) {
-                throw new InvalidArgumentException('Invalid SQL alias for address snapshot select.');
-            }
-            $sql .= ' as `' . str_replace('`', '``', $as) . '`';
-        }
-
-        return DB::raw($sql);
-    }
-}
-
-if (!function_exists('address_snapshot_json_where')) {
-    /**
-     * Apply a where condition against a key inside an address snapshot JSON column.
-     *
-     * Example:
-     * address_snapshot_json_where($query, 'shipments.receiver_address_snapshot', 'country', '=', 'LB');
-     */
-    function address_snapshot_json_where(
-        $query,
-        string $qualifiedColumn,
-        string $key,
-        string $operator,
-        $value
-    ) {
-        $allowedOperators = ['=', '!=', '<>', '>', '>=', '<', '<=', 'like', 'not like'];
-        $normalizedOperator = strtolower(trim($operator));
-
-        if (!in_array($normalizedOperator, $allowedOperators, true)) {
-            throw new InvalidArgumentException('Invalid operator for address_snapshot_json_where.');
-        }
-
-        $sql = address_snapshot_json_sql($qualifiedColumn, $key);
-
-        if ($value === null) {
-            if (in_array($normalizedOperator, ['!=', '<>', 'not like'], true)) {
-                return $query->whereRaw("{$sql} IS NOT NULL");
+    if (!function_exists('address_snapshot_json_sql')) {
+        /**
+         * MySQL expression to read a scalar from address snapshot JSON (keys match buildAddressSnapshot()).
+         *
+         * @param  string  $qualifiedColumn  e.g. shipments.receiver_address_snapshot
+         * @param  string  $key  JSON key (alphanumeric and underscore only)
+         */
+        function address_snapshot_json_sql(string $qualifiedColumn, string $key): string
+        {
+            if (!preg_match('/^[a-zA-Z0-9_]+$/', $key)) {
+                throw new InvalidArgumentException('Invalid address snapshot JSON key.');
             }
 
-            return $query->whereRaw("{$sql} IS NULL");
+            $segments = explode('.', $qualifiedColumn);
+            if (count($segments) === 2) {
+                $qualified = '`' . $segments[0] . '`.`' . $segments[1] . '`';
+            } elseif (count($segments) === 1) {
+                $qualified = '`' . $segments[0] . '`';
+            } else {
+                throw new InvalidArgumentException('address_snapshot_json_sql expects table.column or column.');
+            }
+
+            $path = '$.' . $key;
+            $pathLiteral = DB::getPdo()->quote($path);
+
+            return "JSON_UNQUOTE(JSON_EXTRACT({$qualified}, {$pathLiteral}))";
         }
-
-        return $query->whereRaw("{$sql} {$normalizedOperator} ?", [$value]);
     }
-}
 
-    
+    if (!function_exists('address_snapshot_json_select')) {
+        /**
+         * For query builder ->select(): one JSON field from a snapshot column, optionally aliased.
+         *
+         * @param  string|null  $as  result alias (e.g. address)
+         * @return \Illuminate\Database\Query\Expression
+         */
+        function address_snapshot_json_select(string $qualifiedColumn, string $key, ?string $as = null)
+        {
+            $sql = address_snapshot_json_sql($qualifiedColumn, $key);
+            if ($as !== null && $as !== '') {
+                if (!preg_match('/^[a-zA-Z0-9_]+$/', $as)) {
+                    throw new InvalidArgumentException('Invalid SQL alias for address snapshot select.');
+                }
+                $sql .= ' as `' . str_replace('`', '``', $as) . '`';
+            }
+
+            return DB::raw($sql);
+        }
+    }
+
+    if (!function_exists('address_snapshot_json_where')) {
+        /**
+         * Apply a where condition against a key inside an address snapshot JSON column.
+         *
+         * Example:
+         * address_snapshot_json_where($query, 'shipments.receiver_address_snapshot', 'country', '=', 'LB');
+         */
+        function address_snapshot_json_where(
+            $query,
+            string $qualifiedColumn,
+            string $key,
+            string $operator,
+            $value
+        ) {
+            $allowedOperators = ['=', '!=', '<>', '>', '>=', '<', '<=', 'like', 'not like'];
+            $normalizedOperator = strtolower(trim($operator));
+
+            if (!in_array($normalizedOperator, $allowedOperators, true)) {
+                throw new InvalidArgumentException('Invalid operator for address_snapshot_json_where.');
+            }
+
+            $sql = address_snapshot_json_sql($qualifiedColumn, $key);
+
+            if ($value === null) {
+                if (in_array($normalizedOperator, ['!=', '<>', 'not like'], true)) {
+                    return $query->whereRaw("{$sql} IS NOT NULL");
+                }
+
+                return $query->whereRaw("{$sql} IS NULL");
+            }
+
+            return $query->whereRaw("{$sql} {$normalizedOperator} ?", [$value]);
+        }
+    }
 }
