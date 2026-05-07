@@ -220,7 +220,7 @@ enum PickupStatusEnum: string
                 "icon" => "map",
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
-                'description' => 'Out of Pickup Area',
+                'description' => 'Out of Pickup Areaaaaaaaa',
                 'tags' => ["EXCEPTION"],
                 'category' => [
                     'label' => 'Other',
