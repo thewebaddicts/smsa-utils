@@ -22,6 +22,7 @@ enum PickupStatusEnum: string
     case DUPLICATE_PICKUP = 'PKDP';
     case NO_SHIPMENTS = 'PKNS';
     case DROPPED_AT_RETAILR = 'PKDR';
+
     case OUT_OF_PICKUP_AREA = 'PKOA';
     case NOT_READY_TO_PICKUP = 'PKNR';
     case SHIPPER_HAS_ONLY_THESE = 'PKSH';
@@ -215,7 +216,7 @@ enum PickupStatusEnum: string
                 ],
             ],
             self::OUT_OF_PICKUP_AREA => [
-                'label' => 'Out of Pickup Area',
+                'label' => 'Out of Pickup Areaaaaaaaaaa',
                 "icon" => "map",
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
