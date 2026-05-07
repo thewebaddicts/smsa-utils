@@ -216,11 +216,11 @@ enum PickupStatusEnum: string
                 ],
             ],
             self::OUT_OF_PICKUP_AREA => [
-                'label' => 'Out of Pickup Areaaaaaaaaaa',
+                'label' => 'Out of Pickup Area',
                 "icon" => "map",
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
-                'description' => 'Out of Pickup Areaaaaaaaa',
+                'description' => 'Out of Pickup Area',
                 'tags' => ["EXCEPTION"],
                 'category' => [
                     'label' => 'Other',

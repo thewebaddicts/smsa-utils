@@ -10,7 +10,7 @@ class DefaultServiceProvider extends EventServiceProvider
 {
 
 
-  
+
 
     public function boot()
     {
@@ -18,6 +18,12 @@ class DefaultServiceProvider extends EventServiceProvider
         Relation::enforceMorphMap([
             'operator' => 'twa\smsautils\Models\Operator',
             'courier' => 'twa\smsautils\Models\Courier',
+
+            //exception cases
+            'awb' => 'twa\smsautils\Models\Awb',
+            'pickup_request' => 'twa\smsautils\Models\PickupRequest',
+            'unknown_awb' => 'twa\smsautils\Models\UnknownAwb',
+
         ]);
         $this->publishes([
             __DIR__ . '/../Configs/smsa-utils.php' => config_path('smsa-utils.php'),

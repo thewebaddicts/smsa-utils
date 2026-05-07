@@ -3,6 +3,7 @@
 namespace twa\smsautils\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use twa\smsautils\Models\Awb;
 
 class ExceptionCase extends Model
@@ -64,5 +65,9 @@ class ExceptionCase extends Model
     public function awbModel()
     {
         return $this->belongsTo(\twa\smsautils\Models\Awb::class, 'awb', 'awb')->whereNull('deleted_at');
+    }
+    public function targetable(): MorphTo
+    {
+        return $this->morphTo();
     }
 }
