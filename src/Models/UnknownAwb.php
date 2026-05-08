@@ -12,8 +12,13 @@ class UnknownAwb extends Model
 
 
     //
-    public function shipper(){
+    public function shipper()
+    {
         return $this->belongsTo(\twa\smsautils\Models\Shipper::class, 'seller_id');
     }
-    
-} 
+
+    public function branch()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Hub::class, 'hub_id');
+    }
+}
