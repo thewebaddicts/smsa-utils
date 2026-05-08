@@ -818,6 +818,7 @@ if (!function_exists('find_route_by_address')) {
             // ->where('province', $address['province'])
             ->where('country', $address['country'])
             ->whereNull('deleted_at')
+            ->whereNotNull('route_id')
             ->select('route_id')
             ->first();
 
