@@ -11,5 +11,9 @@ class UnknownAwb extends Model
     use HasFactory, SoftDeletes;
 
 
+    //
+    public function shipper(){
+        return $this->belongsTo(\twa\smsautils\Models\Shipper::class, 'seller_id');
+    }
     
 } 
