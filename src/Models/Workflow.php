@@ -14,6 +14,8 @@ class Workflow extends Model
         'service_id',
         'delivery_attempts',
         'shipper_id',
+        'sla_pickup_hours',
+        'sla_delivery_hours'
     ];
 
     public function service()
@@ -53,6 +55,10 @@ class Workflow extends Model
                 'id' => $this->shipper_id,
                 'name' => $shipper?->name ?? 'All Shippers',
             ],
+
+            'sla_pickup_hours' => $this->sla_pickup_hours . ' hours',
+            'sla_delivery_hours' => $this->sla_delivery_hours . ' hours',
+
             'created_at' => format_date_time($this->created_at),
             'updated_at' => format_date_time($this->updated_at),
             'deleted_at' => format_date_time($this->deleted_at),
