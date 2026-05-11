@@ -44,7 +44,7 @@ class PickupRequestActivity extends Model
             'activity_by_id' => $performer ? $performer->id : null,
         ]);
     }
-    public function activityStatus()
+    public function activity()
     {
         return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'status', 'code')->whereNull('deleted_at');
     }

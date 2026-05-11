@@ -226,7 +226,7 @@ if (!function_exists('find_overlapping_pending_pickup')) {
             })
             ->where('address_id', $addressId)
             ->whereDate('pickup_date', $pickupDate)
-            ->where('status', PickupStatusEnum::PENDING->value)
+            ->where('status', PickupStatusEnum::PICKUP_CREATED->value)
             ->when($excludePickupId, function ($query) use ($excludePickupId) {
                 $query->where('id', '!=', $excludePickupId);
             })
@@ -969,7 +969,7 @@ if (!function_exists('courier_assignment_on_route')) {
             ->whereIn('courier_id', $couriers)
             ->where('pickup_date', now()->format('Y-m-d'))
             ->whereNull('deleted_at')
-            ->where('status', \twa\smsautils\Enums\PickupStatusEnum::PENDING->value)
+            ->where('status', \twa\smsautils\Enums\PickupStatusEnum::PICKUP_CREATED->value)
             ->select('courier_id', DB::raw('COUNT(*) as count'))
             ->groupBy('courier_id')
             ->pluck('count', 'courier_id');

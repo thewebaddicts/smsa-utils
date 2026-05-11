@@ -45,14 +45,14 @@ class CheckPickupRequestStatus implements ShouldQueue
         // dd($this->checkType);
 
         if ($this->checkType === 'delayed') {
-            if ($pickupRequest->status === PickupStatusEnum::PENDING->value) {
-                $pickupRequest->update(['status' => PickupStatusEnum::DELAYED->value]);
+            if ($pickupRequest->status === PickupStatusEnum::PICKUP_CREATED->value) {
+                $pickupRequest->update(['status' => PickupStatusEnum::PICKUP_DELAYED->value]);
                 $pickupRequest->logActivity('Pickup request automatically marked as delayed (1 minute after pickup time end)',null);
                
             }
         } elseif ($this->checkType === 'failed') {
-            if ($pickupRequest->status === PickupStatusEnum::DELAYED->value) {
-                $pickupRequest->update(['status' => PickupStatusEnum::FAILED->value]);
+            if ($pickupRequest->status === PickupStatusEnum::PICKUP_DELAYED->value) {
+                $pickupRequest->update(['status' => PickupStatusEnum::PICKUP_FAILED->value]);
                 $pickupRequest->logActivity("Pickup request automatically marked as failed ({$failMinutes} minutes after pickup time end)",null);
                 
             }
