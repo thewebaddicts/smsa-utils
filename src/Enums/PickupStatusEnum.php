@@ -74,6 +74,22 @@ enum PickupStatusEnum: string
                 'description' => 'Picked Up',
                 'tags' => ["all"],
             ],
+            self::NOT_READY_TO_PICKUP => [
+                'label' => 'Not Ready to Pickup',
+                'icon' => 'map',
+                'color_bg' => '#FEF9C3',
+                'color_text' => '#92400E',
+                'description' => 'Not Ready to Pickup',
+                'tags' => ['MISSING_SCAN_REASON'],
+            ],
+            self::SHIPPER_HAS_ONLY_THESE => [
+                'label' => 'Shipper has only these shipments',
+                'icon' => 'map',
+                'color_bg' => '#FEF9C3',
+                'color_text' => '#92400E',
+                'description' => 'Shipper has only these shipments',
+                'tags' => ['MISSING_SCAN_REASON'],
+            ],
         };
     }
 
