@@ -18,27 +18,24 @@ class BasicAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-            
-     
-        $username = env('INTERNAL_API_BASIC_USER');
-        $password = env('INTERNAL_API_BASIC_PASS');
+        $username = (string) config('smsa-utils.internal_api_basic_user', '');
+        $password = (string) config('smsa-utils.internal_api_basic_pass', '');
 
-        $header = $request->header('Authorization');
-
-        if (!$header || !str_starts_with($header, 'Basic ')) {
-            return $this->response(notification()->error("Unauthorized", "Unauthorized") , 401);
+        if ($username === '' || $password === '') {
+            return $this->response(notification()->error("Unauthorized", "Unauthorized"), 401);
         }
 
-        $encoded = substr($header, 6);
-        
-        [$user, $pass] = explode(':', base64_decode($encoded), 2);
+        $user = $request->getUser();
+        $pass = $request->getPassword();
 
-        if ($user !== $username || $pass !== $password) {
-              return $this->response(notification()->error("Unauthorized", "Unauthorized") , 401);
+        if (!is_string($user) || !is_string($pass)) {
+            return $this->response(notification()->error("Unauthorized", "Unauthorized"), 401);
+        }
+
+        if (!hash_equals($username, $user) || !hash_equals($password, $pass)) {
+            return $this->response(notification()->error("Unauthorized", "Unauthorized"), 401);
         }
 
         return $next($request);
-    
-
     }
 }

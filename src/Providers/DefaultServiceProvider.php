@@ -43,6 +43,7 @@ class DefaultServiceProvider extends EventServiceProvider
 
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__ . '/../Configs/smsa-utils.php', 'smsa-utils');
 
         $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
         include_once(__DIR__ . '/../Helpers/default.php');
