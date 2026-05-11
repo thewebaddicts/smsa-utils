@@ -2433,7 +2433,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
                     'description' => 'Pickup attempt needs to be rescheduled',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
+                        'key' => 'not-available',
+                    ],
                     'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
                 self::NOT_PICKED_UP_NO_ANSWER => [
@@ -2442,7 +2445,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#fff3e0',
                     'color_text' => '#fb8c00',
                     'description' => 'Recipient did not answer during pickup attempt',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
+                        'key' => 'not-available',
+                    ],
                     'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
                 self::NOT_PICKED_UP_ADDRESS_CHANGED => [
@@ -2543,7 +2549,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Pickup was cancelled due to duplicate pickup request',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                        'key' => 'cancelled',
+                    ],
                     'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
 
@@ -2553,7 +2562,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Pickup was cancelled due to no shipment',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                        'key' => 'cancelled',
+                    ],
                     'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
 
@@ -2563,7 +2575,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Pickup was cancelled due to dropped retail',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                        'key' => 'cancelled',
+                    ],
                     'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
                 self::OUT_OF_PICKUP_AREA => [
@@ -2572,7 +2587,10 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffcdd2',
                     'color_text' => '#c62828',
                     'description' => 'Pickup could not be completed due to out of pickup area',
-                    'category' => null,
+                    'category' => [
+                        'label' => $lang === 'ar' ? 'أخرى' : 'Other',
+                        'key' => 'other',
+                    ],
                     'tags' => ["all", "PICKUP EXCEPTION"],
                 ],
 
