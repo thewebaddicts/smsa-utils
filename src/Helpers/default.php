@@ -676,6 +676,10 @@ if (!function_exists('query_options_response')) {
                         });
                         break;
 
+                    case 'in': 
+                        $baseQuery->whereIn($field, $value['value']);
+                        break;
+
                     default:
                         $baseQuery->where($field, $value['operand'] ?? '=', $value['value']);
                 }
