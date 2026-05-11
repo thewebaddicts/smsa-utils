@@ -54,6 +54,11 @@ class PickupRequest extends Model
             \twa\smsautils\Events\PickupRequestCreated::dispatch($pickupRequest);
         });
     }
+    public function activity()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\ShipmentStatus::class, 'status', 'code')->whereNull('deleted_at');
+    }
+
 
 
     public function route()
