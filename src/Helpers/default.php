@@ -1758,4 +1758,10 @@ if (!function_exists('get_documents')) {
             return $query->whereRaw("{$sql} {$normalizedOperator} ?", [$value]);
         }
     }
+    if (!function_exists('create_token')) {
+        function create_token()
+        {
+            return md5(uniqid() . env('APP_KEY')) . md5(uniqid() . env('APP_KEY'));
+        }
+    }
 }
