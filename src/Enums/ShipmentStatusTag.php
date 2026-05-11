@@ -5,7 +5,7 @@ namespace twa\smsautils\Enums;
 enum ShipmentStatusTag: string
 {
 
-    case TRIP_EXCEPTION = 'TRIP_EXCEPTION';
+    case GENERAL_EXCEPTION = 'GENERAL_EXCEPTION';
     case PICKUP_EXCEPTION = 'PICKUP_EXCEPTION';
     case DELIVERY_EXCEPTION = 'DELIVERY_EXCEPTION';
     case PICKUP_TRIP_EXCEPTION = 'PICKUP_TRIP_EXCEPTION';
