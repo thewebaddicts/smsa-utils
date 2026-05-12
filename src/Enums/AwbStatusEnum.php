@@ -266,6 +266,10 @@ enum AwbStatusEnum: string
             // self::CANCELLED_DROPED_RETAIL,
             // self::LOCATION_CHANGED_WRONG_ASSIGMENT,
             self::CLOSED,
+            
+            self::HOLD_FOR_PICKUP,
+             self::HOLD,
+             self::HOLD_CUSTOMS,
             self::DAMAGED,
             self::LOST => 'EXCEPTIONS',
 
