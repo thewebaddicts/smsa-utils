@@ -51,6 +51,7 @@ class Shipment extends Model
     'consignee_snapshot',
     'sender_address_snapshot',
     'receiver_address_snapshot',
+    'quote_id',
     // end ROZANA
   ];
 
