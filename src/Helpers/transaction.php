@@ -50,6 +50,8 @@ if (! function_exists('create_transactions_from_quote')) {
      */
     function create_transactions_from_quote(int $quoteId, array $extra = []): ?Transaction
     {
+        try {
+        DB::beginTransaction();
         $quote = Quote::query()
             ->with(['paymentLines' => function ($query): void {
                 $query->whereNull('deleted_at');
@@ -58,6 +60,8 @@ if (! function_exists('create_transactions_from_quote')) {
             ->find($quoteId);
 
         if (! $quote) {
+            DB::rollBack();
+
             return null;
         }
 
@@ -70,6 +74,8 @@ if (! function_exists('create_transactions_from_quote')) {
             ));
 
         if ($paymentLines->isEmpty()) {
+            DB::rollBack();
+
             return null;
         }
 
@@ -115,7 +121,14 @@ if (! function_exists('create_transactions_from_quote')) {
             ['inventories' => $inventories]
         );
 
-        return create_transaction($payload);
+        $transaction = create_transaction($payload);
+        DB::commit();
+        return $transaction;
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
     }
 }
 
