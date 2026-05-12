@@ -149,7 +149,7 @@ if (! function_exists('enrich_transaction_payload')) {
 
             if (empty($payload['pos_session_id'])) {
                 $payload['pos_session_id'] = DB::table('pos_sessions')
-                    ->where('cashier_id', $payload['cashier_id'])
+                    ->where('operator_id', $payload['cashier_id'])
                     ->whereNull('ended_at')
                     ->latest('id')
                     ->value('id');
