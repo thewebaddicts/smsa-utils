@@ -270,6 +270,7 @@ enum AwbStatusEnum: string
             self::HOLD_FOR_PICKUP,
              self::HOLD,
              self::HOLD_CUSTOMS,
+             self::OFFLOADED,
             self::DAMAGED,
             self::LOST => 'EXCEPTIONS',
 
@@ -3484,13 +3485,7 @@ enum AwbStatusEnum: string
                 'description' => 'Refused delivery due to delay',
             ],
 
-            self::HOLD_CUSTOMS => [
-                'label' => 'On Hold - Customs',
-                'icon' => 'shield',
-                'color_bg' => '#ede7f6',
-                'color_text' => '#4527a0',
-                'description' => 'Shipment on hold for customs clearance',
-            ],
+          
             self::DOCUMENT_UPLOAD => [
                 'label' => 'Documents Uploaded',
                 'icon' => 'file-upload',
