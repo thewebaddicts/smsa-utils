@@ -52,6 +52,7 @@ class Shipment extends Model
     'sender_address_snapshot',
     'receiver_address_snapshot',
     'quote_id',
+    'hal_branch_id',
     // end ROZANA
   ];
 
