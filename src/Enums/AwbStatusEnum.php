@@ -116,17 +116,17 @@ enum AwbStatusEnum: string
     case NOT_AVAILABLE_WRONG_CITY = 'ATLC';
     case NOT_AVAILABLE_ROUTE = 'ATLR'; //to be checked by hovig
     case NOT_AVAILABLE_OUT_OF_AREA = 'ATOA';
-    case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
-    case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
-    case NOT_PICKED_UP_ADDRESS_CHANGED = 'NPLR';
+    // case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
+    // case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
+    // case NOT_PICKED_UP_ADDRESS_CHANGED = 'NPLR';
     case REFUSED_OPEN_SHIPMENT  = 'RFOS';
-    case OUT_OF_PICKUP_AREA = 'OPOA';
-    case CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE = 'CIAV';
-    case CAPACITY_ISSUE_VEHICLE_OVERLOADED = 'CIOV';
-    case CANCELLED_DUPLICATE_PICKUP = 'LCWA';
-    case CANCELLED_NO_SHIPMENT = 'LCNS';
-    case CANCELLED_DROPED_RETAIL = 'LCDR';
-    case LOCATION_CHANGED_WRONG_ASSIGMENT = 'LCAW';
+    // case OUT_OF_PICKUP_AREA = 'OPOA';
+    // case CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE = 'CIAV';
+    // case CAPACITY_ISSUE_VEHICLE_OVERLOADED = 'CIOV';
+    // case CANCELLED_DUPLICATE_PICKUP = 'LCWA';
+    // case CANCELLED_NO_SHIPMENT = 'LCNS';
+    // case CANCELLED_DROPED_RETAIL = 'LCDR';
+    // case LOCATION_CHANGED_WRONG_ASSIGMENT = 'LCAW';
     case DAMAGED = 'EXDM'; // was exp
     case LOST = 'EXLO';
 
@@ -254,17 +254,17 @@ enum AwbStatusEnum: string
             self::NOT_AVAILABLE_WRONG_CITY,
             self::NOT_AVAILABLE_ROUTE,
             self::NOT_AVAILABLE_OUT_OF_AREA,
-            self::NOT_PICKED_UP_RESCHEDULE,
-            self::NOT_PICKED_UP_NO_ANSWER,
-            self::NOT_PICKED_UP_ADDRESS_CHANGED,
+            // self::NOT_PICKED_UP_RESCHEDULE,
+            // self::NOT_PICKED_UP_NO_ANSWER,
+            // self::NOT_PICKED_UP_ADDRESS_CHANGED,
             self::REFUSED_OPEN_SHIPMENT,
-            self::OUT_OF_PICKUP_AREA,
-            self::CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE,
-            self::CAPACITY_ISSUE_VEHICLE_OVERLOADED,
-            self::CANCELLED_DUPLICATE_PICKUP,
-            self::CANCELLED_NO_SHIPMENT,
-            self::CANCELLED_DROPED_RETAIL,
-            self::LOCATION_CHANGED_WRONG_ASSIGMENT,
+            // self::OUT_OF_PICKUP_AREA,
+            // self::CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE,
+            // self::CAPACITY_ISSUE_VEHICLE_OVERLOADED,
+            // self::CANCELLED_DUPLICATE_PICKUP,
+            // self::CANCELLED_NO_SHIPMENT,
+            // self::CANCELLED_DROPED_RETAIL,
+            // self::LOCATION_CHANGED_WRONG_ASSIGMENT,
             self::DAMAGED,
             self::LOST => 'EXCEPTIONS',
 
@@ -1122,7 +1122,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_RESCHEDULE => [
                     'label' => $lang === 'ar' ? 'إعادة الجدولة' : 'Reschedule',
@@ -1134,7 +1134,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_TRAVELING => [
                     'label' => $lang === 'ar' ? 'مسافر' : 'Traveling',
@@ -1146,7 +1146,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
                         'key' => 'not-available',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_WRONG_PHONE => [
                     'label' => $lang === 'ar' ? 'رقم هاتف خاطئ' : 'Wrong Phone Number',
@@ -1158,7 +1158,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'أخرى' : 'Other',
                         'key' => 'other',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
                 self::NOT_AVAILABLE_WRONG_CUSTOMER => [
                     'label' => $lang === 'ar' ? 'عميل خاطئ' : 'Wrong Customer',
@@ -1200,30 +1200,30 @@ enum AwbStatusEnum: string
                     'tags' => ["all"],
                 ],
 
-                self::CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE => [
-                    'label' => $lang === 'ar' ? 'مشكلة في السعة - نوع سيارة آخر' : 'Capacity Issue - Another Vehicle Type',
-                    'icon' => 'truck',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Delivery capacity issue due to another vehicle type',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
-                        'key' => 'capacity-issue',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::CAPACITY_ISSUE_VEHICLE_OVERLOADED => [
-                    'label' => $lang === 'ar' ? 'مشكلة في السعة - سيارة مشحونة' : 'Capacity Issue - Vehicle Overloaded',
-                    'icon' => 'truck',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Delivery capacity issue due to vehicle overloaded',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
-                        'key' => 'capacity-issue',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE => [
+                //     'label' => $lang === 'ar' ? 'مشكلة في السعة - نوع سيارة آخر' : 'Capacity Issue - Another Vehicle Type',
+                //     'icon' => 'truck',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Delivery capacity issue due to another vehicle type',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
+                //         'key' => 'capacity-issue',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::CAPACITY_ISSUE_VEHICLE_OVERLOADED => [
+                //     'label' => $lang === 'ar' ? 'مشكلة في السعة - سيارة مشحونة' : 'Capacity Issue - Vehicle Overloaded',
+                //     'icon' => 'truck',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Delivery capacity issue due to vehicle overloaded',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
+                //         'key' => 'capacity-issue',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
                 self::HOLD_PICKUP => [
                     'label' => $lang === 'ar' ? 'معلق للاستلام' : 'Hold for Pickup',
                     'icon' => 'archive',
@@ -1251,39 +1251,39 @@ enum AwbStatusEnum: string
                     'category' => null,
                     'tags' => ["all"],
                 ],
-                self::NOT_PICKED_UP_RESCHEDULE => [
-                    'label' => $lang === 'ar' ? 'إعادة جدولة الاستلام' : 'Reschedule Pickup',
-                    'icon' => 'calendar',
-                    'color_bg' => '#fff3e0',
-                    'color_text' => '#fb8c00',
-                    'description' => 'Pickup attempt needs to be rescheduled',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
-                        'key' => 'not-available',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::NOT_PICKED_UP_NO_ANSWER => [
-                    'label' => $lang === 'ar' ? 'لا يوجد رد' : 'No Answer',
-                    'icon' => 'phone-missed',
-                    'color_bg' => '#fff3e0',
-                    'color_text' => '#fb8c00',
-                    'description' => 'Recipient did not answer during pickup attempt',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
-                        'key' => 'not-available',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::NOT_PICKED_UP_ADDRESS_CHANGED => [
-                    'label' => $lang === 'ar' ? 'تم تغيير العنوان' : 'Address Changed',
-                    'icon' => 'map-pin',
-                    'color_bg' => '#fff3e0',
-                    'color_text' => '#fb8c00',
-                    'description' => 'Pickup could not be completed due to address change',
-                    'category' => null,
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::NOT_PICKED_UP_RESCHEDULE => [
+                //     'label' => $lang === 'ar' ? 'إعادة جدولة الاستلام' : 'Reschedule Pickup',
+                //     'icon' => 'calendar',
+                //     'color_bg' => '#fff3e0',
+                //     'color_text' => '#fb8c00',
+                //     'description' => 'Pickup attempt needs to be rescheduled',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
+                //         'key' => 'not-available',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::NOT_PICKED_UP_NO_ANSWER => [
+                //     'label' => $lang === 'ar' ? 'لا يوجد رد' : 'No Answer',
+                //     'icon' => 'phone-missed',
+                //     'color_bg' => '#fff3e0',
+                //     'color_text' => '#fb8c00',
+                //     'description' => 'Recipient did not answer during pickup attempt',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
+                //         'key' => 'not-available',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::NOT_PICKED_UP_ADDRESS_CHANGED => [
+                //     'label' => $lang === 'ar' ? 'تم تغيير العنوان' : 'Address Changed',
+                //     'icon' => 'map-pin',
+                //     'color_bg' => '#fff3e0',
+                //     'color_text' => '#fb8c00',
+                //     'description' => 'Pickup could not be completed due to address change',
+                //     'category' => null,
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
                 self::REFUSED_OPEN_SHIPMENT => [
                     'label' => $lang === 'ar' ? 'رفض فتح الشحنة' : 'Refused to Open Shipment',
                     'icon' => 'x-circle',
@@ -1367,56 +1367,56 @@ enum AwbStatusEnum: string
                 ],
 
 
-                self::CANCELLED_DUPLICATE_PICKUP => [
-                    'label' => $lang === 'ar' ? 'ملغي - تم الاستلام مسبقاً' : 'Cancelled - Already Received',
-                    'icon' => 'x-circle',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup was cancelled due to duplicate pickup request',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
-                        'key' => 'cancelled',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CANCELLED_DUPLICATE_PICKUP => [
+                //     'label' => $lang === 'ar' ? 'ملغي - تم الاستلام مسبقاً' : 'Cancelled - Already Received',
+                //     'icon' => 'x-circle',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup was cancelled due to duplicate pickup request',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                //         'key' => 'cancelled',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
-                self::CANCELLED_NO_SHIPMENT => [
-                    'label' => $lang === 'ar' ? 'ملغي - لا يوجد شحنة' : 'Cancelled - No Shipment',
-                    'icon' => 'x-circle',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup was cancelled due to no shipment',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
-                        'key' => 'cancelled',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CANCELLED_NO_SHIPMENT => [
+                //     'label' => $lang === 'ar' ? 'ملغي - لا يوجد شحنة' : 'Cancelled - No Shipment',
+                //     'icon' => 'x-circle',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup was cancelled due to no shipment',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                //         'key' => 'cancelled',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
-                self::CANCELLED_DROPED_RETAIL => [
-                    'label' => $lang === 'ar' ? 'ملغي - تم إسقاط الشحنة' : 'Cancelled - Dropped Retail',
-                    'icon' => 'x-circle',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup was cancelled due to dropped retail',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
-                        'key' => 'cancelled',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::OUT_OF_PICKUP_AREA => [
-                    'label' => $lang === 'ar' ? 'خارج منطقة الاستلام' : 'Out of Pickup Area',
-                    'icon' => 'map-pin',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup could not be completed due to out of pickup area',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'أخرى' : 'Other',
-                        'key' => 'other',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CANCELLED_DROPED_RETAIL => [
+                //     'label' => $lang === 'ar' ? 'ملغي - تم إسقاط الشحنة' : 'Cancelled - Dropped Retail',
+                //     'icon' => 'x-circle',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup was cancelled due to dropped retail',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                //         'key' => 'cancelled',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::OUT_OF_PICKUP_AREA => [
+                //     'label' => $lang === 'ar' ? 'خارج منطقة الاستلام' : 'Out of Pickup Area',
+                //     'icon' => 'map-pin',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup could not be completed due to out of pickup area',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'أخرى' : 'Other',
+                //         'key' => 'other',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
                 self::WRONG_DETAILS_WRONG_PHONE => [
                     'label' => $lang === 'ar' ? 'بيانات خاطئة - رقم هاتف خاطئ' : 'Wrong Details - Wrong Phone Number',
@@ -1429,7 +1429,7 @@ enum AwbStatusEnum: string
                         'key' => 'wrong-details',
                     ],
 
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
 
                 self::WRONG_DETAILS_WRONG_CUSTOMER => [
@@ -1442,7 +1442,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'بيانات خاطئة' : 'Wrong Details',
                         'key' => 'wrong-details',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
                 self::LOCATION_CHANGED_WRONG_CITY => [
                     'label' => $lang === 'ar' ? 'موقع خاطئ - خطأ في المدينة' : 'Location Changed - Wrong City',
@@ -1454,7 +1454,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
                         'key' => 'location-changed',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
                 self::LOCATION_CHANGED_OUT_OF_AREA => [
                     'label' => $lang === 'ar' ? 'موقع خاطئ - خارج المنطقة' : 'Wrong Location - Out of Area',
@@ -1466,21 +1466,21 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
                         'key' => 'location-changed',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
 
-                self::LOCATION_CHANGED_WRONG_ASSIGMENT => [
-                    'label' => $lang === 'ar' ? 'موقع خاطئ - خطأ في التخصيص' : 'Location Changed - Wrong Assignment',
-                    'icon' => 'map-pin',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Trip could not be completed due to wrong assignment',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
-                        'key' => 'location-changed',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::LOCATION_CHANGED_WRONG_ASSIGMENT => [
+                //     'label' => $lang === 'ar' ? 'موقع خاطئ - خطأ في التخصيص' : 'Location Changed - Wrong Assignment',
+                //     'icon' => 'map-pin',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Trip could not be completed due to wrong assignment',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
+                //         'key' => 'location-changed',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
 
 
@@ -1494,7 +1494,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'أخرى' : 'Other',
                         'key' => 'other',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
 
                 self::OUT_OF_DELIVERY_AREA => [
@@ -1507,15 +1507,9 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'أخرى' : 'Other',
                         'key' => 'other',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
-                self::CANCELLED => [
-                    'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
-                    'icon' => 'x-circle',
-                    'color_bg' => '#ffebee',
-                    'color_text' => '#b71c1c',
-                    'description' => 'Shipment cancelled',
-                ],
+               
                 self::LOST => [
                     'label' => $lang === 'ar' ? 'مفقود' : 'Lost',
                     'icon' => 'help-circle',
@@ -1523,7 +1517,7 @@ enum AwbStatusEnum: string
                     'color_text' => '#6a1b9a',
                     'description' => 'Shipment lost in transit',
                     'category' => null,
-                    'tags' => ["all", "EXCEPTION"],
+                    'tags' => ["all", "EXCEPTION","PROBLEMATIC_DEBRIEF_EXCEPTION"],
                 ],
                 self::CLOSED => [
                     'label' => $lang === 'ar' ? 'مغلق' : 'Closed',
@@ -1532,7 +1526,7 @@ enum AwbStatusEnum: string
                     'color_text' => '#424242',
                     'description' => 'Shipment closed',
                     'category' => null,
-                    'tags' => ["all"],
+                    'tags' => ["all", "PROBLEMATIC_DEBRIEF_EXCEPTION"],
                 ],
                 self::CRN_IN => [
                     'label' => $lang === 'ar' ? 'دخول CRN' : 'CRN In',
@@ -2513,30 +2507,30 @@ enum AwbStatusEnum: string
                     'tags' => ["all"],
                 ],
 
-                self::CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE => [
-                    'label' => $lang === 'ar' ? 'مشكلة في السعة - نوع سيارة آخر' : 'Capacity Issue - Another Vehicle Type',
-                    'icon' => 'truck',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Delivery capacity issue due to another vehicle type',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
-                        'key' => 'capacity-issue',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::CAPACITY_ISSUE_VEHICLE_OVERLOADED => [
-                    'label' => $lang === 'ar' ? 'مشكلة في السعة - سيارة مشحونة' : 'Capacity Issue - Vehicle Overloaded',
-                    'icon' => 'truck',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Delivery capacity issue due to vehicle overloaded',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
-                        'key' => 'capacity-issue',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE => [
+                //     'label' => $lang === 'ar' ? 'مشكلة في السعة - نوع سيارة آخر' : 'Capacity Issue - Another Vehicle Type',
+                //     'icon' => 'truck',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Delivery capacity issue due to another vehicle type',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
+                //         'key' => 'capacity-issue',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::CAPACITY_ISSUE_VEHICLE_OVERLOADED => [
+                //     'label' => $lang === 'ar' ? 'مشكلة في السعة - سيارة مشحونة' : 'Capacity Issue - Vehicle Overloaded',
+                //     'icon' => 'truck',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Delivery capacity issue due to vehicle overloaded',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'مشكلة في السعة' : 'Capacity Issue',
+                //         'key' => 'capacity-issue',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
                 self::HOLD_PICKUP => [
                     'label' => $lang === 'ar' ? 'معلق للاستلام' : 'Hold for Pickup',
                     'icon' => 'archive',
@@ -2564,39 +2558,39 @@ enum AwbStatusEnum: string
                     'category' => null,
                     'tags' => ["all"],
                 ],
-                self::NOT_PICKED_UP_RESCHEDULE => [
-                    'label' => $lang === 'ar' ? 'إعادة جدولة الاستلام' : 'Reschedule Pickup',
-                    'icon' => 'calendar',
-                    'color_bg' => '#fff3e0',
-                    'color_text' => '#fb8c00',
-                    'description' => 'Pickup attempt needs to be rescheduled',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
-                        'key' => 'not-available',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::NOT_PICKED_UP_NO_ANSWER => [
-                    'label' => $lang === 'ar' ? 'لا يوجد رد' : 'No Answer',
-                    'icon' => 'phone-missed',
-                    'color_bg' => '#fff3e0',
-                    'color_text' => '#fb8c00',
-                    'description' => 'Recipient did not answer during pickup attempt',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
-                        'key' => 'not-available',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::NOT_PICKED_UP_ADDRESS_CHANGED => [
-                    'label' => $lang === 'ar' ? 'تم تغيير العنوان' : 'Address Changed',
-                    'icon' => 'map-pin',
-                    'color_bg' => '#fff3e0',
-                    'color_text' => '#fb8c00',
-                    'description' => 'Pickup could not be completed due to address change',
-                    'category' => null,
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::NOT_PICKED_UP_RESCHEDULE => [
+                //     'label' => $lang === 'ar' ? 'إعادة جدولة الاستلام' : 'Reschedule Pickup',
+                //     'icon' => 'calendar',
+                //     'color_bg' => '#fff3e0',
+                //     'color_text' => '#fb8c00',
+                //     'description' => 'Pickup attempt needs to be rescheduled',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
+                //         'key' => 'not-available',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::NOT_PICKED_UP_NO_ANSWER => [
+                //     'label' => $lang === 'ar' ? 'لا يوجد رد' : 'No Answer',
+                //     'icon' => 'phone-missed',
+                //     'color_bg' => '#fff3e0',
+                //     'color_text' => '#fb8c00',
+                //     'description' => 'Recipient did not answer during pickup attempt',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'غير متوفر' : 'Not Available',
+                //         'key' => 'not-available',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::NOT_PICKED_UP_ADDRESS_CHANGED => [
+                //     'label' => $lang === 'ar' ? 'تم تغيير العنوان' : 'Address Changed',
+                //     'icon' => 'map-pin',
+                //     'color_bg' => '#fff3e0',
+                //     'color_text' => '#fb8c00',
+                //     'description' => 'Pickup could not be completed due to address change',
+                //     'category' => null,
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
                 self::REFUSED_OPEN_SHIPMENT => [
                     'label' => $lang === 'ar' ? 'رفض فتح الشحنة' : 'Refused to Open Shipment',
                     'icon' => 'x-circle',
@@ -2638,7 +2632,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'مرفوض' : 'Refused',
                         'key' => 'refused',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
                 self::REFUSED_DELAYED => [
                     'label' => $lang === 'ar' ? 'مرفوض - متأخر' : 'Refused - Delayed',
@@ -2650,7 +2644,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'مرفوض' : 'Refused',
                         'key' => 'refused',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
 
                 self::REFUSED_MONEY => [
@@ -2663,7 +2657,7 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'مرفوض' : 'Refused',
                         'key' => 'refused',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
 
                 self::REFUSED_ALREADY_RECEIVED => [
@@ -2676,60 +2670,60 @@ enum AwbStatusEnum: string
                         'label' => $lang === 'ar' ? 'مرفوض' : 'Refused',
                         'key' => 'refused',
                     ],
-                    'tags' => ["all", "TRIP EXCEPTION"],
+                    'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
 
 
-                self::CANCELLED_DUPLICATE_PICKUP => [
-                    'label' => $lang === 'ar' ? 'ملغي - تم الاستلام مسبقاً' : 'Cancelled - Already Received',
-                    'icon' => 'x-circle',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup was cancelled due to duplicate pickup request',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
-                        'key' => 'cancelled',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CANCELLED_DUPLICATE_PICKUP => [
+                //     'label' => $lang === 'ar' ? 'ملغي - تم الاستلام مسبقاً' : 'Cancelled - Already Received',
+                //     'icon' => 'x-circle',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup was cancelled due to duplicate pickup request',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                //         'key' => 'cancelled',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
-                self::CANCELLED_NO_SHIPMENT => [
-                    'label' => $lang === 'ar' ? 'ملغي - لا يوجد شحنة' : 'Cancelled - No Shipment',
-                    'icon' => 'x-circle',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup was cancelled due to no shipment',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
-                        'key' => 'cancelled',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CANCELLED_NO_SHIPMENT => [
+                //     'label' => $lang === 'ar' ? 'ملغي - لا يوجد شحنة' : 'Cancelled - No Shipment',
+                //     'icon' => 'x-circle',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup was cancelled due to no shipment',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                //         'key' => 'cancelled',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
-                self::CANCELLED_DROPED_RETAIL => [
-                    'label' => $lang === 'ar' ? 'ملغي - تم إسقاط الشحنة' : 'Cancelled - Dropped Retail',
-                    'icon' => 'x-circle',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup was cancelled due to dropped retail',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
-                        'key' => 'cancelled',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
-                self::OUT_OF_PICKUP_AREA => [
-                    'label' => $lang === 'ar' ? 'خارج منطقة الاستلام' : 'Out of Pickup Area',
-                    'icon' => 'map-pin',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Pickup could not be completed due to out of pickup area',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'أخرى' : 'Other',
-                        'key' => 'other',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::CANCELLED_DROPED_RETAIL => [
+                //     'label' => $lang === 'ar' ? 'ملغي - تم إسقاط الشحنة' : 'Cancelled - Dropped Retail',
+                //     'icon' => 'x-circle',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup was cancelled due to dropped retail',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'ملغي' : 'Cancelled',
+                //         'key' => 'cancelled',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
+                // self::OUT_OF_PICKUP_AREA => [
+                //     'label' => $lang === 'ar' ? 'خارج منطقة الاستلام' : 'Out of Pickup Area',
+                //     'icon' => 'map-pin',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Pickup could not be completed due to out of pickup area',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'أخرى' : 'Other',
+                //         'key' => 'other',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
                 self::WRONG_DETAILS_WRONG_PHONE => [
                     'label' => $lang === 'ar' ? 'بيانات خاطئة - رقم هاتف خاطئ' : 'Wrong Details - Wrong Phone Number',
@@ -2782,18 +2776,18 @@ enum AwbStatusEnum: string
                     'tags' => ["all", "TRIP EXCEPTION", "PICKUP EXCEPTION"],
                 ],
 
-                self::LOCATION_CHANGED_WRONG_ASSIGMENT => [
-                    'label' => $lang === 'ar' ? 'موقع خاطئ - خطأ في التخصيص' : 'Location Changed - Wrong Assignment',
-                    'icon' => 'map-pin',
-                    'color_bg' => '#ffcdd2',
-                    'color_text' => '#c62828',
-                    'description' => 'Trip could not be completed due to wrong assignment',
-                    'category' => [
-                        'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
-                        'key' => 'location-changed',
-                    ],
-                    'tags' => ["all", "PICKUP EXCEPTION"],
-                ],
+                // self::LOCATION_CHANGED_WRONG_ASSIGMENT => [
+                //     'label' => $lang === 'ar' ? 'موقع خاطئ - خطأ في التخصيص' : 'Location Changed - Wrong Assignment',
+                //     'icon' => 'map-pin',
+                //     'color_bg' => '#ffcdd2',
+                //     'color_text' => '#c62828',
+                //     'description' => 'Trip could not be completed due to wrong assignment',
+                //     'category' => [
+                //         'label' => $lang === 'ar' ? 'تم تغيير الموقع' : 'Location Changed',
+                //         'key' => 'location-changed',
+                //     ],
+                //     'tags' => ["all", "PICKUP EXCEPTION"],
+                // ],
 
 
 
@@ -3407,27 +3401,27 @@ enum AwbStatusEnum: string
             ],
 
             // NOT PICKED UP STATUSES
-            self::NOT_PICKED_UP_RESCHEDULE => [
-                'label' => 'Reschedule Pickup',
-                'icon' => 'calendar',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#fb8c00',
-                'description' => 'Pickup attempt needs to be rescheduled',
-            ],
-            self::NOT_PICKED_UP_NO_ANSWER => [
-                'label' => 'No Answer',
-                'icon' => 'phone-missed',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#fb8c00',
-                'description' => 'Recipient did not answer during pickup attempt',
-            ],
-            self::NOT_PICKED_UP_ADDRESS_CHANGED => [
-                'label' => 'Address Changed',
-                'icon' => 'map-pin',
-                'color_bg' => '#fff3e0',
-                'color_text' => '#fb8c00',
-                'description' => 'Pickup could not be completed due to address change',
-            ],
+            // self::NOT_PICKED_UP_RESCHEDULE => [
+            //     'label' => 'Reschedule Pickup',
+            //     'icon' => 'calendar',
+            //     'color_bg' => '#fff3e0',
+            //     'color_text' => '#fb8c00',
+            //     'description' => 'Pickup attempt needs to be rescheduled',
+            // ],
+            // self::NOT_PICKED_UP_NO_ANSWER => [
+            //     'label' => 'No Answer',
+            //     'icon' => 'phone-missed',
+            //     'color_bg' => '#fff3e0',
+            //     'color_text' => '#fb8c00',
+            //     'description' => 'Recipient did not answer during pickup attempt',
+            // ],
+            // self::NOT_PICKED_UP_ADDRESS_CHANGED => [
+            //     'label' => 'Address Changed',
+            //     'icon' => 'map-pin',
+            //     'color_bg' => '#fff3e0',
+            //     'color_text' => '#fb8c00',
+            //     'description' => 'Pickup could not be completed due to address change',
+            // ],
 
             // REFUSED STATUSES
             self::REFUSED_OPEN_SHIPMENT => [
