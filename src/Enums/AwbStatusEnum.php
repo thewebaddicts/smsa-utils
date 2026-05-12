@@ -228,14 +228,148 @@ enum AwbStatusEnum: string
     case RTSIN = 'RTSIN';
     case HSSC = 'HSSC';
 
+    /**
+     * Core shipment statuses (SH*) return null. Exception reason codes return EXCEPTIONS.
+     * Legacy / old-system scan codes return OLD.
+     */
+    public function statusType(): ?string
+    {
+        return match ($this) {
+            self::NOT_AVAILABLE_MOBILE_CLOSED,
+            self::NOT_AVAILABLE_NO_ANSWER,
+            self::NOT_AVAILABLE_RESCHEDULE,
+            self::NOT_AVAILABLE_TRAVELING,
+            self::NOT_AVAILABLE_WRONG_PHONE,
+            self::WRONG_DETAILS_WRONG_PHONE,
+            self::WRONG_DETAILS_WRONG_CUSTOMER,
+            self::LOCATION_CHANGED_WRONG_CITY,
+            self::LOCATION_CHANGED_OUT_OF_AREA,
+            self::CUSTOMER_REQUESTED_HOLD_FOR_PICKUP,
+            self::OUT_OF_DELIVERY_AREA,
+            self::REFUSED_MONEY,
+            self::REFUSED_ALREADY_RECEIVED,
+            self::REFUSED_NO_LONGER_NEEDED,
+            self::REFUSED_DELAYED,
+            self::NOT_AVAILABLE_WRONG_CUSTOMER,
+            self::NOT_AVAILABLE_WRONG_CITY,
+            self::NOT_AVAILABLE_ROUTE,
+            self::NOT_AVAILABLE_OUT_OF_AREA,
+            self::NOT_PICKED_UP_RESCHEDULE,
+            self::NOT_PICKED_UP_NO_ANSWER,
+            self::NOT_PICKED_UP_ADDRESS_CHANGED,
+            self::REFUSED_OPEN_SHIPMENT,
+            self::OUT_OF_PICKUP_AREA,
+            self::CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE,
+            self::CAPACITY_ISSUE_VEHICLE_OVERLOADED,
+            self::CANCELLED_DUPLICATE_PICKUP,
+            self::CANCELLED_NO_SHIPMENT,
+            self::CANCELLED_DROPED_RETAIL,
+            self::LOCATION_CHANGED_WRONG_ASSIGMENT,
+            self::DAMAGED,
+            self::LOST => 'EXCEPTIONS',
 
+            self::AF,
+            self::CC,
+            self::CR,
+            self::DE,
+            self::DEX03,
+            self::DEX08,
+            self::DEX14,
+            self::DEX29,
+            self::DEX41,
+            self::DEX42,
+            self::DEX93,
+            self::DF,
+            self::DL,
+            self::HIP,
+            self::HOP,
+            self::IC,
+            self::OD,
+            self::PU,
+            self::RTIN,
+            self::RTOPS,
+            self::SOP,
+            self::ST44,
+            self::ST68,
+            self::ST77,
+            self::UTI,
+            self::UTLX,
+            self::CD,
+            self::ST41,
+            self::ST64,
+            self::DEX8X,
+            self::DEX09,
+            self::BA,
+            self::CA,
+            self::FD,
+            self::NH,
+            self::MS,
+            self::OH,
+            self::RD,
+            self::WC,
+            self::PRC,
+            self::TN,
+            self::POD,
+            self::RPMX,
+            self::DEX03_1,
+            self::DEX03_2,
+            self::DEX03_3,
+            self::DEX03_4,
+            self::DEX03_7,
+            self::DEX03_8,
+            self::DEX03_9,
+            self::DEX03_10,
+            self::DEX03_12,
+            self::DEX03_13,
+            self::DEX03_14,
+            self::DEX03_15,
+            self::DEX03_16,
+            self::DEX07,
+            self::DEX07_3,
+            self::DEX07_4,
+            self::DEX07_5,
+            self::DEX07_6,
+            self::DEX07_7,
+            self::DEX07_8,
+            self::DEX93_1,
+            self::DEX93_2,
+            self::DEX93_3,
+            self::DEX93_4,
+            self::DEX93_5,
+            self::RTS,
+            self::RTI,
+            self::ST50,
+            self::Data,
+            self::RTO,
+            self::SMS,
+            self::DEX17,
+            self::PUX43,
+            self::ADV,
+            self::PUX_17,
+            self::PUX03_1,
+            self::PUX3,
+            self::ST60_10,
+            self::ST60_5,
+            self::ST60_6,
+            self::BTRO,
+            self::BTRI,
+            self::HAL,
+            self::DEX34,
+            self::DEX84,
+            self::CODRTS,
+            self::RTSIN,
+            self::HSSC => 'OLD',
+
+            default => null,
+        };
+    }
 
     public function info()
     {
         $lang = app()->getLocale();
 
         try {
-            return match ($this) {
+            $data = match ($this) {
                 self::ATTEMPTED_1 => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'Attempted-1',
                     'icon' => 'file-plus',
@@ -1534,6 +1668,9 @@ enum AwbStatusEnum: string
                 self::RTSIN => ['label' => 'RTSIN', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Shipper In', 'category' => null, 'tags' => []],
                 self::HSSC => ['label' => 'HSSC', 'icon' => 'users', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Handed Over To SSC', 'category' => null, 'tags' => []],
             };
+            $data['type'] = $this->statusType();
+
+            return $data;
         } catch (UnhandledMatchError $e) {
             // dump the unhandled enum value
             dd('Unhandled enum value: ' . $this->value);
@@ -1545,7 +1682,7 @@ enum AwbStatusEnum: string
         $lang = 'ar';
 
         try {
-            return match ($this) {
+            $data = match ($this) {
                 self::ATTEMPTED_1 => [
                     'label' => $lang === 'ar' ? 'تم الإنشاء' : 'Attempted-1',
                     'icon' => 'file-plus',
@@ -2844,6 +2981,9 @@ enum AwbStatusEnum: string
                 self::RTSIN => ['label' => 'RTSIN', 'icon' => 'archive', 'color_bg' => '#e1f5fe', 'color_text' => '#0277bd', 'description' => 'Return To Shipper In', 'category' => null, 'tags' => []],
                 self::HSSC => ['label' => 'HSSC', 'icon' => 'users', 'color_bg' => '#e8f5e9', 'color_text' => '#2e7d32', 'description' => 'Handed Over To SSC', 'category' => null, 'tags' => []],
             };
+            $data['type'] = $this->statusType();
+
+            return $data;
         } catch (UnhandledMatchError $e) {
             // dump the unhandled enum value
             dd('Unhandled enum value: ' . $this->value);
