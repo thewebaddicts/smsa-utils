@@ -617,6 +617,39 @@ if (!function_exists('log_awb_activity')) {
             ]);
         }
 
+        $shipment_status = ShipmentStatus::query()
+            ->where('code', $status_code)
+            ->where('module', 'awb')
+            ->whereNull('deleted_at')
+            ->first();
+
+        if ($shipment_status?->exception_trigger_reason_id) {
+            $triggerReason = ExceptionTriggerReason::query()
+                ->with('exceptionCategory')
+                ->where('id', $shipment_status->exception_trigger_reason_id)
+                ->whereNull('deleted_at')
+                ->first();
+
+            if ($triggerReason?->exceptionCategory) {
+                $exceptionPayload = [
+                    'targetable_id' => $target_id,
+                    'targetable_type' => 'awb',
+                    'exception_category_id' => $triggerReason->exceptionCategory->id,
+                    'exception_trigger_reason_id' => (int) $shipment_status->exception_trigger_reason_id,
+                    'comments' => $comment,
+                    'files' => $files ?? [],
+                    'created_by_id' => $activity_by_id,
+                    'created_by_type' => $activity_by_type,
+                ];
+
+               
+                  
+                
+
+                create_record_in_exception($exceptionPayload);
+            }
+        }
+
         \twa\smsautils\Events\OnAWBActivityLog::dispatch($awb_activity_log_id);
     }
 }
