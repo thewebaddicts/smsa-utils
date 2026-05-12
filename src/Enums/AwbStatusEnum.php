@@ -265,6 +265,7 @@ enum AwbStatusEnum: string
             // self::CANCELLED_NO_SHIPMENT,
             // self::CANCELLED_DROPED_RETAIL,
             // self::LOCATION_CHANGED_WRONG_ASSIGMENT,
+            self::CLOSED,
             self::DAMAGED,
             self::LOST => 'EXCEPTIONS',
 

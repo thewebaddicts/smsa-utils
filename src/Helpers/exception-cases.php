@@ -23,7 +23,7 @@ if (!function_exists('create_record_in_exception')) {
                 ->where(function ($query) use ($payload, $awb) {
                     $query->where('awb', $payload['awb']);
                     $query->orWhere(function ($q) use ($awb) {
-                        $q->where('targetable_id', $awb['id']);
+                        $q->where('targetable_id', $awb->id);
                         $q->where('targetable_type', 'awb');
                     });
                 })
@@ -89,7 +89,7 @@ if (!function_exists('create_record_in_exception')) {
                 ->whereNull('deleted_at')
                 ->first();
 
-            if ($exists) {
+            if ($exceptionCase) {
                 return $exceptionCase;
             }
         }
