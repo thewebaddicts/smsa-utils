@@ -20,7 +20,8 @@ use twa\smsautils\Models\Hub;
 use twa\smsautils\Models\PickupRequest;
 use twa\smsautils\Models\AttributeSchema;
 use twa\smsautils\Facades\AwbStatusFacade;
-
+use twa\smsautils\Models\ExceptionTriggerReason;
+use twa\smsautils\Models\ShipmentStatus;
 
 if (!function_exists('format_code_branch')) {
 
