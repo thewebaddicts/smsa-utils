@@ -5,11 +5,16 @@ namespace twa\smsautils\Enums;
 enum PickupStatusEnumOld: string
 {
 
-    case PENDING = 'pending';
-    case PICKED_UP = 'picked_up';
-    case CANCELLED = 'cancelled';
-    case FAILED = 'failed';
-    case DELAYED = 'delayed';
+    case PICKUP_CREATED = 'PKCR';
+    case PICKUP_PICKED_UP = 'PKPU';
+    case PICKUP_DELAYED = 'PKDL';
+    case PICKUP_FAILED = 'PKFL';
+    case PICKUP_CANCELLED = 'PKCN';
+
+
+    case NOT_READY_TO_PICKUP = 'PKNR';
+    case SHIPPER_HAS_ONLY_THESE = 'PKSH';
+
     case MOBILE_CLOSED = 'PKMC';
     case NO_ANSWER = 'PKNA';
     case RESCHEDULE = 'PKRE';
@@ -20,64 +25,90 @@ enum PickupStatusEnumOld: string
     case ROUTE_CHANGED = 'PKRC';
     case WRONG_ASSIGNMENT = 'PKWA';
     case DUPLICATE_PICKUP = 'PKDP';
-    case NO_SHIPMENTS = 'PKNS';
     case DROPPED_AT_RETAILR = 'PKDR';
-
     case OUT_OF_PICKUP_AREA = 'PKOA';
-    case NOT_READY_TO_PICKUP = 'PKNR';
-    case SHIPPER_HAS_ONLY_THESE = 'PKSH';
+
+
 
     public function info(): array
     {
         return match ($this) {
-            self::PENDING => [
+
+            self::PICKUP_CREATED => [
                 'label' => 'Pending',
                 "icon" => "calendar",
                 "color_bg" => "#FFF4E6", // soft orange background
                 "color_text" => "#D97706", // amber-700
-                'description' => 'Pending',
-                'tags' => ["all"],
-
+                'description' => 'Pickup Created',
+                'tags' => [],
+                "type" => null,
             ],
-            self::PICKED_UP => [
-                'label' => 'Picked Up',
-                "icon" => "truck",
-                "color_bg" => "#E0F2FE", // light blue background
-                "color_text" => "#0369A1", // sky-800
-                'description' => 'Picked Up',
-                'tags' => ["all"],
-            ],
-            self::CANCELLED => [
+            self::PICKUP_CANCELLED => [
                 'label' => 'Cancelled',
                 "icon" => "x",
                 "color_bg" => "#FEE2E2", // light red background
                 "color_text" => "#B91C1C", // red-700
                 'description' => 'Cancelled',
-                'tags' => ["all"],
+                'tags' => [],
+                "type" => null,
             ],
-            self::FAILED => [
+            self::PICKUP_FAILED => [
                 'label' => 'Failed',
                 "icon" => "alert-triangle",
                 "color_bg" => "#FEF2F2", // very light red background
                 "color_text" => "#DC2626", // red-600
                 'description' => 'Failed',
-                'tags' => ["all"],
+                'tags' => [],
+                "type" => null,
             ],
-            self::DELAYED => [
+            self::PICKUP_DELAYED => [
                 'label' => 'Delayed',
                 "icon" => "clock",
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Delayed',
-                'tags' => ["all"],
+                'tags' => [],
+                "type" => null,
             ],
+            self::PICKUP_PICKED_UP => [
+                'label' => 'Picked Up',
+                "icon" => "truck",
+                "color_bg" => "#E0F2FE", // light blue background
+                "color_text" => "#0369A1", // sky-800
+                'description' => 'Picked Up',
+                'tags' => [],
+                "type" => null,
+            ],
+
+
+
+            self::NOT_READY_TO_PICKUP => [
+                'label' => 'Not Ready to Pickup',
+                'icon' => 'map',
+                'color_bg' => '#FEF9C3',
+                'color_text' => '#92400E',
+                'description' => 'Not Ready to Pickup',
+                'tags' => ['PICKUP_EXCEPTION'],
+                "type" => 'EXCEPTIONS',
+            ],
+            self::SHIPPER_HAS_ONLY_THESE => [
+                'label' => 'Shipper has only these shipments',
+                'icon' => 'map',
+                'color_bg' => '#FEF9C3',
+                'color_text' => '#92400E',
+                'description' => 'Shipper has only these shipments',
+                'tags' => ['PICKUP_EXCEPTION'],
+                "type" => 'EXCEPTIONS',
+            ],
+
             self::MOBILE_CLOSED => [
                 'label' => 'Mobile Closed',
                 "icon" => "mobile",
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Mobile Closed',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
+                "type" => 'EXCEPTIONS',
                 'category' => [
                     'label' => 'Not Available',
                     'key' => 'not_available',
@@ -89,7 +120,8 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'No Answer',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
+                "type" => 'EXCEPTIONS',
                 'category' => [
                     'label' => 'Not Available',
                     'key' => 'not_available',
@@ -101,11 +133,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Reschedule',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Not Available',
                     'key' => 'not_available',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::ANOTHER_VEHICLE_TYPE => [
                 'label' => 'Another Vehicle Type',
@@ -113,11 +146,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Another Vehicle Type',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Capacity Issue',
                     'key' => 'capacity_issue',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::VEHCILE_OVERLOADED => [
                 'label' => 'Vehicle Overloaded',
@@ -125,11 +159,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Vehicle Overloaded',
-                'tags' => ["EXCEPTION", "MISSING_SCAN_REASON"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION", "PICKUP_EXCEPTION"],
                 'category' => [
                     'label' => 'Capacity Issue',
                     'key' => 'capacity_issue',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::CITY_CHANGED => [
                 'label' => 'City Changed',
@@ -137,11 +172,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3", // soft yellow background
                 "color_text" => "#92400E", // amber-800
                 'description' => 'City Changed',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Location Change',
                     'key' => 'location_change',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::AREA_CHANGED => [
                 'label' => 'Area Changed',
@@ -149,11 +185,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Area Changed',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Location Change',
                     'key' => 'location_change',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::ROUTE_CHANGED => [
                 'label' => 'Route Changed',
@@ -161,11 +198,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Route Changed',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Location Change',
                     'key' => 'location_change',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::WRONG_ASSIGNMENT => [
                 'label' => 'Wrong Assignment',
@@ -173,11 +211,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Wrong Assignment',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Location Change',
                     'key' => 'location_change',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::DUPLICATE_PICKUP => [
                 'label' => 'Duplicate Pickup',
@@ -185,11 +224,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Duplicate Pickup',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Cancelled',
                     'key' => 'cancelled',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::NO_SHIPMENTS => [
                 'label' => 'No Shipments',
@@ -197,11 +237,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
                 'description' => 'No Shipments',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Cancelled',
                     'key' => 'cancelled',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::DROPPED_AT_RETAILR => [
                 'label' => 'Dropped at Retail',
@@ -209,11 +250,12 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Dropped at Retail',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Cancelled',
                     'key' => 'cancelled',
                 ],
+                "type" => 'EXCEPTIONS',
             ],
             self::OUT_OF_PICKUP_AREA => [
                 'label' => 'Out of Pickup Area',
@@ -221,54 +263,19 @@ enum PickupStatusEnumOld: string
                 "color_bg" => "#FEF9C3",
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Out of Pickup Area',
-                'tags' => ["EXCEPTION"],
+                'tags' => ["PICKUP_TRIP_EXCEPTION"],
                 'category' => [
                     'label' => 'Other',
                     'key' => 'other',
                 ],
-            ],
-            self::NOT_READY_TO_PICKUP => [
-                'label' => 'Not Ready to Pickup',
-                "icon" => "map",
-                "color_bg" => "#FEF9C3",
-                "color_text" => "#92400E", // amber-800
-                'description' => 'Not Ready to Pickup',
-                'tags' => ["MISSING_SCAN_REASON"],
-
-            ],
-            self::SHIPPER_HAS_ONLY_THESE => [
-                'label' => 'Shipper has only these shipments',
-                "icon" => "map",
-                "color_bg" => "#FEF9C3",
-                "color_text" => "#92400E", // amber-800
-                'description' => 'Shipper has only these shipments',
-                'tags' => ["MISSING_SCAN_REASON"],
-
-            ],
+                "type" => 'EXCEPTIONS',
+            ]
         };
     }
 
     public function values(): array
     {
-        return [
-            self::PENDING,
-            self::PICKED_UP,
-            self::CANCELLED,
-            self::FAILED,
-            self::DELAYED,
-            self::MOBILE_CLOSED,
-            self::NO_ANSWER,
-            self::RESCHEDULE,
-            self::ANOTHER_VEHICLE_TYPE,
-            self::VEHCILE_OVERLOADED,
-            self::CITY_CHANGED,
-            self::AREA_CHANGED,
-            self::ROUTE_CHANGED,
-            self::WRONG_ASSIGNMENT,
-            self::DUPLICATE_PICKUP,
-            self::NO_SHIPMENTS,
-            self::DROPPED_AT_RETAILR,
-        ];
+        return [];
     }
 
     public function apiOptions(): array
