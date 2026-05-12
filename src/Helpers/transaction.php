@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 use twa\smsautils\Events\TransactionCreated;
+use twa\smsautils\Models\Quote;
 use twa\smsautils\Models\Transaction;
 
 if (! function_exists('create_transaction')) {
@@ -33,6 +34,88 @@ if (! function_exists('create_transaction')) {
         }
 
         return $transaction;
+    }
+}
+
+if (! function_exists('create_transactions_from_quote')) {
+    /**
+     * Create one transaction from a quote, with one inventory line per payment_source
+     * group on the quote's payment lines. Inventory type is always 'transaction'.
+     * VAT and discount from the quote are prorated by each group's share of total_amount.
+     *
+     * Pass anything not derivable from the quote (hub_id, awb, pos_session_id,
+     * cashier_name, cashier_id override) via $extra. Keys in $extra win over quote defaults.
+     *
+     * @param  array<string, mixed>  $extra
+     */
+    function create_transactions_from_quote(int $quoteId, array $extra = []): ?Transaction
+    {
+        $quote = Quote::query()
+            ->with(['paymentLines' => function ($query): void {
+                $query->whereNull('deleted_at');
+            }])
+            ->whereNull('deleted_at')
+            ->find($quoteId);
+
+        if (! $quote) {
+            return null;
+        }
+
+        $paymentLines = $quote->paymentLines
+            ->filter(static fn ($line): bool => is_numeric($line->payment_amount))
+            ->filter(static fn ($line): bool => in_array(
+                strtolower((string) $line->payment_source),
+                ['cash', 'card'],
+                true
+            ));
+
+        if ($paymentLines->isEmpty()) {
+            return null;
+        }
+
+        $quoteTotal = (float) ($quote->total_amount ?? 0);
+        $quoteVat = (float) ($quote->vat_amount ?? 0);
+        $quoteDiscountAmount = (float) ($quote->total_discount_amount ?? 0);
+        $quoteCurrency = (string) ($quote->currency ?? '');
+        $quoteDiscountPercentage = $quoteTotal > 0
+            ? round(($quoteDiscountAmount / $quoteTotal) * 100, 2)
+            : null;
+
+        $inventories = $paymentLines
+            ->groupBy(static fn ($line): string => strtolower((string) $line->payment_source))
+            ->map(function ($lines, string $paymentSource) use (
+                $quoteTotal,
+                $quoteVat,
+                $quoteDiscountAmount,
+                $quoteDiscountPercentage,
+                $quoteCurrency
+            ): array {
+                $groupAmount = (float) $lines->sum(
+                    static fn ($line): float => (float) $line->payment_amount
+                );
+                $shareOfTotal = $quoteTotal > 0 ? $groupAmount / $quoteTotal : 0.0;
+                $currency = (string) ($lines->first()->payment_currency ?? $quoteCurrency);
+
+                return [
+                    'transaction_type' => $paymentSource,
+                    'type' => 'transaction',
+                    'amount' => round($groupAmount, 2),
+                    'vat' => round($quoteVat * $shareOfTotal, 2),
+                    'discount_amount' => round($quoteDiscountAmount * $shareOfTotal, 2),
+                    'discount_percentage' => $quoteDiscountPercentage,
+                    'currency' => $currency,
+                ];
+            })
+            ->values()
+            ->all();
+
+        $payload = array_merge(
+            ['cashier_id' => $quote->cashier_id],
+            $extra,
+            ['inventories' => $inventories]
+        );
+
+        return create_transaction($payload);
     }
 }
 
