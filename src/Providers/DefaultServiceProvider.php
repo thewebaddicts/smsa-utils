@@ -53,5 +53,6 @@ class DefaultServiceProvider extends EventServiceProvider
         include_once(__DIR__ . '/../Helpers/awb-received-status.php');
         include_once(__DIR__ . '/../Helpers/awbLogsActivities.php');
         include_once(__DIR__ . '/../Helpers/exception-cases.php');
+        include_once(__DIR__ . '/../Helpers/transaction.php');
     }
 }

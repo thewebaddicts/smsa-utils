@@ -91,4 +91,8 @@ class Operator extends Model
         return $this->hasMany(DB::table('roles'), 'roles_ids', 'id')
         ->whereNull('roles.deleted_at');
     }
+    public function hasPermissionTo($permission)
+    {
+        return $this->roles()->whereJsonContains('permissions', $permission)->exists();
+    }
 }
