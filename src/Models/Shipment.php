@@ -53,6 +53,7 @@ class Shipment extends Model
     'receiver_address_snapshot',
     'quote_id',
     'hal_branch_id',
+    'service_type'
     // end ROZANA
   ];
 
