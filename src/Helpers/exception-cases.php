@@ -164,7 +164,7 @@ if (!function_exists('create_record_in_exception')) {
                 ->where('targetable_type', 'awb')
                 ->where('exception_category_id', $payload['exception_category_id'])
                 ->where('exception_trigger_reason_id', $payload['exception_trigger_reason_id'])
-                ->whereNotNull('resolved_at')
+                ->whereNull('resolved_at')
                 ->whereNull('deleted_at')
                 ->first();
 
