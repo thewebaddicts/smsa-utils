@@ -405,7 +405,7 @@ if (!function_exists('create_pickup_from_shipment')) {
         $pickupRequest->assigned_at = now();
         $pickupRequest->expected_awbs = $expected_awbs;
 
-        $pickupRequest->status = 'pending';
+        $pickupRequest->status = PickupStatusEnum::PICKUP_CREATED->value;
         $pickupRequest->is_return = $is_cir ? true : false;
 
         $pickupRequest->save();
