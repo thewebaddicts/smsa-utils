@@ -19,7 +19,9 @@ class Shipper extends Model
         'email',
         'phone',
     ];
-
+    protected $casts = [
+        'attributes' => 'array',
+    ];
     protected $hidden = [
         'account_pin'
     ];
