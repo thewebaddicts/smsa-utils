@@ -197,10 +197,11 @@ if (! function_exists('build_transaction_inventory_attributes')) {
         return [
             'transaction_id' => $transaction->id,
             'quote_payment_line_id' => $inventory['quote_payment_line_id'] ?? null,
+            'hub_id' => $payload['hub_id'] ?? null,
             'cashier_id' => $payload['cashier_id'] ?? null,
             'cashier_name' => $payload['cashier_name'] ?? null,
             'pos_session_id' => $payload['pos_session_id'] ?? null,
-            'payed_by' => $inventory['payed_by'] ?? null,
+            'payed_by' => $inventory['payed_by'] ?? $payload['payed_by'] ?? null,
             'transaction_type' => $inventory['transaction_type'] ?? 'cash',
             'type' => $inventory['type'] ?? null,
             'amount' => (float) ($inventory['amount'] ?? 0),
