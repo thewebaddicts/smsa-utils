@@ -20,5 +20,6 @@ class VerifyTokenAttempt extends Model
 
     protected $casts = [
         'attempt_at' => 'datetime',
+        'expires_at' => 'datetime',
     ];
 } 
