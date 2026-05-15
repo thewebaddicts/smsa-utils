@@ -124,13 +124,13 @@ if (! function_exists('create_transactions_from_quote')) {
             return null;
         }
 
-        $defaultPayedBy = $extra['payed_by'] ?? null;
+    
 
         $inventories = $quote->paymentLines
             ->whereIn('payment_source', ['cash', 'card'])
             ->map(fn ($line) => [
                 'quote_payment_line_id' => $line->id,
-                'payed_by' => $line->source ?: $defaultPayedBy,
+                'payed_by' =>  $extra['payed_by'] ?? null ,
                 'transaction_type' => $line->payment_source,
                 'type' => 'transaction',
                 'amount' => (float) $line->payment_amount,
