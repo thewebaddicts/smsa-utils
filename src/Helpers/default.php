@@ -1219,7 +1219,7 @@ if (!function_exists('get_workflow_statuses')) {
                 return [
                     'value' => $status->code,
                     'value_code' => 100 + $index,
-                    'label' => $status->label_en,
+                    'label' => $status->label_en . ' (' . $status->code . ')',
                     'icon' => $status->icon,
                     'color_bg' => $status->color_bg,
                     'color_text' => $status->color_text,
