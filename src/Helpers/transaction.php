@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\DB;
 use twa\smsautils\Events\TransactionCreated;
+use twa\smsautils\Models\Operator;
 use twa\smsautils\Models\Quote;
 use twa\smsautils\Models\Transaction;
 use twa\smsautils\Models\TransactionInventory;
@@ -429,9 +430,8 @@ if (! function_exists('enrich_payload_from_cashier')) {
         $cashierId = $payload['cashier_id'];
 
         if (empty($payload['cashier_name'])) {
-            $payload['cashier_name'] = DB::table('operators')
-                ->where('id', $cashierId)
-                ->value('name');
+            $operator = Operator::query()->find($cashierId);
+            $payload['cashier_name'] = $operator?->display_full_name;
         }
 
         if (empty($payload['pos_session_id'])) {
