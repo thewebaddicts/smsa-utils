@@ -56,8 +56,8 @@ class Workflow extends Model
                 'name' => $shipper?->name ?? 'All Shippers',
             ],
 
-            'sla_pickup_hours' => $this->sla_pickup_hours . ' hours',
-            'sla_delivery_hours' => $this->sla_delivery_hours . ' hours',
+            'sla_pickup_hours' => $this->sla_pickup_hours ? $this->sla_pickup_hours . ' hours' : null,
+            'sla_delivery_hours' => $this->sla_delivery_hours ? $this->sla_delivery_hours . ' hours' : null,
 
             'created_at' => format_date_time($this->created_at),
             'updated_at' => format_date_time($this->updated_at),
