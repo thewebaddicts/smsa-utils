@@ -643,9 +643,9 @@ if (!function_exists('log_awb_activity')) {
                     'created_by_type' => $activity_by_type,
                 ];
 
-               
-                  
-                
+
+
+
 
                 create_record_in_exception($exceptionPayload);
             }
@@ -710,7 +710,7 @@ if (!function_exists('query_options_response')) {
                         });
                         break;
 
-                    case 'in': 
+                    case 'in':
                         $baseQuery->whereIn($field, $value['value']);
                         break;
 
@@ -1202,13 +1202,23 @@ if (!function_exists('convert_status_to_number')) {
 if (!function_exists('get_workflow_statuses')) {
     function get_workflow_statuses()
     {
-        $statuses = DB::table('shipment_statuses')
+        $attempts = max(1, (int) request()->input('nb_attempts', 1));
+        $lang = app()->getLocale();
+
+        return DB::table('shipment_statuses')
             ->whereNull('deleted_at')
             ->whereJsonContains('shipment_status_tags', 'WORKFLOW')
             ->orderBy('id')
             ->get()
+            ->filter(function ($status) use ($attempts) {
+                if (preg_match('/^SHAT-(\d+)$/', $status->code, $matches)) {
+                    return (int) $matches[1] <= $attempts;
+                }
+
+                return true;
+            })
             ->values()
-            ->map(function ($status, $index) {
+            ->map(function ($status, $index) use ($lang) {
                 $tags = [];
                 if (is_string($status->shipment_status_tags) && $status->shipment_status_tags !== '') {
                     $tags = json_decode($status->shipment_status_tags, true) ?: [];
@@ -1216,22 +1226,109 @@ if (!function_exists('get_workflow_statuses')) {
                     $tags = $status->shipment_status_tags;
                 }
 
+                $label = $lang === 'ar' ? ($status->label_ar ?? '') : ($status->label_en ?? '');
+
                 return [
                     'value' => $status->code,
                     'value_code' => 100 + $index,
-                    'label' => $status->label_en . ' (' . $status->code . ')',
+                    'label' => $label . ' (' . $status->code . ')',
                     'icon' => $status->icon,
                     'color_bg' => $status->color_bg,
                     'color_text' => $status->color_text,
-                    'description' => $status->description_en,
+                    'description' => $lang === 'ar' ? ($status->description_ar ?? '') : ($status->description_en ?? ''),
                     'category' => $status->shipment_status_category_id ?? null,
                     'tags' => $tags,
                 ];
             });
-
-        return $statuses;
     }
 }
+
+
+
+// if (!function_exists('get_workflow_statuses')) {
+//     function get_workflow_statuses()
+//     {
+
+//         $attempts = request()->input('nb_attempts', 1);
+
+//         $status_codes = [
+//             AwbStatusEnum::CREATED,
+//             AwbStatusEnum::PICKED_UP,
+//             AwbStatusEnum::ORIGIN_RECEIVED,
+//             AwbStatusEnum::RECEIVED_OPERATION,
+//             AwbStatusEnum::GATEWAY_RECEIVED,
+//             AwbStatusEnum::STATION_RECEIVED,
+//             AwbStatusEnum::HUB_RECEIVED,
+//             AwbStatusEnum::RETAIL_RECEIVED,
+//             AwbStatusEnum::DESTINATION_RECEIVED,
+
+
+//             AwbStatusEnum::GATEWAY_NOT_RECEIVED,
+//             AwbStatusEnum::STATION_NOT_RECEIVED,
+//             AwbStatusEnum::HUB_NOT_RECEIVED,
+//             AwbStatusEnum::RETAIL_NOT_RECEIVED,
+
+//             AwbStatusEnum::OFFLOADED,
+
+
+//             AwbStatusEnum::RTS_INITIATED,
+//             AwbStatusEnum::REVOKED,
+
+//             AwbStatusEnum::ADDRESS_CHANGED,
+//             AwbStatusEnum::ADDRESS_VALIDATED,
+//             AwbStatusEnum::UPDATED_DIMENSIONS,
+//             AwbStatusEnum::UPDATED_WEIGHT,
+//             AwbStatusEnum::CHANGE_ROUTE,
+//             AwbStatusEnum::HOLD_FOR_PICKUP,
+//             AwbStatusEnum::HOLD,
+//             AwbStatusEnum::HOLD_CUSTOMS,
+//             AwbStatusEnum::RELEASE_CUSTOMS,
+
+
+
+//             AwbStatusEnum::OUT_FOR_DELIVERY,
+//             AwbStatusEnum::REFUSED,
+//             AwbStatusEnum::RELEASE_HOLD,
+
+//             // SHRA
+//             AwbStatusEnum::SCAN_RUNSHEET,
+//             // SHOD
+//             AwbStatusEnum::OUT_FOR_DELIVERY,
+
+
+
+
+
+//         ];
+
+//         foreach (range(1, $attempts) as $attempt) {
+//             $status_codes[] = AwbStatusEnum::tryFrom('SHAT-' . $attempt);
+//         }
+
+
+//         $status_codes[] = AwbStatusEnum::DELIVERED;
+//         $status_codes[] = AwbStatusEnum::CANCELLED;
+//         $status_codes[] = AwbStatusEnum::CIR;
+
+//         // case  RTS_INITIATED = 'SHRT';
+//         // case FINAL_RTS = 'SHFR';
+//         // case RTS_INBOUND = 'SHRTIN';
+//         // case RTS_SHELF_IN = 'SHRTSI';
+//         // case RTS_SHELF_OUT = 'SHRTSO';
+//         // case RTS_DELIVERED = 'SHRTSD';
+//         // case CIR = 'SHCIR';
+//         // case REVOKED = 'SHRE';
+
+//         $statuses = collect($status_codes)
+//             ->filter()
+
+//             ->map(function ($case, $index) {
+//                 return array_merge(['value' => $case->value, "value_code" => 100 + $index], $case->info());
+//             });
+
+//         return $statuses;
+//     }
+// }
 if (!function_exists('is_valid_awb')) {
     function is_valid_awb($awb)
     {
