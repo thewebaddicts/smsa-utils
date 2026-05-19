@@ -95,7 +95,14 @@ class DocumentController extends Controller
 
 
         $documents = json_decode($target->documents, true) ?? [];
-        $documents[$documentKey] = $documentValues ?? [];
+
+        $documentValues = $documentValues ?? [];
+
+        if(empty($documentValues)) {
+            unset($documents[$documentKey]);
+        }else{
+            $documents[$documentKey] = $documentValues;
+        }
 
         $affected = DB::table($table)
             ->where($barcodeField, $barcode)
