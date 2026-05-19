@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use twa\smsautils\Http\Controllers\AttributesController;
 
 Route::prefix('api/v1')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class])->group(function () {
+
+  
+    // https://smsa-awb.twalab.live/api/v1/save-documents
+ 
+    Route::post('/save-documents', action: [twa\smsautils\Http\Controllers\DocumentController::class, 'saveDocuments']);
     Route::post('/files', action: [twa\smsautils\Http\Controllers\FileController::class, 'upload']);
 
     Route::post('/activity-log', action: [twa\smsautils\Http\Controllers\ActivityLogController::class, 'getActivityLogs']);
