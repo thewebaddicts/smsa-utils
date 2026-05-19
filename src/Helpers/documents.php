@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 
 if (!function_exists('document_file_ids')) {
     /**
@@ -116,6 +117,80 @@ if (!function_exists('update_documents_batch')) {
 
             $documents = update_documents_for_key($documents, $documentKey, $documentValues, null);
         }
+
+        return $documents;
+    }
+}
+
+
+
+if (!function_exists('get_documents_info')) {
+    /**
+     * Build document schema rows with uploaded file IDs and file metadata.
+     *
+     * Stored documents example:
+     * {
+     *   "commercial_invoice": [31446, 31447],
+     *   "trading_invoice": [31448]
+     * }
+     */
+    function get_documents_info($condition_slug, $document_for, $destination_code, $product_group, $visible = null, $data = [])
+    {
+        if (!is_array($condition_slug)) {
+            $condition_slug = [$condition_slug];
+        }
+
+        if (is_string($data) && $data !== '') {
+            $data = json_decode($data, true);
+        }
+        if (!is_array($data)) {
+            $data = [];
+        }
+
+        $documents = DB::table('document_schemas')
+            ->select('document_key',  'document_name')
+
+            ->when(!is_null($visible), function ($query) use ($visible) {
+                $query->where('visible_on_creation', $visible ? 1 : 0);
+            })
+            ->where('document_for', $document_for)
+            ->whereIn('required_condition', $condition_slug)
+            ->when($destination_code, function ($query) use ($destination_code) {
+                $query->where(function ($q1) use ($destination_code) {
+
+                    $q1->where(function ($q) use ($destination_code) {
+                        $q->where('ports', 'LIKE', '%"' . $destination_code . '"%');
+                        $q->orWhere('ports', 'LIKE', "%'" . $destination_code . "'%");
+                    });
+                    $q1->orWhereNull('ports');
+                    $q1->orWhere('ports', '[]');
+                });
+            })
+            ->when($product_group, function ($query) use ($product_group) {
+                $query->where(function ($q1) use ($product_group) {
+                    $q1->where(function ($q) use ($product_group) {
+                        $q->where('product_group', 'LIKE', '%"' . $product_group . '"%');
+                        $q->orWhere('product_group', 'LIKE', "%'" . $product_group . "'%");
+                    });
+                    $q1->orWhereNull('product_group');
+                    $q1->orWhere('product_group', '[]');
+                });
+            })
+            ->whereNull('deleted_at')
+            ->get()->map(function ($doc) use ($data) {
+
+                $documentValue = collect($data[$doc->document_key] ?? [])->unique()->filter()->values()->toArray();
+                $filePaths = get_files_info($documentValue);
+
+                return [
+                    'document_key' => $doc->document_key,
+                    'document_name' => $doc->document_name,
+                    'value' => $documentValue,
+                    'file_paths' => $filePaths,
+
+                ];
+            });
+
 
         return $documents;
     }
