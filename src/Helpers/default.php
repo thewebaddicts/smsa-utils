@@ -323,21 +323,25 @@ if (!function_exists('create_pickup_from_shipment')) {
 
         $firstAwb = $awbs->first();
 
-        $existingPendingPickup = find_overlapping_pending_pickup(
-            clientId: $has_client ? $shipment->client_id : null,
-            addressId: $firstAwb->sender_address_id,
-            pickupDate: $pickupDate,
-            pickupTimeFrom: $pickupTimeFrom,
-            pickupTimeTo: $pickupTimeTo
-        );
-        if ($existingPendingPickup) {
-            // $existingPendingPickup->already_exists = true;
-            if ($throw_exception) {
-                throw new \Exception('A pending pickup already exists for the same shipper address.');
-            }
-            return $existingPendingPickup;
-        }
 
+        if (!$is_cir) {
+
+
+            $existingPendingPickup = find_overlapping_pending_pickup(
+                clientId: $has_client ? $shipment->client_id : null,
+                addressId: $firstAwb->sender_address_id,
+                pickupDate: $pickupDate,
+                pickupTimeFrom: $pickupTimeFrom,
+                pickupTimeTo: $pickupTimeTo
+            );
+            if ($existingPendingPickup) {
+                // $existingPendingPickup->already_exists = true;
+                if ($throw_exception) {
+                    throw new \Exception('A pending pickup already exists for the same shipper address.');
+                }
+                return $existingPendingPickup;
+            }
+        }
 
         // $courier_id = courier_assignment_on_route($route_id);
         // if (!$courier_id) {
@@ -1163,21 +1167,6 @@ if (!function_exists('convert_status_to_number')) {
     function convert_status_to_number($status)
     {
 
-        // ABCD
-
-        //A = 1.
-        //B = 2.
-        // C = 3.
-        // D = 4.
-
-        // the value will be (1*4) + (2*3) + (3*2) + (4*1) = 4 + 6 + 6 + 4 = 20
-
-        // Please implement this function to convert the status to number
-        // The status is a string like "ABCD"
-        // The function should return the number
-        // The function should return the number    
-
-
         $statuses = get_workflow_statuses()->pluck('value_code', 'value')->toArray();
 
         if (!isset($statuses[$status])) {
@@ -1185,17 +1174,6 @@ if (!function_exists('convert_status_to_number')) {
         }
 
         return $statuses[$status];
-
-        // $status_array = str_split($status);
-
-        // $number = 0;
-        // foreach ($status_array as $index => $letter) {
-
-        //     $letter_value = ord($letter) - ord('A') + 1;
-
-        //     $number += ($index + 1) * $letter_value;
-        // }
-        // return $number;
     }
 }
 
@@ -1243,93 +1221,6 @@ if (!function_exists('get_workflow_statuses')) {
     }
 }
 
-
-
-
-// if (!function_exists('get_workflow_statuses')) {
-//     function get_workflow_statuses()
-//     {
-
-//         $attempts = request()->input('nb_attempts', 1);
-
-//         $status_codes = [
-//             AwbStatusEnum::CREATED,
-//             AwbStatusEnum::PICKED_UP,
-//             AwbStatusEnum::ORIGIN_RECEIVED,
-//             AwbStatusEnum::RECEIVED_OPERATION,
-//             AwbStatusEnum::GATEWAY_RECEIVED,
-//             AwbStatusEnum::STATION_RECEIVED,
-//             AwbStatusEnum::HUB_RECEIVED,
-//             AwbStatusEnum::RETAIL_RECEIVED,
-//             AwbStatusEnum::DESTINATION_RECEIVED,
-
-
-//             AwbStatusEnum::GATEWAY_NOT_RECEIVED,
-//             AwbStatusEnum::STATION_NOT_RECEIVED,
-//             AwbStatusEnum::HUB_NOT_RECEIVED,
-//             AwbStatusEnum::RETAIL_NOT_RECEIVED,
-
-//             AwbStatusEnum::OFFLOADED,
-
-
-//             AwbStatusEnum::RTS_INITIATED,
-//             AwbStatusEnum::REVOKED,
-
-//             AwbStatusEnum::ADDRESS_CHANGED,
-//             AwbStatusEnum::ADDRESS_VALIDATED,
-//             AwbStatusEnum::UPDATED_DIMENSIONS,
-//             AwbStatusEnum::UPDATED_WEIGHT,
-//             AwbStatusEnum::CHANGE_ROUTE,
-//             AwbStatusEnum::HOLD_FOR_PICKUP,
-//             AwbStatusEnum::HOLD,
-//             AwbStatusEnum::HOLD_CUSTOMS,
-//             AwbStatusEnum::RELEASE_CUSTOMS,
-
-
-
-//             AwbStatusEnum::OUT_FOR_DELIVERY,
-//             AwbStatusEnum::REFUSED,
-//             AwbStatusEnum::RELEASE_HOLD,
-
-//             // SHRA
-//             AwbStatusEnum::SCAN_RUNSHEET,
-//             // SHOD
-//             AwbStatusEnum::OUT_FOR_DELIVERY,
-
-
-
-
-
-//         ];
-
-//         foreach (range(1, $attempts) as $attempt) {
-//             $status_codes[] = AwbStatusEnum::tryFrom('SHAT-' . $attempt);
-//         }
-
-
-//         $status_codes[] = AwbStatusEnum::DELIVERED;
-//         $status_codes[] = AwbStatusEnum::CANCELLED;
-//         $status_codes[] = AwbStatusEnum::CIR;
-
-//         // case  RTS_INITIATED = 'SHRT';
-//         // case FINAL_RTS = 'SHFR';
-//         // case RTS_INBOUND = 'SHRTIN';
-//         // case RTS_SHELF_IN = 'SHRTSI';
-//         // case RTS_SHELF_OUT = 'SHRTSO';
-//         // case RTS_DELIVERED = 'SHRTSD';
-//         // case CIR = 'SHCIR';
-//         // case REVOKED = 'SHRE';
-
-//         $statuses = collect($status_codes)
-//             ->filter()
-
-//             ->map(function ($case, $index) {
-//                 return array_merge(['value' => $case->value, "value_code" => 100 + $index], $case->info());
-//             });
-
-//         return $statuses;
-//     }
-// }
 if (!function_exists('is_valid_awb')) {
     function is_valid_awb($awb)
     {
