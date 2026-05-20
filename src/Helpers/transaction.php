@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use twa\smsautils\Events\TransactionCreated;
 use twa\smsautils\Models\Operator;
+use twa\smsautils\Models\PosReceipt;
 use twa\smsautils\Models\Quote;
 use twa\smsautils\Models\Transaction;
 use twa\smsautils\Models\TransactionInventory;
@@ -15,6 +17,11 @@ if (! function_exists('create_transaction')) {
 
         $transaction = DB::transaction(function () use ($payload, &$hasChanges) {
             [$transaction, $transactionChanged] = persist_transaction($payload);
+            $payload['pos_receipt_id'] = ensure_pos_receipt_id(
+                $transaction,
+                $transactionChanged,
+                $payload['hub_id'] ?? null
+            );
             $changedInventoryTypes = persist_transaction_inventories($transaction, $payload);
             sync_transaction_totals($payload, $transactionChanged, $changedInventoryTypes);
             $hasChanges = transaction_has_changes($transactionChanged, $changedInventoryTypes);
@@ -136,7 +143,7 @@ if (! function_exists('create_transactions_from_quote')) {
                 'amount' => (float) $line->payment_amount,
                 'vat' => $quote->vat_amount ?? 0,
                 'discount_amount' => $quote->total_discount_amount ?? 0,
-                'discount_percentage' => 0,
+                'discount_percentage' => $quote->total_discount_percentage ?? 0,
                 'currency' => $line->payment_currency ?? $quote->currency,
             ])
             ->values()
@@ -194,6 +201,37 @@ if (! function_exists('persist_transaction_inventory')) {
     }
 }
 
+if (! function_exists('resolve_discount_percentage_for_inventory')) {
+    function resolve_discount_percentage_for_inventory(array $inventory): ?float
+    {
+        $discountPercentage = isset($inventory['discount_percentage']) && is_numeric($inventory['discount_percentage'])
+            ? (float) $inventory['discount_percentage']
+            : null;
+
+        if ($discountPercentage !== null && $discountPercentage > 0) {
+            return $discountPercentage;
+        }
+
+        $discountAmount = isset($inventory['discount_amount']) && is_numeric($inventory['discount_amount'])
+            ? (float) $inventory['discount_amount']
+            : 0.0;
+
+        if ($discountAmount <= 0) {
+            return $discountPercentage;
+        }
+
+        $amount = (float) ($inventory['amount'] ?? 0);
+        $vat = (float) ($inventory['vat'] ?? 0);
+        $subtotalBeforeDiscount = ($amount - $vat) + $discountAmount;
+
+        if ($subtotalBeforeDiscount <= 0) {
+            return $discountPercentage;
+        }
+
+        return round(($discountAmount / $subtotalBeforeDiscount) * 100, 2);
+    }
+}
+
 if (! function_exists('build_transaction_inventory_attributes')) {
     function build_transaction_inventory_attributes(Transaction $transaction, array $payload, array $inventory): array
     {
@@ -212,9 +250,117 @@ if (! function_exists('build_transaction_inventory_attributes')) {
             'amount' => (float) ($inventory['amount'] ?? 0),
             'vat' => $inventory['vat'] ?? null,
             'discount_amount' => $inventory['discount_amount'] ?? null,
-            'discount_percentage' => $inventory['discount_percentage'] ?? null,
+            'discount_percentage' => resolve_discount_percentage_for_inventory($inventory),
             'currency' => $inventory['currency'] ?? null,
+            'pos_receipt_id' => $inventory['pos_receipt_id'] ?? $payload['pos_receipt_id'] ?? null,
         ];
+    }
+}
+
+if (! function_exists('generate_pos_receipt_invoice_number')) {
+    /**
+     * Per-branch sequential invoice number, e.g. SA-RYD01-0000042.
+     *
+     * @param  positive-int  $branchSequence
+     */
+    function generate_pos_receipt_invoice_number(
+        string $countryCode,
+        string $branchIdentifier,
+        int $branchSequence
+    ): string {
+        return strtoupper($countryCode)
+            .'-'.$branchIdentifier
+            .'-'.sprintf('%07d', $branchSequence);
+    }
+}
+
+if (! function_exists('create_pos_receipt')) {
+    /**
+     * @return positive-int
+     */
+    function create_pos_receipt(int $hubId): int
+    {
+        try {
+            $hub = DB::table('hubs')
+                ->where('id', $hubId)
+                ->whereNull('deleted_at')
+                ->first(['country_code', 'identifier']);
+
+            if (! $hub) {
+                throw new RuntimeException("Hub [{$hubId}] not found.");
+            }
+
+            $sequence = PosReceipt::query()
+                ->where('hub_id', $hubId)
+                ->lockForUpdate()
+                ->count() + 1;
+
+            return PosReceipt::query()->create([
+                'hub_id' => $hubId,
+                'invoice_number' => generate_pos_receipt_invoice_number(
+                    $hub->country_code ?? 'XX',
+                    $hub->identifier ?? (string) $hubId,
+                    $sequence,
+                ),
+            ])->id;
+        } catch (Throwable $exception) {
+            Log::error('Failed to create POS receipt invoice number.', [
+                'hub_id' => $hubId,
+                'message' => $exception->getMessage(),
+            ]);
+
+            try {
+                return PosReceipt::query()->create([
+                    'hub_id' => $hubId,
+                    'invoice_number' => 'INV-'.$hubId.'-'.now()->format('YmdHis').'-'.uniqid(),
+                ])->id;
+            } catch (Throwable $fallbackException) {
+                Log::error('Failed to create fallback POS receipt.', [
+                    'hub_id' => $hubId,
+                    'message' => $fallbackException->getMessage(),
+                ]);
+
+                throw $fallbackException;
+            }
+        }
+    }
+}
+
+if (! function_exists('resolve_pos_receipt_id_for_transaction')) {
+    function resolve_pos_receipt_id_for_transaction(Transaction $transaction): ?int
+    {
+        return TransactionInventory::query()
+            ->where('transaction_id', $transaction->id)
+            ->whereNotNull('pos_receipt_id')
+            ->value('pos_receipt_id');
+    }
+}
+
+if (! function_exists('ensure_pos_receipt_id')) {
+    /**
+     * @return positive-int|null
+     */
+    function ensure_pos_receipt_id(Transaction $transaction, bool $transactionChanged, ?int $hubId = null): ?int
+    {
+        if (! $transactionChanged) {
+            $existingPosReceiptId = resolve_pos_receipt_id_for_transaction($transaction);
+
+            if ($existingPosReceiptId !== null) {
+                return $existingPosReceiptId;
+            }
+        }
+
+        $hubId = (int) ($hubId ?? $transaction->created_by_hub_id);
+
+        if ($hubId <= 0) {
+            Log::warning('Skipping POS receipt creation: hub_id is missing.', [
+                'transaction_id' => $transaction->id,
+            ]);
+
+            return null;
+        }
+
+        return create_pos_receipt($hubId);
     }
 }
 
@@ -433,9 +579,15 @@ if (! function_exists('enrich_payload_from_cashier')) {
     {
         $cashierId = $payload['cashier_id'];
 
-        if (empty($payload['cashier_name'])) {
-            $operator = Operator::query()->find($cashierId);
-            $payload['cashier_name'] = $operator?->display_full_name;
+        $operator = Operator::query()->find($cashierId);
+        $formattedCashierName = $operator?->display_full_name;
+
+        if ($formattedCashierName) {
+            $cashierName = (string) ($payload['cashier_name'] ?? '');
+
+            if ($cashierName === '' || ! str_contains($cashierName, ' | ')) {
+                $payload['cashier_name'] = $formattedCashierName;
+            }
         }
 
         if (empty($payload['pos_session_id'])) {
