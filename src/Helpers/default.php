@@ -1628,7 +1628,7 @@ if (!function_exists('get_documents')) {
         }
 
         $documents = DB::table('document_schemas')
-            ->select('document_key',  'document_name')
+            ->select('document_key',  'document_name', 'required_condition')
 
             ->when(!is_null($visible), function ($query) use ($visible) {
                 $query->where('visible_on_creation', $visible ? 1 : 0);
