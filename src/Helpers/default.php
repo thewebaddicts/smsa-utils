@@ -1654,6 +1654,7 @@ if (!function_exists('get_documents')) {
                 return [
                     'document_name' => $document->document_name,
                     'document_key' => $document->document_key,
+                    'required' => $document->required_condition == "REQUIRED_ON_CREATION" ? true : false,
 
                     'sample_file_url' => config('sample-files.' . $document->document_key) ?? null,
                     'value' => !empty($documentFileIds) ? get_files_info($documentFileIds) : null
