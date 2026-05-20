@@ -183,11 +183,12 @@ if (!function_exists('get_documents_info')) {
                 $filePaths = get_files_info($documentValue);
 
                 return [
-                    'document_key' => $doc->document_key,
                     'document_name' => $doc->document_name,
+                    'document_key' => $doc->document_key,
+                    'required' => in_array($doc->required_condition, ["REQUIRED_ON_CREATION", "REQUIRED_ON_COMPLETE"]),
+                    'sample_file_url' => config('sample-files.' . $doc->document_key) ?? null,
                     'value' => $documentValue,
                     'file_paths' => $filePaths,
-
                 ];
             });
 
