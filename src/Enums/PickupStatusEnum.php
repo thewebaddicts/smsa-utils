@@ -43,7 +43,7 @@ enum PickupStatusEnum: string
                 "color_text" => "#D97706", // amber-700
                 'description' => 'Pickup Created',
                 'description_ar' => 'تم إنشاء الاستلام',
-                'tags' => [],
+                'tags' => ['all'],
                 "type" => null,
             ],
             self::PICKUP_CANCELLED => [
@@ -54,7 +54,7 @@ enum PickupStatusEnum: string
                 "color_text" => "#B91C1C", // red-700
                 'description' => 'Cancelled',
                 'description_ar' => 'ملغى',
-                'tags' => [],
+                'tags' => ['all'],
                 "type" => null,
             ],
             self::PICKUP_FAILED => [
@@ -65,7 +65,7 @@ enum PickupStatusEnum: string
                 "color_text" => "#DC2626", // red-600
                 'description' => 'Failed',
                 'description_ar' => 'فشل',
-                'tags' => [],
+                'tags' => ['all'],
                 "type" => null,
             ],
             self::PICKUP_DELAYED => [
@@ -76,7 +76,7 @@ enum PickupStatusEnum: string
                 "color_text" => "#92400E", // amber-800
                 'description' => 'Delayed',
                 'description_ar' => 'متأخر',
-                'tags' => [],
+                'tags' => ['all'],
                 "type" => null,
             ],
             self::PICKUP_PICKED_UP => [
@@ -87,7 +87,7 @@ enum PickupStatusEnum: string
                 "color_text" => "#0369A1", // sky-800
                 'description' => 'Picked Up',
                 'description_ar' => 'تم الاستلام',
-                'tags' => [],
+                'tags' => ['all'],
                 "type" => null,
             ],
 
