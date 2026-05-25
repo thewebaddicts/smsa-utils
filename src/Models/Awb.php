@@ -19,6 +19,7 @@ class Awb extends Model
         'package_reference',
         'package_description',
         'packaging_unit',
+        'packaging_material_id',
         'awb_sequence',
         'nb_packages',
         'type',
