@@ -26,6 +26,7 @@ use Milon\Barcode\DNS2D;
 class PaymentReceiptController extends Controller
 {
     private const SUPPLIER_NAME_AR = 'شركة سمسا للنقل السريع المحدودة';
+    private const LOGO_RELATIVE_PATH = '/../../Resources/images/logo.png';
 
     public function show(Request $request, $transaction_inventory_id)
     {
@@ -139,6 +140,7 @@ class PaymentReceiptController extends Controller
         $codes = $this->buildCodes($invoiceNumber, $issueDate);
 
         return [
+            'logo_src'       => $this->buildLogoSrc(),
             'supplier' => $supplier,
             'invoice_number' => $invoiceNumber,
             'issue_date'     => $issueDate,
@@ -197,6 +199,28 @@ class PaymentReceiptController extends Controller
             'barcode' => $barcodePng ? 'data:image/png;base64,' . $barcodePng : '',
             'qr'      => $qrPng ? 'data:image/png;base64,' . $qrPng : '',
         ];
+    }
+
+    /**
+     * Loads the SMSA logo shipped with the package and returns it as a base64 data-URI.
+     *
+     * Inlining the PNG keeps the receipt self-contained: it survives print preview, dompdf,
+     * and any host app that doesn't serve a public logo asset.
+     */
+    private function buildLogoSrc(): string
+    {
+        $path = __DIR__ . self::LOGO_RELATIVE_PATH;
+
+        if (!is_file($path) || !is_readable($path)) {
+            return '';
+        }
+
+        $binary = @file_get_contents($path);
+        if ($binary === false || $binary === '') {
+            return '';
+        }
+
+        return 'data:image/png;base64,' . base64_encode($binary);
     }
 
     /**

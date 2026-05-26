@@ -58,6 +58,19 @@
             background: #333;
         }
 
+        .logo-wrap {
+            text-align: center;
+            margin: 0 0 8px;
+        }
+
+        .logo-wrap img {
+            display: inline-block;
+            max-width: 40mm;
+            max-height: 18mm;
+            width: auto;
+            height: auto;
+        }
+
         .title {
             text-align: center;
             font-weight: 700;
@@ -157,6 +170,12 @@
     </div>
 
     <div class="receipt">
+
+    @if (!empty($logo_src))
+        <div class="logo-wrap">
+            <img src="{{ $logo_src }}" alt="SMSA">
+        </div>
+    @endif
 
     <div class="title">فاتورة ضريبية مبسطة</div>
 
