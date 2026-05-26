@@ -35,7 +35,7 @@ class PaymentReceiptController extends Controller
             abort(404, 'Transaction inventory not found');
         }
 
-        return view('smsautils::pages.payment-receipt', $payload);
+        return view('smsautils::receipt.payment-receipt', $payload);
     }
 
     private function buildInvoicePayload($transactionInventoryId): ?array
