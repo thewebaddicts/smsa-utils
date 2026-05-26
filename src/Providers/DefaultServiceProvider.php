@@ -46,6 +46,7 @@ class DefaultServiceProvider extends EventServiceProvider
         $this->mergeConfigFrom(__DIR__ . '/../Configs/smsa-utils.php', 'smsa-utils');
 
         $this->loadRoutesFrom(__DIR__ . '/../Routes/api.php');
+        $this->loadRoutesFrom(__DIR__ . '/../Routes/web.php');
         include_once(__DIR__ . '/../Helpers/default.php');
         include_once(__DIR__ . '/../Helpers/awbLocationChange.php');
         include_once(__DIR__ . '/../Helpers/courier-notifications.php');
