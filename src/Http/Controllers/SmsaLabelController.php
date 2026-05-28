@@ -248,13 +248,13 @@ class SmsaLabelController extends Controller
     public function generatePdf($awb, $token)
     {
         if (!$awb || !$token) {
-            return view('awb.not_found');
+            return view('smsautils::awb.not_found');
         }
 
         $check = generate_awb_token($awb);
 
         if ($check != $token) {
-            return view('awb.not_found');
+            return view('smsautils::awb.not_found');
         }
 
         $awbModel = AwbModel::with(['sender', 'receiver', 'pickupRoute.hub', 'deliveryRoute.hub', 'shipment.client', 'shipment.customer'])
@@ -264,7 +264,7 @@ class SmsaLabelController extends Controller
         $data = $this->buildLabelDataFromModel($awbModel);
 
         //        return view('pages.smsa_test', $data);
-        $pdf = Pdf::loadView('pages.smsa_test', $data);
+        $pdf = Pdf::loadView('smsautils::pages.smsa_test', $data);
         $pdf->setPaper('a6', 'portrait');
         return $pdf->stream($awbModel->awb . '.pdf');
     }
@@ -399,7 +399,7 @@ class SmsaLabelController extends Controller
 
 
 
-        return view('pages.smsa_test', $data);
+        return view('smsautils::pages.smsa_test', $data);
     }
 
     public function generateInvoice($awb, $token)
@@ -439,7 +439,7 @@ class SmsaLabelController extends Controller
 
         $mpdf = new \Mpdf\Mpdf();
 
-        $html = view('pages.smsa_invoice', $this->buildInvoiceDataFromModel($awbModel, false));
+        $html = view('smsautils::pages.smsa_invoice', $this->buildInvoiceDataFromModel($awbModel, false));
 
         $mpdf->WriteHTML($html);
         $mpdf->Output();
@@ -463,16 +463,10 @@ class SmsaLabelController extends Controller
             ->first();
 
         if (!$awbModel) {
-            return view('awb.not_found');
+            return view('smsautils::awb.not_found');
         }
 
-        //          $mpdf = new \Mpdf\Mpdf();
-        //         $html = view('pages.smsa_invoice1', $this->buildInvoiceDataFromModel($awbModel, false));
-        // $mpdf->WriteHTML($html);
-        // $mpdf->Output();
-
-
-        return view('pages.smsa_invoice', $this->buildInvoiceDataFromModel($awbModel, false));
+        return view('smsautils::pages.smsa_invoice', $this->buildInvoiceDataFromModel($awbModel, false));
     }
 
     private function buildInvoiceDataFromModel(AwbModel $awbModel, bool $useArabicGlyphs = true): array
