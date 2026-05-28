@@ -17,7 +17,7 @@ class SmsaLabelController extends Controller
     {
         $awbModel = \twa\smsautils\Models\Awb::with(['sender', 'receiver', 'pickupRoute.hub', 'deliveryRoute.hub'])->where('awb', $awb)->firstOrFail();
 
-        $logoPath = public_path('assets/images/smsa.png');
+        $logoPath = public_path('assets/images/logo.png');
 
         // 2. Read the image file content.
         $logoData = File::get($logoPath);
@@ -115,7 +115,7 @@ class SmsaLabelController extends Controller
         $awbModel = \twa\smsautils\Models\Awb::with(['shipment.sender', 'shipment.receiver', 'pickupRoute.hub', 'deliveryRoute.hub'])->where('awb', $awb)->firstOrFail();
 
         // dd($awbModel);
-        $logoPath = public_path('assets/images/smsa.png');
+        $logoPath = public_path('assets/images/logo.png');
         $logoData = File::get($logoPath);
         $logoBase64 = base64_encode($logoData);
         $logoSrc = 'data:image/png;base64,' . $logoBase64;
