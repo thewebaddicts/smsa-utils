@@ -58,5 +58,9 @@ class Transaction extends Model
         return $this->hasOne(Awb::class, 'master_awb', 'awb');
     }
     
-  
+    public function shipment(): BelongsTo
+    {
+        return $this->belongsTo(Shipment::class, 'awb', 'parent_awb');
+    }
 }
+
