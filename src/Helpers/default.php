@@ -1648,8 +1648,8 @@ if (!function_exists('get_documents')) {
             })
             ->whereNull('deleted_at')
             ->get()->map(function ($document) use ($data) {
-                $documentValue = is_array($data) ? ($data[$document->document_key] ?? null) : null;
-                $documentFileIds = $documentValue ? [(int) $documentValue] : [];
+                $documentValue =  collect($data[$document->document_key] ?? [])->unique()->filter()->values()->toArray();
+              
 
                 return [
                     'document_name' => $document->document_name,
@@ -1657,7 +1657,7 @@ if (!function_exists('get_documents')) {
                     'required' => $document->required_condition == "REQUIRED_ON_CREATION" ? true : false,
 
                     'sample_file_url' => config('sample-files.' . $document->document_key) ?? null,
-                    'value' => !empty($documentFileIds) ? get_files_info($documentFileIds) : null
+                    'value' => !empty($documentValue) ? get_files_info($documentValue) : null
                 ];
             });
 
