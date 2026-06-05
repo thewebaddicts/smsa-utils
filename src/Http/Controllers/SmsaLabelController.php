@@ -102,6 +102,32 @@ class SmsaLabelController extends Controller
         return $this->formatText($truncatedText);
     }
 
+    private function resolveAddressFor(array $snapshot, $address, ?int $addressId): ?string
+    {
+        if (!empty($snapshot['address_for'])) {
+            return (string) $snapshot['address_for'];
+        }
+
+        if (!empty($address?->address_for)) {
+            return (string) $address->address_for;
+        }
+
+        $id = $addressId ?? ($snapshot['id'] ?? null);
+        if ($id) {
+            $fromDb = DB::table('addresses')->where('id', $id)->value('address_for');
+            if ($fromDb) {
+                return (string) $fromDb;
+            }
+        }
+
+        return null;
+    }
+
+    private function isHubAddress(?string $addressFor): bool
+    {
+        return strtoupper(trim((string) $addressFor)) === 'HUB';
+    }
+
     public function buildLabelDataFromModel(AwbModel $awbModel): array
     {
         $logoPath = public_path('assets/images/logo.png');
@@ -164,7 +190,31 @@ class SmsaLabelController extends Controller
         $receiverSnapshot = (array) ($shipment->receiver_address_snapshot ?? []);
         $weight = $awbModel->actual_weight_g ?: $awbModel->declared_weight_g;
 
-        // dd($receiverSnapshot['phone']);
+        $senderAddressFor = $this->resolveAddressFor(
+            $senderSnapshot,
+            $awbModel->sender,
+            $awbModel->sender_address_id ?? $shipment->sender_address_id ?? null
+        );
+        $isSenderHubAddress = $this->isHubAddress($senderAddressFor);
+        $shipperPhone = $isSenderHubAddress
+            ? ($shipperSnapshot['phone'] ?? $client?->phone ?? '')
+            : ($senderSnapshot['phone'] ?? $awbModel->sender?->phone ?? '');
+
+        $receiverAddressFor = $this->resolveAddressFor(
+            $receiverSnapshot,
+            $awbModel->receiver,
+            $awbModel->receiver_address_id ?? $shipment->receiver_address_id ?? null
+        );
+        $isReceiverHubAddress = $this->isHubAddress($receiverAddressFor);
+        $recipientPhone = $isReceiverHubAddress
+            ? ($consigneeSnapshot['phone'] ?? $customer?->phone ?? '')
+            : ($receiverSnapshot['phone'] ?? $awbModel->receiver?->phone ?? '');
+
+        $consigneeName = $consigneeSnapshot['name'] ?? $customer?->name ?? '';
+        $recipientAttention = $isReceiverHubAddress
+            ? $consigneeName
+            : ($receiverSnapshot['attention'] ?? $awbModel->receiver?->attention ?? '');
+
         return [
             'logo' => $logoSrc,
             'page_count' => ($awbModel->awb_sequence ?? 1) . '/' . ($awbModel->nb_packages ?? 1),
@@ -214,7 +264,7 @@ class SmsaLabelController extends Controller
                 10 // max words
             ),
 
-            'shipper_phone' => $senderSnapshot['phone'] ?? $awbModel->sender?->phone ?? '',
+            'shipper_phone' => $shipperPhone,
             'destination_city_code' => strtoupper($awbModel->destination_code) ?? '',
             //            'destination_city_code' => $destinationReference,
             'destination_route' => $destinationRoute,
@@ -223,7 +273,7 @@ class SmsaLabelController extends Controller
 
             'recipient_address_1' => $this->processTextForDisplay($receiverSnapshot['address1'] ?? $awbModel->receiver?->address1 ?? '', 7),
             'recipient_address_2' => $this->processTextForDisplay($receiverSnapshot['address2'] ?? $awbModel->receiver?->address2 ?? '', 7),
-            'recipient_attention' => $this->processTextForDisplay($receiverSnapshot['attention'] ?? $awbModel->receiver?->attention ?? '', 7),
+            'recipient_attention' => $this->processTextForDisplay($recipientAttention, 7),
             'recipient_company' => $this->processTextForDisplay($receiverSnapshot['company'] ?? $awbModel->receiver?->company ?? '', 7),
             'recipient_area_code' => $receiverSnapshot['area_code'] ?? $awbModel->receiver?->area_code ?? null,
             'recipient_district' => $this->processTextForDisplay(
@@ -235,7 +285,7 @@ class SmsaLabelController extends Controller
                 10
             ),
 
-            'recipient_phone' => $receiverSnapshot['phone'] ?? '',
+            'recipient_phone' => $recipientPhone,
 
             'barcode_horizontal' => $barcodeHorizontal,
             'barcode_vertical' => $barcodeVertical,
