@@ -934,26 +934,27 @@ class EventController
     public function getVariables($awb, $api = true)
     {
         $awb = Awb::query()
-            ->with(['shipment', 'sender', 'receiver'])
+            ->with(['shipment'])
             ->where('awb', $awb)
             ->whereNull('deleted_at')
             ->first();
         if (!$awb) {
-            return $this->response(notification()->error('AWB not found', 'AWB not found'));
+            return $api ? $this->response(notification()->error('AWB not found', 'AWB not found')) : null;
         }
         $shipment = $awb->shipment;
         if (!$shipment) {
-            return $this->response(notification()->error('Shipment not found', 'Shipment not found'));
+            return $api ? $this->response(notification()->error('Shipment not found', 'Shipment not found')) : null;
         }
 
-        $sender = $awb->sender;
+        $sender = (object) $shipment->sender_address_snapshot;
         if (!$sender) {
-            return $this->response(notification()->error('Sender not found', 'Sender not found'));
+            return $api ? $this->response(notification()->error('Sender not found', 'Sender not found')) : null;
         }
-        $receiver = $awb->receiver;
+        $receiver = (object) $shipment->receiver_address_snapshot;
         if (!$receiver) {
-            return $this->response(notification()->error('Receiver not found', 'Receiver not found'));
+            return $api ? $this->response(notification()->error('Receiver not found', 'Receiver not found')) : null;
         }
+
 
         $variables = [
             'shipment_id' => $shipment->id,
@@ -1001,49 +1002,49 @@ class EventController
             ],
 
             'shipper' => [
-                'id' => $shipment->client->id,
-                'name' => $shipment->client->name,
-                'email' => $shipment->client->email,
-                'phone' => $shipment->client->phone,
-                'country' => $shipment->client->account_country,
+                'id' => $shipment->shipper_snapshot["id"] ?? null,
+                'name' => $shipment->shipper_snapshot["name"]?? null,
+                'email' => $shipment->shipper_snapshot["email"]?? null,
+                'phone' => $shipment->shipper_snapshot["phone"]?? null,
+                'country' => $shipment->shipper_snapshot["account_country"] ?? null,
             ],
             'consignee' => [
-                'name' => $shipment->customer->name,
-                'email' => $shipment->customer->email,
-                'phone' => $shipment->customer->phone,
+                'name' => $shipment->consignee_snapshot["name"] ?? null,
+                'email' => $shipment->consignee_snapshot["email"] ?? null,
+                'phone' => $shipment->consignee_snapshot["phone"] ?? null,
             ],
 
             'shipper_address' => [
-                'label' => $sender->label,
-                'attention' => $sender->attention,
-                'company' => $sender->company,
-                'address1' => $sender->address1,
-                'address2' => $sender->address2,
-                'address' => $sender->address,
-                'phone' => $sender->phone,
-                'email' => $sender->email,
-                'address_type' => $sender->address_type,
-                'truth_level' => $sender->truth_level,
-                'area_code' => $sender->area_code,
-                'country_code' => $sender->country,
-                'province_code' => $sender->province,
-                'city_code' => $sender->city
+                'label' => $sender->label?? null,
+                'attention' => $sender->attention?? null,
+                'company' => $sender->company?? null,
+                'address1' => $sender->address1?? null,
+                'address2' => $sender->address2 ?? null,
+                'address' => $sender->address ?? null,
+                'phone' => $sender->phone?? null,
+                'email' => $sender->email?? null,
+                'address_type' => $sender->address_type?? null,
+                'truth_level' => $sender->truth_level?? null,
+                'area_code' => $sender->area_code?? null,
+                'country_code' => $sender->country?? null,
+                'province_code' => $sender->province?? null,
+                'city_code' => $sender->city?? null
             ],
             'consignee_address' => [
-                'label' => $receiver->label,
-                'attention' => $receiver->attention,
-                'company' => $receiver->company,
-                'address1' => $receiver->address1,
-                'address2' => $receiver->address2,
-                'address' => $receiver->address,
-                'phone' => $receiver->phone,
-                'email' => $receiver->email,
-                'address_type' => $receiver->address_type,
-                'truth_level' => $receiver->truth_level,
-                'area_code' => $receiver->area_code,
-                'country_code' => $receiver->country,
-                'province_code' => $receiver->province,
-                'city_code' => $receiver->city
+                'label' => $receiver->label?? null,
+                'attention' => $receiver->attention?? null,
+                'company' => $receiver->company?? null,
+                'address1' => $receiver->address1?? null,
+                'address2' => $receiver->address2?? null,
+                'address' => $receiver->address?? null,
+                'phone' => $receiver->phone?? null,
+                'email' => $receiver->email?? null,
+                'address_type' => $receiver->address_type?? null,
+                'truth_level' => $receiver->truth_level?? null,
+                'area_code' => $receiver->area_code?? null,
+                'country_code' => $receiver->country?? null,
+                'province_code' => $receiver->province?? null,
+                'city_code' => $receiver->city?? null
             ]
 
         ];

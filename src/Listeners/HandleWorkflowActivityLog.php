@@ -29,6 +29,13 @@ class HandleWorkflowActivityLog implements ShouldQueue
 
         $awb_number = $awb_activity->target;
         $variables = (new EventController())->getVariables($awb_number, false); // Query inside
+
+        if($variables === null){
+            $awb_activity->workflow_ended_at = now();
+            $awb_activity->save();
+            return;
+        }
+
         $workflow_country = $variables['shipper']['country'];
         $workflow_shipper_id = $variables['shipper']['id'];
         $workflow_service_code = $variables['service'];
