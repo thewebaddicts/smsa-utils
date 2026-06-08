@@ -30,7 +30,7 @@ class FileController extends Controller
         $uploadedFile = $request->file('file');
 
         // Store file in the configured "bucket" disk
-        $path = $uploadedFile->store('uploads', 'bucket');
+        $path = $uploadedFile->store('uploads', env("DEFAULT_DISK_PUBLIC"));
 
         $file = File::create([
             'original_name' => $uploadedFile->getClientOriginalName(),
@@ -39,7 +39,7 @@ class FileController extends Controller
             'size'          => $uploadedFile->getSize(),
         ]);
 
-        $url = Storage::disk('bucket')->url($path);
+        $url = Storage::disk(env("DEFAULT_DISK_PUBLIC"))->url($path);
 
         $data = [
             'id'            => $file->id,

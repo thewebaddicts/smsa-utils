@@ -1095,8 +1095,9 @@ if (!function_exists('send_client_otp')) {
 
 
 if (!function_exists('get_file_info')) {
-    function get_file_info($file_id, $disk = 'bucket')
+    function get_file_info($file_id, $disk = null)
     {
+        $disk =  env("DEFAULT_DISK_PUBLIC");
         $cacheKey = "file_{$file_id}";
 
         return Cache::remember($cacheKey, now()->addHours(2), function () use ($file_id, $disk) {
@@ -1117,8 +1118,9 @@ if (!function_exists('get_file_info')) {
 
 
 if (!function_exists('get_files_info')) {
-    function get_files_info(array $file_ids, $disk = 'bucket')
+    function get_files_info(array $file_ids, $disk = null)
     {
+        $disk = env("DEFAULT_DISK_PUBLIC");
         $filesInfo = [];
 
         foreach ($file_ids as $file_id) {
