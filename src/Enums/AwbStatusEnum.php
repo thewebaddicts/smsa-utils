@@ -670,7 +670,7 @@ enum AwbStatusEnum: string
                     'icon' => 'file-plus',
                     'color_bg' => '#e3f2fd',
                     'color_text' => '#1565c0',
-                    'description' => 'Shipment has been received at retail',
+                    'description' => 'Shipment has been received at destinationetail',
                     'category' => null,
                     'tags' => ["all"],
                 ],

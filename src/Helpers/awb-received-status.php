@@ -49,17 +49,25 @@ if (!function_exists('update_awb_received_status')) {
             &&
             !$awb->destination_received_at
         ) {
+            $isRetailHub = $hub && strtolower((string) ($hub->type ?? '')) === 'retail';
+            $receivedStatus = $isRetailHub
+                ? AwbStatusEnum::RETAIL_RECEIVED
+                : AwbStatusEnum::DESTINATION_RECEIVED;
 
-            $awb->last_status = AwbStatusEnum::DESTINATION_RECEIVED;
+            $awb->last_status = $receivedStatus;
             $awb->destination_received_at = now();
 
             log_awb_activity(
-                AwbStatusEnum::DESTINATION_RECEIVED,
+                $receivedStatus,
                 $awb->awb,
                 $awb->id,
                 $user->id ?? null,
                 $user_type ?? null,
-                $commentOverride ?? ('Destination received from ' . $location),
+                $commentOverride ?? (
+                    $isRetailHub
+                        ? ('Destination Retail received from ' . $location)
+                        : ('Destination received from ' . $location)
+                ),
                 [],
                 $activity_by,
                 $activity_location,
