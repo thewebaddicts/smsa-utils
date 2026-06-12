@@ -50,7 +50,7 @@ if (!function_exists('update_awb_received_status')) {
             &&
             !$awb->destination_received_at
         ) {
-            $isRetailHub = $hub && strtolower((string) ($hub->type ?? '')) === 'retail';
+            $isRetailHub = $hub && strtolower((string) ($hub->type ?? '')) === 'retail' && $awb->shipment->hal_branch_id == $hub_id;
             $receivedStatus = $isRetailHub
                 ? AwbStatusEnum::RETAIL_RECEIVED
                 : AwbStatusEnum::DESTINATION_RECEIVED;
