@@ -1651,7 +1651,7 @@ if (!function_exists('get_documents')) {
             ->whereNull('deleted_at')
             ->get()->map(function ($document) use ($data) {
                 $documentValue =  collect($data[$document->document_key] ?? [])->unique()->filter()->values()->toArray();
-              
+
 
                 return [
                     'document_name' => $document->document_name,
@@ -1790,6 +1790,15 @@ if (!function_exists('get_documents')) {
             return md5(uniqid() . env('APP_KEY')) . md5(uniqid() . env('APP_KEY'));
         }
     }
+}
 
 
+
+if (!function_exists('get_source')) {
+    function get_source()
+    {
+        $source = request()->header('source') ?: request()->input('source');
+
+        return filled($source) ? trim($source) : 'web';
+    }
 }
