@@ -15,6 +15,7 @@ if (!function_exists('update_awb_received_status')) {
     {
         $user = request()->user();
         $user_type = request()->input('user_type');
+        $source = get_source();
         $hub = Hub::find($hub_id);
        
         $activity_location = get_branch_info($hub);
@@ -38,7 +39,7 @@ if (!function_exists('update_awb_received_status')) {
                 $activity_by,
                 $activity_location,
                 now(),
-                'web'
+                $source
             );
         } elseif (
             $awb->origin_hub_id != $awb->destination_hub_id
@@ -72,7 +73,7 @@ if (!function_exists('update_awb_received_status')) {
                 $activity_by,
                 $activity_location,
                 now(),
-                'web'
+                $source
 
             );
 
@@ -91,7 +92,7 @@ if (!function_exists('update_awb_received_status')) {
                 $activity_by,
                 $activity_location,
                 now(),
-                'web'
+                $source
             );
         }
 
