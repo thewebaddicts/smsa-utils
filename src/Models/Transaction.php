@@ -38,15 +38,7 @@ class Transaction extends Model
             ->whereNull('countries.deleted_at');
     }
 
-    public function getOriginProvinceNameAttribute(): ?string
-    {
-        return resolve_province_name_by_code($this->origin_province, $this->origin_country);
-    }
 
-    public function getDestinationProvinceNameAttribute(): ?string
-    {
-        return resolve_province_name_by_code($this->destination_province, $this->destination_country);
-    }
  
     public function awbRow()
     {
