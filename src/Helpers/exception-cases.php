@@ -92,6 +92,59 @@ if (!function_exists('resolve_exception_case_hub_id')) {
     }
 }
 
+if (!function_exists('log_exception_case_triggered')) {
+    function log_exception_case_triggered(\twa\smsautils\Models\ExceptionCase $exceptionCase, array $payload, ?Awb $awb = null): void
+    {
+        // Only AWB-targeted exceptions can be recorded on the AWB activity timeline.
+        if ($exceptionCase->targetable_type !== 'awb' || ! $awb) {
+            return;
+        }
+
+        if (! function_exists('log_activity')) {
+            return;
+        }
+
+        $triggerReason = ExceptionTriggerReason::query()
+            ->with('exceptionCategory')
+            ->whereKey($exceptionCase->exception_trigger_reason_id)
+            ->first();
+
+        // status_code mirrors the trigger reason code so the activity ties back to the exception.
+        $statusCode = $triggerReason?->code ?? ('EXCEPTION-' . $exceptionCase->exception_trigger_reason_id);
+
+        $comment = $exceptionCase->comments
+            ?? trim(($triggerReason?->exceptionCategory?->label ? $triggerReason->exceptionCategory->label . ' | ' : '') . ($triggerReason?->label ?? 'Exception triggered'));
+
+        try {
+            // Write directly to awb_activities (not log_awb_activity) to avoid re-triggering exception creation.
+            log_activity(
+                'awb_activities',
+                $statusCode,
+                $awb->awb,
+                $awb->id,
+                $exceptionCase->created_by_id,
+                $exceptionCase->created_by_type,
+                $comment,
+                $exceptionCase->file_ids ?? [],
+                null,
+                null,
+                $exceptionCase->created_at,
+                'exception_case:' . $exceptionCase->reference
+            );
+
+            \Illuminate\Support\Facades\DB::table('awbs')->where('id', $awb->id)->update([
+                'last_activity_at' => $exceptionCase->created_at ?? now(),
+            ]);
+        } catch (\Throwable $th) {
+            \Illuminate\Support\Facades\Log::warning('Failed to log triggered exception case as AWB activity.', [
+                'exception_case_id' => $exceptionCase->id,
+                'awb' => $awb->awb,
+                'error' => $th->getMessage(),
+            ]);
+        }
+    }
+}
+
 if (!function_exists('create_record_in_exception')) {
     function create_record_in_exception(array $payload)
     {
@@ -189,6 +242,8 @@ if (!function_exists('create_record_in_exception')) {
 
         $exceptionCase->reference = generate_reference_number($exceptionCase->id, 'EX-');
         $exceptionCase->save();
+
+        log_exception_case_triggered($exceptionCase, $payload, $awb);
 
         return $exceptionCase;
     }
