@@ -116,20 +116,21 @@ enum AwbStatusEnum: string
     case NOT_AVAILABLE_WRONG_CITY = 'ATLC';
     case NOT_AVAILABLE_ROUTE = 'ATLR'; //to be checked by hovig
     case NOT_AVAILABLE_OUT_OF_AREA = 'ATOA';
-    // case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
-    // case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
-    // case NOT_PICKED_UP_ADDRESS_CHANGED = 'NPLR';
+        // case NOT_PICKED_UP_RESCHEDULE = 'NPRS';
+        // case NOT_PICKED_UP_NO_ANSWER = 'NPNA';
+        // case NOT_PICKED_UP_ADDRESS_CHANGED = 'NPLR';
     case REFUSED_OPEN_SHIPMENT  = 'RFOS';
-    // case OUT_OF_PICKUP_AREA = 'OPOA';
-    // case CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE = 'CIAV';
-    // case CAPACITY_ISSUE_VEHICLE_OVERLOADED = 'CIOV';
-    // case CANCELLED_DUPLICATE_PICKUP = 'LCWA';
-    // case CANCELLED_NO_SHIPMENT = 'LCNS';
-    // case CANCELLED_DROPED_RETAIL = 'LCDR';
-    // case LOCATION_CHANGED_WRONG_ASSIGMENT = 'LCAW';
+        // case OUT_OF_PICKUP_AREA = 'OPOA';
+        // case CAPACITY_ISSUE_ANOTHER_VEHICLE_TYPE = 'CIAV';
+        // case CAPACITY_ISSUE_VEHICLE_OVERLOADED = 'CIOV';
+        // case CANCELLED_DUPLICATE_PICKUP = 'LCWA';
+        // case CANCELLED_NO_SHIPMENT = 'LCNS';
+        // case CANCELLED_DROPED_RETAIL = 'LCDR';
+        // case LOCATION_CHANGED_WRONG_ASSIGMENT = 'LCAW';
     case DAMAGED = 'EXDM'; // was exp
     case LOST = 'EXLO';
 
+    case CHANGE_CUSTOMS_PAYMENT_TYPE = 'CHCP';
 
 
         //OLD SYSTEM STATUSES
@@ -266,11 +267,11 @@ enum AwbStatusEnum: string
             // self::CANCELLED_DROPED_RETAIL,
             // self::LOCATION_CHANGED_WRONG_ASSIGMENT,
             self::CLOSED,
-            
+
             self::HOLD_FOR_PICKUP,
-             self::HOLD,
-             self::HOLD_CUSTOMS,
-             self::OFFLOADED,
+            self::HOLD,
+            self::HOLD_CUSTOMS,
+            self::OFFLOADED,
             self::DAMAGED,
             self::LOST => 'EXCEPTIONS',
 
@@ -1515,7 +1516,7 @@ enum AwbStatusEnum: string
                     ],
                     'tags' => ["all", "GENERAL_AWB_EXCEPTION"],
                 ],
-               
+
                 self::LOST => [
                     'label' => $lang === 'ar' ? 'مفقود' : 'Lost',
                     'icon' => 'help-circle',
@@ -1523,7 +1524,7 @@ enum AwbStatusEnum: string
                     'color_text' => '#6a1b9a',
                     'description' => 'Shipment lost in transit',
                     'category' => null,
-                    'tags' => ["all", "EXCEPTION","PROBLEMATIC_DEBRIEF_EXCEPTION"],
+                    'tags' => ["all", "EXCEPTION", "PROBLEMATIC_DEBRIEF_EXCEPTION"],
                 ],
                 self::CLOSED => [
                     'label' => $lang === 'ar' ? 'مغلق' : 'Closed',
@@ -1571,7 +1572,15 @@ enum AwbStatusEnum: string
                     'category' => null,
                     'tags' => ["all"],
                 ],
-
+                self::CHANGE_CUSTOMS_PAYMENT_TYPE => [
+                    'label' => $lang === 'ar' ? 'تغيير نوع الدفع للجمارك' : 'Change Customs Payment Type',
+                    'icon' => 'check-circle',
+                    'color_bg' => '#c8e6c9',
+                    'color_text' => '#000000',
+                    'description' => 'Shipment successfully changed customs payment type',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
 
                 //old statuses:
                 self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility', 'category' => null, 'tags' => []],
@@ -3485,7 +3494,7 @@ enum AwbStatusEnum: string
                 'description' => 'Refused delivery due to delay',
             ],
 
-          
+
             self::DOCUMENT_UPLOAD => [
                 'label' => 'Documents Uploaded',
                 'icon' => 'file-upload',
