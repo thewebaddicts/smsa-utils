@@ -1577,7 +1577,7 @@ enum AwbStatusEnum: string
                     'icon' => 'check-circle',
                     'color_bg' => '#c8e6c9',
                     'color_text' => '#000000',
-                    'description' => 'Shipment successfully changed customs payment type',
+                    'description' => $lang === 'ar' ? 'تم تغيير نوع الدفع للجمارك' : 'Shipment successfully changed customs payment type',
                     'category' => null,
                     'tags' => ["all"],
                 ],
