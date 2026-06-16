@@ -137,13 +137,10 @@ if (! function_exists('create_transactions_from_quote')) {
             ->whereIn('payment_source', ['cash', 'card'])
             ->map(fn ($line) => [
                 'quote_payment_line_id' => $line->id,
-                'payed_by' =>  $extra['payed_by'] ?? null ,
+                'payed_by' => $extra['payed_by'] ?? null,
                 'transaction_type' => $line->payment_source,
                 'type' => 'transaction',
                 'amount' => (float) $line->payment_amount,
-                'vat' => $quote->vat_amount ?? 0,
-                'discount_amount' => $quote->total_discount_amount ?? 0,
-                'discount_percentage' => $quote->total_discount_percentage ?? 0,
                 'currency' => $line->payment_currency ?? $quote->currency,
             ])
             ->values()
@@ -555,9 +552,228 @@ if (! function_exists('transaction_has_changes')) {
     }
 }
 
+if (! function_exists('allocate_proportional_amount_across_lines')) {
+    /**
+     * @param  list<array{amount: float|int|string|null}>  $lines
+     * @return list<float>
+     */
+    function allocate_proportional_amount_across_lines(float $totalAmount, array $lines): array
+    {
+        if ($lines === []) {
+            return [];
+        }
+
+        $totalAmount = max(0, round($totalAmount, 2));
+        $paymentTotal = round(
+            collect($lines)->sum(fn (array $line): float => max(0, (float) ($line['amount'] ?? 0))),
+            2
+        );
+
+        if ($totalAmount <= 0 || $paymentTotal <= 0) {
+            return array_fill(0, count($lines), 0.0);
+        }
+
+        $allocations = [];
+        $allocatedSoFar = 0.0;
+        $lineCount = count($lines);
+
+        foreach ($lines as $index => $line) {
+            $lineAmount = max(0, (float) ($line['amount'] ?? 0));
+
+            if ($index === $lineCount - 1) {
+                $allocations[] = round($totalAmount - $allocatedSoFar, 2);
+
+                continue;
+            }
+
+            $share = round($totalAmount * ($lineAmount / $paymentTotal), 2);
+            $allocations[] = $share;
+            $allocatedSoFar += $share;
+        }
+
+        return $allocations;
+    }
+}
+
+if (! function_exists('collect_transaction_inventory_payment_lines')) {
+    /**
+     * @param  list<array<string, mixed>>  $inventories
+     * @return array{0: list<int>, 1: list<array{amount: float}>}
+     */
+    function collect_transaction_inventory_payment_lines(array $inventories): array
+    {
+        $transactionIndexes = [];
+        $linePayloads = [];
+
+        foreach ($inventories as $index => $inventory) {
+            if (($inventory['type'] ?? 'transaction') !== 'transaction') {
+                continue;
+            }
+
+            $transactionIndexes[] = $index;
+            $linePayloads[] = ['amount' => (float) ($inventory['amount'] ?? 0)];
+        }
+
+        return [$transactionIndexes, $linePayloads];
+    }
+}
+
+if (! function_exists('resolve_quote_for_transaction_inventories')) {
+    /**
+     * @param  list<array<string, mixed>>  $inventories
+     */
+    function resolve_quote_for_transaction_inventories(array $inventories): ?Quote
+    {
+        $paymentLineIds = collect($inventories)
+            ->filter(fn (array $inventory): bool => ($inventory['type'] ?? 'transaction') === 'transaction')
+            ->pluck('quote_payment_line_id')
+            ->filter()
+            ->unique()
+            ->values();
+
+        if ($paymentLineIds->isEmpty()) {
+            return null;
+        }
+
+        $quoteId = DB::table('quote_payment_lines')
+            ->whereIn('id', $paymentLineIds)
+            ->whereNull('deleted_at')
+            ->value('quote_id');
+
+        if (! $quoteId) {
+            return null;
+        }
+
+        return Quote::query()->find($quoteId);
+    }
+}
+
+if (! function_exists('resolve_shared_inventory_amount_total')) {
+    /**
+     * @param  list<int>  $transactionIndexes
+     */
+    function resolve_shared_inventory_amount_total(
+        array $inventories,
+        array $transactionIndexes,
+        string $field,
+        ?float $quoteTotal,
+        ?float $payloadTotal
+    ): ?float {
+        if ($quoteTotal !== null) {
+            return $quoteTotal;
+        }
+
+        if ($payloadTotal !== null) {
+            return $payloadTotal;
+        }
+
+        $lineValues = [];
+
+        foreach ($transactionIndexes as $index) {
+            if (! isset($inventories[$index][$field]) || ! is_numeric($inventories[$index][$field])) {
+                continue;
+            }
+
+            $lineValues[] = (float) $inventories[$index][$field];
+        }
+
+        if (count($lineValues) >= 2 && count(array_unique($lineValues)) === 1) {
+            return $lineValues[0];
+        }
+
+        return null;
+    }
+}
+
+if (! function_exists('apply_transaction_inventory_amount_allocations')) {
+    /**
+     * @param  list<array<string, mixed>>  $inventories
+     * @return list<array<string, mixed>>
+     */
+    function apply_transaction_inventory_amount_allocations(array $inventories, array $payload = []): array
+    {
+        [$transactionIndexes, $linePayloads] = collect_transaction_inventory_payment_lines($inventories);
+
+        if ($linePayloads === []) {
+            return $inventories;
+        }
+
+        $quote = resolve_quote_for_transaction_inventories($inventories);
+
+        $totalVat = resolve_shared_inventory_amount_total(
+            $inventories,
+            $transactionIndexes,
+            'vat',
+            isset($quote?->vat_amount) && is_numeric($quote->vat_amount) ? (float) $quote->vat_amount : null,
+            isset($payload['vat_amount']) && is_numeric($payload['vat_amount']) ? (float) $payload['vat_amount'] : null
+        );
+
+        $totalDiscount = resolve_shared_inventory_amount_total(
+            $inventories,
+            $transactionIndexes,
+            'discount_amount',
+            isset($quote?->total_discount_amount) && is_numeric($quote->total_discount_amount) ? (float) $quote->total_discount_amount : null,
+            isset($payload['total_discount_amount']) && is_numeric($payload['total_discount_amount']) ? (float) $payload['total_discount_amount'] : null
+        );
+
+        $discountPercentage = $quote?->total_discount_percentage
+            ?? ($payload['total_discount_percentage'] ?? null);
+
+        if ($totalVat === null && $totalDiscount === null && $discountPercentage === null) {
+            return $inventories;
+        }
+
+        if (count($linePayloads) === 1) {
+            $inventoryIndex = $transactionIndexes[0];
+
+            if ($totalVat !== null) {
+                $inventories[$inventoryIndex]['vat'] = $totalVat;
+            }
+
+            if ($totalDiscount !== null) {
+                $inventories[$inventoryIndex]['discount_amount'] = $totalDiscount;
+            }
+
+            if ($discountPercentage !== null) {
+                $inventories[$inventoryIndex]['discount_percentage'] = $discountPercentage;
+            }
+
+            return $inventories;
+        }
+
+        if ($totalVat !== null) {
+            $vatAllocations = allocate_proportional_amount_across_lines($totalVat, $linePayloads);
+
+            foreach ($transactionIndexes as $allocationIndex => $inventoryIndex) {
+                $inventories[$inventoryIndex]['vat'] = $vatAllocations[$allocationIndex] ?? 0.0;
+            }
+        }
+
+        if ($totalDiscount !== null) {
+            $discountAllocations = allocate_proportional_amount_across_lines($totalDiscount, $linePayloads);
+
+            foreach ($transactionIndexes as $allocationIndex => $inventoryIndex) {
+                $inventories[$inventoryIndex]['discount_amount'] = $discountAllocations[$allocationIndex] ?? 0.0;
+            }
+        }
+
+        if ($discountPercentage !== null) {
+            foreach ($transactionIndexes as $inventoryIndex) {
+                $inventories[$inventoryIndex]['discount_percentage'] = $discountPercentage;
+            }
+        }
+
+        return $inventories;
+    }
+}
+
 if (! function_exists('enrich_transaction_payload')) {
     function enrich_transaction_payload(array $payload): array
     {
+        if (! empty($payload['inventories'])) {
+            $payload['inventories'] = apply_transaction_inventory_amount_allocations($payload['inventories'], $payload);
+        }
+
         if (! empty($payload['cashier_id'])) {
             $payload = enrich_payload_from_cashier($payload);
         }
