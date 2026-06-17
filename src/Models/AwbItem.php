@@ -8,6 +8,7 @@ class AwbItem extends Model
 {
     protected $fillable = [
         'awb_id',
+        'shipment_id',
         'sku_code',
         'hsn_code',
         'description',
@@ -24,5 +25,9 @@ class AwbItem extends Model
     public function awb()
     {
         return $this->belongsTo(\twa\smsautils\Models\Awb::class, 'awb_id', 'id');
+    }
+    public function shipment()
+    {
+        return $this->belongsTo(\twa\smsautils\Models\Shipment::class, 'shipment_id', 'id');
     }
 }
