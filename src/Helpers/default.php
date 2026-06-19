@@ -22,6 +22,7 @@ use twa\smsautils\Models\AttributeSchema;
 use twa\smsautils\Facades\AwbStatusFacade;
 use twa\smsautils\Models\ExceptionTriggerReason;
 use twa\smsautils\Models\ShipmentStatus;
+use twa\smsautils\Models\Quote;
 
 if (!function_exists('format_code_branch')) {
 
@@ -1800,5 +1801,93 @@ if (!function_exists('get_source')) {
         $source = request()->header('source') ?: request()->input('source');
 
         return filled($source) ? trim($source) : 'web';
+    }
+}
+if (! function_exists('format_quote_packaging_materials_breakdown')) {
+    /**
+     * @return list<array<string, mixed>>
+     */
+    function format_quote_packaging_materials_breakdown(Quote $quote): array
+    {
+        $breakdown = $quote->packaging_materials_breakdown;
+
+        if (is_string($breakdown)) {
+            $breakdown = json_decode($breakdown, true);
+        }
+
+        return is_array($breakdown) ? $breakdown : [];
+    }
+}
+if (! function_exists('getAmountToPay')) {
+    function getAmountToPay(int|Quote $quote, string $party): float
+    {
+        if (! $quote instanceof Quote) {
+            $quote = Quote::query()->where('id', $quote)->first();
+        }
+
+        if (! $quote) {
+            return 0.0;
+        }
+
+        $shippingFeesPaymentType = strtoupper((string) ($quote->shipping_fees_payment_type ?? ''));
+        $totalAmount = (float) ($quote->total_amount ?? 0);
+        $packagingMaterialsAmount = max(0, (float) ($quote->packaging_materials_amount ?? 0));
+
+        if ($party === 'sender') {
+            if ($shippingFeesPaymentType === '' || $shippingFeesPaymentType === 'DDP') {
+                return $totalAmount;
+            }
+
+            return $packagingMaterialsAmount;
+        }
+
+        if ($party === 'receiver') {
+            if ($shippingFeesPaymentType !== 'DDU') {
+                return 0.0;
+            }
+
+            return max(0, $totalAmount - $packagingMaterialsAmount);
+        }
+
+        return 0.0;
+    }
+}
+if (! function_exists('formatQuoteResponse')) {
+    function formatQuoteResponse(Quote $quote): array
+    {
+        $quote->loadMissing('paymentLines');
+
+        $shippingFeesAmount = (float) ($quote->shipping_fees_amount ?? 0);
+        $additionalCharges = (float) ($quote->additional_charges ?? 0);
+        $packagingMaterialsAmount = (float) ($quote->packaging_materials_amount ?? 0);
+
+        return [
+            'id' => (int) $quote->id,
+            'Currency' => (string) $quote->currency,
+            'ShippingFeesAmount' => $shippingFeesAmount,
+            'VatAmount' => (float) ($quote->vat_amount ?? 0),
+            'VatPercentage' => (string) $quote->vat_percentage,
+            'TotalAmount' => (float) ($quote->total_amount ?? 0),
+            'TotalDiscountAmount' => (float) ($quote->total_discount_amount ?? 0),
+            'TotalDiscountPercentage' => (float) ($quote->total_discount_percentage ?? 0),
+            'AdditionalCharges' => $additionalCharges,
+            'PackagingMaterialsAmount' => $packagingMaterialsAmount,
+            'PackagingMaterialsCurrency' => (string) $quote->currency,
+            'PackagingMaterialsSourceCurrency' => $quote->packaging_materials_currency,
+            'PackagingMaterials' => format_quote_packaging_materials_breakdown($quote),
+            'SenderAmountToPay' => getAmountToPay($quote, 'sender'),
+            'ReceiverAmountToPay' => getAmountToPay($quote, 'receiver'),
+            'PaymentLines' => $quote->paymentLines->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'payment_source' => $item->payment_source,
+                    'payment_amount' => $item->payment_amount,
+                    'payment_currency' => $item->payment_currency,
+                    'payment_reference' => $item->payment_reference,
+                    'status' => $item->status,
+                    'auth_code' => $item->auth_code,
+                ];
+            }),
+        ];
     }
 }
