@@ -3830,4 +3830,92 @@ enum AwbStatusEnum: string
             self::CANCELLED->value,
         ];
     }
+
+    /**
+     * Operational milestone statuses from pickup through delivery (inclusive).
+     * Used for the IN_FULFILLMENT workflow grouping tag — not outcomes (RTS, cancelled, etc.).
+     */
+    public static function inFulfillmentStatusCodes(): array
+    {
+        $cases = [
+            self::PICKED_UP,
+            self::ORIGIN_RECEIVED,
+            self::RECEIVED_OPERATION,
+            self::EXPECTED_RECEIVE,
+            self::GATEWAY_RECEIVED,
+            self::GATEWAY_NOT_RECEIVED,
+            self::GATEWAY_INBOUND,
+            self::GATEWAY_OUTBOUND,
+            self::STATION_RECEIVED,
+            self::STATION_NOT_RECEIVED,
+            self::HUB_RECEIVED,
+            self::HUB_NOT_RECEIVED,
+            self::HUB_IN,
+            self::HUB_OUT,
+            self::RETAIL_RECEIVED,
+            self::RETAIL_NOT_RECEIVED,
+            self::DESTINATION_RECEIVED,
+            self::CRN_IN,
+            self::CRN_OUT,
+            self::CRN_MOVED,
+            self::HST_IN,
+            self::HST_OUT,
+            self::HST_MOVED,
+            self::DISPATCHED_HST,
+            self::MAWB_IN,
+            self::MAWB_OUT,
+            self::MAWB_MOVED,
+            self::DISPATCHED_MAWB,
+            self::SHELF_IN,
+            self::SHELF_OUT,
+            self::OPERATION_INBOUND,
+            self::OPERATION_OUTSTANDING,
+            self::OPERATION_OUTBOUND,
+            self::IN_TRANSIT,
+            self::OFFLOADED,
+            self::NOT_RECEIVED,
+            self::ADDRESS_CHANGED,
+            self::ADDRESS_VALIDATED,
+            self::UPDATED_DIMENSIONS,
+            self::UPDATED_WEIGHT,
+            self::CHANGE_ROUTE,
+            self::CHANGE_CUSTOMS_PAYMENT_TYPE,
+            self::HOLD_FOR_PICKUP,
+            self::HOLD_PICKUP,
+            self::HOLD,
+            self::HOLD_CUSTOMS,
+            self::RELEASE_CUSTOMS,
+            self::RELEASE_HOLD,
+            self::SCAN_RUNSHEET,
+            self::SCAN_RUNSHEET_VERIFIED,
+            self::SCAN_RUNSHEET_UNASSIGNED,
+            self::SCAN_BAG,
+            self::UNSCAN_BAG,
+            self::OUT_FOR_DELIVERY,
+            self::SMS_SENT,
+            self::DOCUMENT_UPLOAD,
+            self::ATTEMPTED,
+            self::REFUSED,
+            self::REFUSED_OPEN_SHIPMENT,
+            self::REFUSED_MONEY,
+            self::REFUSED_ALREADY_RECEIVED,
+            self::REFUSED_NO_LONGER_NEEDED,
+            self::REFUSED_DELAYED,
+            self::REFUSED_WRONG_ADDRESS,
+            self::REFUSED_WRONG_CITY,
+            self::REFUSED_WRONG_PHONE,
+            self::REFUSED_WRONG_CUSTOMER,
+            self::REFUSED_WRONG_CITY,
+            self::REFUSED_WRONG_PHONE,
+            self::REFUSED_WRONG_CUSTOMER,
+            self::REFUSED_WRONG_CITY,
+            self::REFUSED_WRONG_PHONE,
+        ];
+
+       
+        return array_values(array_unique(array_map(
+            fn(self $case) => $case->value,
+            $cases
+        )));
+    }
 }
