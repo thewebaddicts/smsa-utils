@@ -207,9 +207,15 @@ class EventController
     public function list($workflow_id)
     {
         $events = WorkflowEventStatus::query()
-            ->where('workflow_id', $workflow_id)
-            ->whereNull('deleted_at')
-            ->orderBy('orders', 'asc')
+            ->from('workflow_event_status')
+            ->where('workflow_event_status.workflow_id', $workflow_id)
+            ->whereNull('workflow_event_status.deleted_at')
+            ->leftJoin('shipment_statuses', function ($join) {
+                $join->on('workflow_event_status.status', '=', 'shipment_statuses.code')
+                    ->whereNull('shipment_statuses.deleted_at');
+            })
+            ->orderByRaw('CASE WHEN shipment_statuses.orders IS NULL OR shipment_statuses.orders = 0 THEN 999999 ELSE shipment_statuses.orders END ASC')
+            ->orderBy('workflow_event_status.orders', 'asc')
             ->get()
             ->map(function ($event) {
                 $label = get_event_handler_label($event->workflow_event);
