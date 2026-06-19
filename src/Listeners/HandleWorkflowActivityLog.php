@@ -78,11 +78,12 @@ class HandleWorkflowActivityLog implements ShouldQueue
 
             foreach ($events as $event) {
 
-                $awb_status_code = process_event_status($awb_activity->status_code, $variables['nb_delivery_attempts'] ?? 1);
+                $matchStatuses = workflow_event_match_statuses(
+                    $awb_activity->status_code,
+                    $variables['nb_delivery_attempts'] ?? 1
+                );
 
-                // dd($event->status, $awb_status_code);
-
-                if ($event->status != $awb_status_code) {
+                if (!in_array($event->status, $matchStatuses, true)) {
                     // dd($event->status, $awb_status_code);
                     // $event_status = new WorkflowActivityEventStatus();
                     // $event_status->awb_activity_id = $awb_activity->id;

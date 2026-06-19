@@ -67,6 +67,7 @@ enum AwbStatusEnum: string
     case OVERAGE = 'SHOV'; // was exp
     case ATTEMPTED = 'SHAT';
     case REFUSED = 'SHRF';
+    case IN_FULFILLMENT = 'SHIF';
     case ATTEMPTED_1 = 'SHAT-1';
     case ATTEMPTED_2 = 'SHAT-2';
     case ATTEMPTED_3 = 'SHAT-3';
@@ -1255,6 +1256,15 @@ enum AwbStatusEnum: string
                     'color_bg' => '#ffebee',
                     'color_text' => '#b71c1c',
                     'description' => 'Recipient refused the shipment',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
+                self::IN_FULFILLMENT => [
+                    'label' => $lang === 'ar' ? 'قيد التنفيذ' : 'In Fulfillment',
+                    'icon' => 'truck',
+                    'color_bg' => '#e8f5e9',
+                    'color_text' => '#2e7d32',
+                    'description' => 'Shipment is actively moving from pickup through delivery',
                     'category' => null,
                     'tags' => ["all"],
                 ],
@@ -2573,6 +2583,15 @@ enum AwbStatusEnum: string
                     'category' => null,
                     'tags' => ["all"],
                 ],
+                self::IN_FULFILLMENT => [
+                    'label' => $lang === 'ar' ? 'قيد التنفيذ' : 'In Fulfillment',
+                    'icon' => 'truck',
+                    'color_bg' => '#e8f5e9',
+                    'color_text' => '#2e7d32',
+                    'description' => 'Shipment is actively moving from pickup through delivery',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
                 // self::NOT_PICKED_UP_RESCHEDULE => [
                 //     'label' => $lang === 'ar' ? 'إعادة جدولة الاستلام' : 'Reschedule Pickup',
                 //     'icon' => 'calendar',
@@ -2894,7 +2913,15 @@ enum AwbStatusEnum: string
                     'tags' => ["all"],
                 ],
 
-
+                self::CHANGE_CUSTOMS_PAYMENT_TYPE => [
+                    'label' => $lang === 'ar' ? 'تغيير نوع الدفع للجمارك' : 'Change Customs Payment Type',
+                    'icon' => 'check-circle',
+                    'color_bg' => '#c8e6c9',
+                    'color_text' => '#000000',
+                    'description' => $lang === 'ar' ? 'تم تغيير نوع الدفع للجمارك' : 'Shipment successfully changed customs payment type',
+                    'category' => null,
+                    'tags' => ["all"],
+                ],
                 //old statuses:
                 self::AF => ['label' => 'AF', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Arrived Delivery Facility', 'category' => null, 'tags' => []],
                 self::CC => ['label' => 'CC', 'icon' => 'file-plus', 'color_bg' => '#e3f2fd', 'color_text' => '#1565c0', 'description' => 'Processing for Consignee Collection', 'category' => null, 'tags' => []],

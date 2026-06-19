@@ -10,7 +10,7 @@ enum ShipmentStatusTag: string
     case DELIVERY_EXCEPTION = 'DELIVERY_EXCEPTION';
     case PICKUP_TRIP_EXCEPTION = 'PICKUP_TRIP_EXCEPTION';
     case DELIVERY_TRIP_EXCEPTION = 'DELIVERY_TRIP_EXCEPTION';
-        case EXCEPTION = 'EXCEPTION';
+    case EXCEPTION = 'EXCEPTION';
     case WORKFLOW = 'WORKFLOW';
     case PROBLEMATIC_DEBRIEF_EXCEPTION = 'PROBLEMATIC_DEBRIEF_EXCEPTION';
     case HOLD_EXCEPTION = 'HOLD_EXCEPTION';
@@ -18,6 +18,7 @@ enum ShipmentStatusTag: string
     case ATTEMPTED = 'ATTEMPTED';
     case REFUSED = 'REFUSED';
     case WORKFLOW_TRIP_EXCEPTION = 'WORKFLOW_TRIP_EXCEPTION';
+    case IN_FULFILLMENT = 'IN_FULFILLMENT';
     case ALL = 'ALL';
 
     /**
@@ -52,6 +53,7 @@ enum ShipmentStatusTag: string
             self::HOLD_EXCEPTION => 'On-hold pipeline: customs, operational, or other holds that block normal progress.',
             self::ATTEMPTED => 'grouping for attempted statuses dropdown in workflow logic.',
             self::REFUSED => 'grouping for refused statuses dropdown in workflow logic.',
+            self::IN_FULFILLMENT => 'Child pickup-through-delivery statuses also match workflow events configured on the In Fulfillment parent.',
             self::ALL => 'Universal tag: status is not restricted to a single exception subtype (e.g. reporting or global lists).',
         
         };

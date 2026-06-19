@@ -1529,6 +1529,36 @@ function process_event_status($status, $number_of_attempts = 1)
 
     return $status;
 }
+
+if (!function_exists('workflow_event_match_statuses')) {
+    /**
+     * Status codes a workflow event may match for a given AWB activity.
+     * Keeps process_event_status() behavior unchanged; only adds SHIF when applicable.
+     */
+    function workflow_event_match_statuses(string $status, int $number_of_attempts = 1): array
+    {
+        $normalizedStatus = process_event_status($status, $number_of_attempts);
+        $matchStatuses = [$normalizedStatus];
+
+        if ($normalizedStatus !== $status) {
+            return $matchStatuses;
+        }
+
+        $inFulfillmentStatuses = DB::table('shipment_statuses')
+            ->whereNull('deleted_at')
+            ->whereJsonContains('shipment_status_tags', 'IN_FULFILLMENT')
+            ->pluck('code')
+            ->filter()
+            ->values()
+            ->all();
+
+        if (in_array($status, $inFulfillmentStatuses, true)) {
+            $matchStatuses[] = AwbStatusEnum::IN_FULFILLMENT->value;
+        }
+
+        return array_values(array_unique($matchStatuses));
+    }
+}
 if (!function_exists('filter_date_timezone_to_utc')) {
     function filter_date_timezone_to_utc(array $keys, $timezone = 'UTC')
     {
