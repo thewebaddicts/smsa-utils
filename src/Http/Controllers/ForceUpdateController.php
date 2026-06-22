@@ -53,10 +53,15 @@ class ForceUpdateController extends Controller
 
     public function check(Request $request)
     {
-        $request->validate([
+      
+        $validator = Validator::make(request()->all(), [
             'version' => 'required|string',
             'platform' => 'required|string|in:android,ios',
         ]);
+
+        if ($validator->fails()) {
+            return $this->responseValidation($validator);
+        }
 
         $platform = request()->input('platform');
 
@@ -77,7 +82,6 @@ class ForceUpdateController extends Controller
                 'url' => null,
             ]);
         }
-      
 
         $file_name = 'v' . str_replace('.', '_', $manifest["version"]) . '.apk';
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use twa\smsautils\Http\Controllers\AttributesController;
 
+
 Route::prefix('api/v1')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class])->group(function () {
 
     Route::get('/version/check', [\twa\smsautils\Http\Controllers\ForceUpdateController::class, 'check']);
