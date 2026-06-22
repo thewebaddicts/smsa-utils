@@ -6,7 +6,12 @@ use twa\smsautils\Http\Controllers\AttributesController;
 
 Route::prefix('api/v1')->middleware([twa\smsautils\Http\Middleware\AuthMandatoryMiddleware::class])->group(function () {
 
-  
+    Route::get('/version/check', [\twa\smsautils\Http\Controllers\ForceUpdateController::class, 'check']);
+
+    Route::middleware(twa\smsautils\Http\Middleware\BasicAuthMiddleware::class)->group(function () {
+        Route::post('version/release', [\twa\smsautils\Http\Controllers\ForceUpdateController::class, 'release']);
+    });
+
     // https://smsa-awb.twalab.live/api/v1/save-documents
  
     Route::post('/save-documents', action: [twa\smsautils\Http\Controllers\DocumentController::class, 'saveDocuments']);
